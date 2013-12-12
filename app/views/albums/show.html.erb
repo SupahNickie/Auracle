@@ -1,0 +1,9 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @album.title %>
+</p>
+
+<%= link_to 'Edit', edit_user_album_path(@user, @album) %> |
+<%= link_to 'Back', user_albums_path(@user) %>

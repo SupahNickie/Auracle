@@ -30,4 +30,14 @@ Minstrel::Application.configure do
   config.assets.debug = true
 
   Paperclip.options[:command_path] = "/usr/bin/convert"
+
+#   config.paperclip_defaults = {
+#   :storage => :s3,
+#   :s3_protocol => 'http',
+#   :s3_credentials => {
+#     :bucket => ENV['AWS_DEV_BUCKET'],
+#     :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
+#     :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
+#   }
+# }
 end

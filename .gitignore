@@ -20,3 +20,9 @@
 
 # Ignore seeds
 /db/seeds.rb
+
+# Ignore coverage
+/coverage
+
+# Ignore local paperclip storage
+/public/system
