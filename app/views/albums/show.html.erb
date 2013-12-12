@@ -5,20 +5,23 @@
 
 <%= image_tag(@album.album_art.url(:album_art)) %><br>
 
-<% @album.songs.each do |song| %>
-  <strong><%= song.title %></strong><br>
-  <%= audio_tag(song.mp3.url, controls: true) %><br>
-  <% if song.link_to_purchase? && song.link_to_download? %>
-    <%= link_to 'Purchase', "http://#{song.link_to_purchase}" %> |
-    <%= link_to 'Download', "http://#{song.link_to_download}" %>
-  <% elsif song.link_to_purchase? && song.link_to_download.empty? %>
-    <%= link_to 'Purchase', "http://#{song.link_to_purchase}" %>
-  <% elsif song.link_to_download? && song.link_to_purchase.empty? %>
-    <%= link_to 'Download', "http://#{song.link_to_download}" %>
+<% if @album.songs.any? %>
+  <% @album.songs.each do |song| %>
+    <strong><%= song.title %></strong><br>
+    <%= audio_tag(song.mp3.url, controls: true) %><br>
+    <% if song.link_to_purchase? && song.link_to_download? %>
+      <%= link_to 'Purchase', "http://#{song.link_to_purchase}" %> |
+      <%= link_to 'Download', "http://#{song.link_to_download}" %>
+    <% elsif song.link_to_purchase? && song.link_to_download.empty? %>
+      <%= link_to 'Purchase', "http://#{song.link_to_purchase}" %>
+    <% elsif song.link_to_download? && song.link_to_purchase.empty? %>
+      <%= link_to 'Download', "http://#{song.link_to_download}" %>
+    <% end %>
+    <br><%= link_to 'Edit', edit_user_album_song_path(@user, @album, song) %> |
+    <%= link_to 'Delete', user_album_song_path(@user, @album, song), method: :delete, data: { confirm: 'Are you sure?' } %><br><br>
   <% end %>
-  <br><%= link_to 'Edit', edit_user_album_song_path(@user, @album, song) %> |
-  <%= link_to 'Delete', user_album_song_path(@user, @album, song), method: :delete, data: { confirm: 'Are you sure?' } %><br><br>
-
+<% else %>
+  <p>This artist hasn't uploaded any songs yet!</p>
 <% end %>
 
 <br><br>

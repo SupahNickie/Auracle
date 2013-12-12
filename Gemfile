@@ -17,6 +17,10 @@ group :production do
   gem 'rails_12factor'
 end
 
+group :development do
+  gem 'pry-rails'
+end
+
 group :test do
   gem 'simplecov', :require => false
   gem 'minitest-rails-capybara'

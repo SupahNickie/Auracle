@@ -26,6 +26,7 @@ class SongsController < ApplicationController
   # POST /songs.json
   def create
     @song = @album.songs.new(song_params)
+    @song.add_attributes_to_array(params["song"]["mood"], params["song"]["timbre"], params["song"]["intensity"], params["song"]["tone"])
 
     respond_to do |format|
       if @song.save
