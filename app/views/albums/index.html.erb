@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>Title</th>
-      <th></th>
+      <th>Art</th>
       <th></th>
       <th></th>
     </tr>
@@ -13,10 +13,10 @@
   <tbody>
     <% @albums.each do |album| %>
       <tr>
-        <td><%= album.title %></td>
-        <td><%= link_to 'Show', user_album_path(@user, album) %></td>
+        <td><%= link_to album.title, user_album_path(@user, album) %></td>
+        <td><%= link_to image_tag(album.album_art.url(:album_art)), user_album_path(@user, album) %></td>
         <td><%= link_to 'Edit', edit_user_album_path(@user, album) %></td>
-        <td><%= link_to 'Destroy', user_album_path(album), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', user_album_path(@user, album), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

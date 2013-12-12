@@ -1,9 +1,12 @@
 Minstrel::Application.routes.draw do
 
+
   devise_for :users
 
   resources :users, only: [:index, :show, :edit, :update] do
-    resources :albums
+    resources :albums do
+      resources :songs, except: [:show]
+    end
   end
 
   root :to => 'home#home'

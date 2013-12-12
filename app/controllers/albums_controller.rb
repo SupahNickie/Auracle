@@ -29,8 +29,8 @@ class AlbumsController < ApplicationController
 
     respond_to do |format|
       if @album.save
-        @current_user.albums << @album
-        format.html { redirect_to @album, notice: 'Album was successfully created.' }
+        @user.albums << @album
+        format.html { redirect_to user_album_path(@user, @album), notice: 'Album was successfully created.' }
         format.json { render action: 'show', status: :created, location: @album }
       else
         format.html { render action: 'new' }
@@ -44,7 +44,7 @@ class AlbumsController < ApplicationController
   def update
     respond_to do |format|
       if @album.update(album_params)
-        format.html { redirect_to @album, notice: 'Album was successfully updated.' }
+        format.html { redirect_to user_album_path(@user, @album), notice: 'Album was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -58,7 +58,7 @@ class AlbumsController < ApplicationController
   def destroy
     @album.destroy
     respond_to do |format|
-      format.html { redirect_to albums_url }
+      format.html { redirect_to user_albums_url(@user) }
       format.json { head :no_content }
     end
   end
@@ -76,6 +76,7 @@ class AlbumsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def album_params
-      params.require(:album).permit(:title, :album_art, :user_id)
+      params.require(:album).permit(:title, :album_art, :user_id, songs_attributes: [:title, :mp3, :link_to_purchase, :link_to_download, :average_mood, :average_timbre,
+        :average_intensity, :average_tone, :mood, :timbre, :intensity, :tone, :album_id, :user_id])
     end
 end

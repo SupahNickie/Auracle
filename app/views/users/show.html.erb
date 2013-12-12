@@ -1,12 +1,21 @@
-<p id="notice"><%= notice %></p>
-
 <p>
-  <strong>Username:</strong>
+  <% if @user.role == "band" %>
+    <strong>Band:</strong>
+  <% else %>
+    <strong>Username:</strong>
+  <% end %>
   <%= @user.username %>
 </p>
 
 <%= image_tag(@user.avatar.url(:avatar)) %><br>
 <%= image_tag(@user.user_pic.url(:user_pic)) %><br>
 
+<%= @user.albums.each do |album| %>
+  <%= link_to album.title, user_album_path(@user, album) %><br>
+  <%= link_to image_tag(album.album_art.url(:album_art)), user_album_path(@user, album) %><br>
+<% end %>
+
+<br>
+<%= link_to 'New Album', new_user_album_path(@user) %> |
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

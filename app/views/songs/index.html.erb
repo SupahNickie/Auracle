@@ -1,0 +1,33 @@
+<h1>Listing songs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Listen</th>
+      <th>Link to purchase</th>
+      <th>Link to download</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @songs.each do |song| %>
+      <tr>
+        <td><%= song.title %></td>
+        <td><%= audio_tag(song.mp3.url, controls: true) %></td>
+        <td><%= song.link_to_purchase %></td>
+        <td><%= song.link_to_download %></td>
+        <td><%= link_to 'Show', song %></td>
+        <td><%= link_to 'Edit', edit_song_path(song) %></td>
+        <td><%= link_to 'Destroy', song, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Song', new_user_album_song_path(@user, @album) %>

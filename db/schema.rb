@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131212015714) do
+ActiveRecord::Schema.define(version: 20131212174711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,28 @@ ActiveRecord::Schema.define(version: 20131212015714) do
     t.datetime "album_art_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "songs", force: true do |t|
+    t.string   "title"
+    t.string   "mp3_file_name"
+    t.string   "mp3_content_type"
+    t.integer  "mp3_file_size"
+    t.datetime "mp3_updated_at"
+    t.string   "link_to_purchase"
+    t.string   "link_to_download"
+    t.integer  "average_mood"
+    t.integer  "average_timbre"
+    t.integer  "average_intensity"
+    t.integer  "average_tone"
+    t.integer  "mood",              default: [], array: true
+    t.integer  "timbre",            default: [], array: true
+    t.integer  "intensity",         default: [], array: true
+    t.integer  "tone",              default: [], array: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+    t.integer  "album_id"
   end
 
   create_table "users", force: true do |t|
