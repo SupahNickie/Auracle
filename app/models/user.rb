@@ -8,5 +8,6 @@ class User < ActiveRecord::Base
   has_many :photo_albums
   has_attached_file :avatar, :styles => { :avatar => "200x200>" }
   has_attached_file :user_pic, :styles => { :user_pic => "700x500>" }
+  validates :role, presence: true
 
 end

@@ -14,7 +14,7 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
             <% if current_user %>
-            <li><%= link_to "#{@user.username}'s Minstrel", user_path(current_user) %></li>
+            <li><%= link_to "#{current_user.username}'s Minstrel", user_path(current_user) %></li>
             <% end %>
             <li><%= link_to 'What is Minstrel?', '#' %></li>
             <li><%= link_to 'Explore Artists', users_path %></li>
