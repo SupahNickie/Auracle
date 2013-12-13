@@ -1,6 +1,6 @@
 class SongsController < ApplicationController
   before_filter :load_album_and_user
-  before_action :set_song, only: [:show, :edit, :update, :destroy]
+  before_action :set_song, only: [:show, :edit, :update, :destroy, :rating, :vote]
 
   # GET /songs
   # GET /songs.json
@@ -40,12 +40,22 @@ class SongsController < ApplicationController
     end
   end
 
+  def rating
+  end
+
+  def vote
+    @song.add_attributes_to_array(@song, params["song"]["mood"], params["song"]["timbre"], params["song"]["intensity"], params["song"]["tone"])
+    @song.new_average(@song)
+    current_user.ratings << @song.id
+
+    respond_to do |format|
+      format.html { redirect_to user_album_path(@user, @album), notice: 'Thank you for your vote!' }
+    end
+  end
+
   # PATCH/PUT /songs/1
   # PATCH/PUT /songs/1.json
   def update
-    @song.add_attributes_to_array
-    @song.new_average
-
     respond_to do |format|
       if @song.update(song_params)
         format.html { redirect_to user_album_path(@user, @album), notice: 'Song was successfully updated.' }

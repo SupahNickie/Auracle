@@ -18,20 +18,14 @@ class Song < ActiveRecord::Base
     @song.timbre << scores[1].to_i
     @song.intensity << scores[2].to_i
     @song.tone << scores[3].to_i
-    binding.pry
   end
 
   def new_average(song)
     @song = song
-    average_mood_will_change!
-    average_timbre_will_change!
-    average_intensity_will_change!
-    average_tone_will_change!
     @song.update(:average_mood => (mood.reduce :+)/mood.count)
     @song.update(:average_timbre => (timbre.reduce :+)/timbre.count)
     @song.update(:average_intensity => (intensity.reduce :+)/intensity.count)
     @song.update(:average_tone => (tone.reduce :+)/tone.count)
-    binding.pry
   end
 
 end

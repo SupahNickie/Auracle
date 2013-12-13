@@ -5,7 +5,13 @@ Minstrel::Application.routes.draw do
 
   resources :users, only: [:index, :show, :edit, :update] do
     resources :albums do
-      resources :songs, except: [:show]
+      resources :songs, except: [:show] do
+        member do
+          get :rating
+          put :vote
+          patch :vote
+        end
+      end
     end
   end
 
