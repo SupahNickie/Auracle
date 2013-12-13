@@ -26,7 +26,8 @@ class SongsController < ApplicationController
   # POST /songs.json
   def create
     @song = @album.songs.new(song_params)
-    @song.add_attributes_to_array(params["song"]["mood"], params["song"]["timbre"], params["song"]["intensity"], params["song"]["tone"])
+    @song.add_attributes_to_array(@song, params["song"]["mood"], params["song"]["timbre"], params["song"]["intensity"], params["song"]["tone"])
+    @song.new_average(@song)
 
     respond_to do |format|
       if @song.save
@@ -42,6 +43,9 @@ class SongsController < ApplicationController
   # PATCH/PUT /songs/1
   # PATCH/PUT /songs/1.json
   def update
+    @song.add_attributes_to_array
+    @song.new_average
+
     respond_to do |format|
       if @song.update(song_params)
         format.html { redirect_to user_album_path(@user, @album), notice: 'Song was successfully updated.' }
