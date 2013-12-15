@@ -12,5 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.all
+//= require jquery.modal
 //= require turbolinks
 //= require_tree .
+$.modal.defaults.zIndex = 1000

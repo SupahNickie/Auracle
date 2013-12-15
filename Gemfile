@@ -12,6 +12,7 @@ gem 'aws-sdk'
 gem 'mime-types'
 gem 'postmark-rails'
 gem 'jquery-ui-rails'
+gem 'jquery-modal-rails'
 
 group :production do
   gem 'rails_12factor'

@@ -10,4 +10,12 @@ class User < ActiveRecord::Base
   has_attached_file :user_pic, :styles => { :user_pic => "700x500>" }
   validates :role, presence: true
 
+  def push_song_id_to_ratings_list(song, user)
+    @song = song
+    @user = user
+    ratings_will_change!
+    new_ratings_list = @user.ratings << @song.id
+    @user.update(:ratings => new_ratings_list)
+  end
+
 end

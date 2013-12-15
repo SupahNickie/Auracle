@@ -1,18 +1,17 @@
 <p>
-  <% if @user.role == "band" %>
-    <strong>Band:</strong>
-  <% else %>
-    <strong>Username:</strong>
-  <% end %>
-  <%= @user.username %>
+  <h1><%= @user.username %></h1>
 </p>
 
 <%= image_tag(@user.avatar.url(:avatar)) %><br>
-<%= image_tag(@user.user_pic.url(:user_pic)) %><br>
+<%= image_tag(@user.user_pic.url(:user_pic)) %><br><br>
 
-<%= @user.albums.each do |album| %>
-  <%= link_to album.title, user_album_path(@user, album) %><br>
-  <%= link_to image_tag(album.album_art.url(:album_art)), user_album_path(@user, album) %><br>
+<% if @user.albums.any? %>
+  <%= @user.albums.each do |album| %>
+    <h3><%= link_to album.title, user_album_path(@user, album) %></h3><br>
+    <%= link_to image_tag(album.album_art.url(:album_art)), user_album_path(@user, album) %><br>
+  <% end %>
+<% else %>
+  <p>This band hasn't uploaded any albums yet!</p>
 <% end %>
 
 <br>

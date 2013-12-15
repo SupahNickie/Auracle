@@ -9,7 +9,13 @@
   <% @album.songs.each do |song| %>
     <strong><%= song.title %></strong><br>
     <%= audio_tag(song.mp3.url, controls: true) %><br>
-    <%= link_to "What do you think the song's qualities are? Vote here!", rating_user_album_song_path(@user, @album, song) %><br>
+
+    <% if current_user.ratings.include? song.id %>
+      <p>Thank you for rating <%= song.title %>! Our system will get more accurate with every vote!</p>
+    <% else %>
+      <%= link_to_modal "What do you think the song's qualities are? Vote here!", rating_user_album_song_path(@user, @album, song), :class=>"button" %><br>
+    <% end %>
+
     <% if song.link_to_purchase? && song.link_to_download? %>
       <%= link_to 'Purchase', "http://#{song.link_to_purchase}" %> |
       <%= link_to 'Download', "http://#{song.link_to_download}" %>
@@ -18,6 +24,7 @@
     <% elsif song.link_to_download? && song.link_to_purchase.empty? %>
       <%= link_to 'Download', "http://#{song.link_to_download}" %>
     <% end %>
+
     <br><%= link_to 'Edit', edit_user_album_song_path(@user, @album, song) %> |
     <%= link_to 'Delete', user_album_song_path(@user, @album, song), method: :delete, data: { confirm: 'Are you sure?' } %><br><br>
   <% end %>
@@ -26,6 +33,6 @@
 <% end %>
 
 <br><br>
-<%= link_to 'New Song', new_user_album_song_path(@user, @album) %> |
-<%= link_to 'Edit', edit_user_album_path(@user, @album) %> |
+<%= link_to_modal 'New Song', new_user_album_song_path(@user, @album) %> |
+<%= link_to_modal 'Edit', edit_user_album_path(@user, @album) %> |
 <%= link_to 'Back', user_albums_path(@user) %>

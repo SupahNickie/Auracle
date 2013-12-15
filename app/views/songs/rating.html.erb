@@ -1,4 +1,4 @@
-<%= form_for [@user, @album, @song], :url => "vote" do |f| %>
+<%= form_for [@user, @album, @song], :url => "#{@album.id}/songs/#{@song.id}/vote" do |f| %>
   <% if @song.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@song.errors.count, "error") %> prohibited your vote from counting:</h2>
