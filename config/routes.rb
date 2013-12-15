@@ -1,9 +1,8 @@
 Minstrel::Application.routes.draw do
-
-
   devise_for :users
 
   resources :users, only: [:index, :show, :edit, :update] do
+    resources :playlists
     resources :albums do
       resources :songs, except: [:show] do
         member do

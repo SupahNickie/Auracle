@@ -3,7 +3,7 @@
 <%= form_for [@user, @album, @song], :html => { :multipart => true } do |f| %>
   <% if @song.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@song.errors.count, "error") %> prohibited this song from being saved:</h2>
+      <h2><%= pluralize(@song.errors.count, "error") %> prohibited this song from being updated:</h2>
 
       <ul>
       <% @song.errors.full_messages.each do |msg| %>

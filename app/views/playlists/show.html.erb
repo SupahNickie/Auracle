@@ -1,0 +1,21 @@
+<p>
+  <strong>Name:</strong>
+  <%= @playlist.name %>
+</p>
+
+<% @playlist.songs_list.each do |song| %>
+  <strong><%= User.find(Album.find(Song.find(song).album_id).user_id).username %></strong> - <strong><%= Song.find(song).title %></strong><br>
+  <%= audio_tag(Song.find(song).mp3.url, controls: true) %><br>
+
+  <% if Song.find(song).link_to_purchase? && Song.find(song).link_to_download? %>
+    <%= link_to 'Purchase', "http://#{Song.find(song).link_to_purchase}" %> |
+    <%= link_to 'Download', "http://#{Song.find(song).link_to_download}" %>
+  <% elsif Song.find(song).link_to_purchase? && Song.find(song).link_to_download.empty? %>
+    <%= link_to 'Purchase', "http://#{Song.find(song).link_to_purchase}" %>
+  <% elsif Song.find(song).link_to_download? && Song.find(song).link_to_purchase.empty? %>
+    <%= link_to 'Download', "http://#{Song.find(song).link_to_download}" %>
+  <% end %>
+<% end %>
+
+<%= link_to 'Edit', edit_user_playlist_path(@user, @playlist) %> |
+<%= link_to 'Back', user_playlists_path(@user) %>
