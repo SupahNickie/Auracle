@@ -70,6 +70,7 @@ class SongsController < ApplicationController
   # DELETE /songs/1
   # DELETE /songs/1.json
   def destroy
+    @song.mp3 = nil
     @song.destroy
     respond_to do |format|
       format.html { redirect_to user_album_path(@user, @album) }
