@@ -11,6 +11,9 @@ class PlaylistsController < ApplicationController
   # GET /playlists/1
   # GET /playlists/1.json
   def show
+    @songs = Song.all
+    @playlist.check_if_songs_present(@playlist)
+    @playlist.find_music(@playlist, @songs, @playlist.mood, @playlist.timbre, @playlist.intensity, @playlist.tone)
   end
 
   # GET /playlists/new

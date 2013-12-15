@@ -11,15 +11,29 @@ class Playlist < ActiveRecord::Base
     @intensity = intensity.to_i
     @tone = tone.to_i
     songs_list_will_change!
+    array = []
     @songs.each do |song|
       if
         check_fit(@mood, song.average_mood) &&
         check_fit(@timbre, song.average_timbre) &&
         check_fit(@intensity, song.average_intensity) &&
         check_fit(@tone, song.average_tone)
-        @playlist.songs_list << song
+        array << song
       end
     end
+    @playlist.update(:songs_list => array)
+  end
+
+  def check_if_songs_present(playlist)
+    @playlist = playlist
+    songs_list_will_change!
+    array = @playlist.songs_list
+    array.each do |song|
+      if Song.find_by_id(song).nil?
+        array.delete(song)
+      end
+    end
+    @playlist.update(:songs_list => array)
   end
 
 private
