@@ -1,7 +1,7 @@
 MINSTREL - A music app to expand your horizons
 ==============================================
 
-Visible at minstrel.herokuapp.com. Please continue to check every so often to see the latest update. I will make an announcement in this Readme when the app is completed so there will be no confusion.
+Visible at http://minstrel.herokuapp.com. Please continue to check every so often to see the latest update. I will make an announcement in this Readme when the app is completed so there will be no confusion.
 
 The idea for this app is to create a new music service to compete with the likes of Pandora and Spotify, but for a more niche clientele: those who are hardcore music appreciators. Everybody has their favorite artist or genre, but I'm looking to take aim at people who are more than that, who are not afraid to explore all kinds of music regardless of genre.
 
