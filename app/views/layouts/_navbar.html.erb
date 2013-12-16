@@ -13,11 +13,14 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
-            <li><%= link_to 'What is Minstrel?', '#' %></li>
+            <li><%= link_to 'What is Minstrel?', '/about' %></li>
             <li><%= link_to 'Explore Artists', users_path %></li>
+            <% if current_user && current_user.role == "band" %>
+              <li><%= link_to 'Manage My Albums', user_albums_path(current_user) %></li>
+            <% end %>
             <% if current_user %>
               <li><%= link_to 'My Playlists', user_playlists_path(current_user) %></li>
-              <li><%= link_to "#{current_user.username}'s Minstrel", user_path(current_user) %></li>
+              <li><%= link_to "#{current_user.username}'s Profile", user_path(current_user) %></li>
               <li><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></li>
             <% elsif current_user.nil? %>
               <li><%= link_to 'Sign In', new_user_session_path %></li>

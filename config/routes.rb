@@ -14,6 +14,7 @@ Minstrel::Application.routes.draw do
     end
   end
 
+  match 'about', to: 'home#about', via: [:get]
   root :to => 'home#home'
 
 
