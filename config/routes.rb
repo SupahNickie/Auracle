@@ -11,6 +11,8 @@ Minstrel::Application.routes.draw do
           patch :vote
           put :favorite
           patch :favorite
+          put :delete_favorite
+          patch :delete_favorite
         end
       end
     end

@@ -1,6 +1,6 @@
 class SongsController < ApplicationController
   before_filter :load_album_and_user
-  before_action :set_song, only: [:show, :edit, :update, :destroy, :rating, :vote, :favorite]
+  before_action :set_song, except: [:new, :create]
 
   # GET /songs
   # GET /songs.json
@@ -82,6 +82,14 @@ class SongsController < ApplicationController
     current_user.add_song_to_favorites(@song, current_user)
     respond_to do |format|
       format.html { redirect_to user_album_path(@user, @album), notice: 'Song was successfully favorited!' }
+      format.json { head :no_content }
+    end
+  end
+
+  def delete_favorite
+    current_user.delete_song_from_favorites(@song, current_user)
+    respond_to do |format|
+      format.html { redirect_to user_playlists_path(@user), notice: 'Song was successfully removed from favorites.' }
       format.json { head :no_content }
     end
   end

@@ -39,4 +39,13 @@ class User < ActiveRecord::Base
     @user.update(:favorites => array)
   end
 
+  def delete_song_from_favorites(song, user)
+    @song = song
+    @user = user
+    favorites_will_change!
+    array = @user.favorites
+    array.delete(@song.id)
+    @user.update(:favorites => array)
+  end
+
 end
