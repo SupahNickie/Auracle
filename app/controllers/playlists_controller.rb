@@ -5,6 +5,7 @@ class PlaylistsController < ApplicationController
   # GET /playlists
   # GET /playlists.json
   def index
+    current_user.check_favorites(current_user)
     @playlists = @user.playlists.all
   end
 
