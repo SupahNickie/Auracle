@@ -42,6 +42,8 @@
       <strong><%= @band.username %></strong> - <strong><%= @song.title %></strong><br>
       <%= audio_tag(Song.find(song).mp3.url, controls: true) %><br>
 
+      <%= link_to 'Remove from favorites', delete_favorite_user_album_song_path(@band, @album, @song), method: :put, data: { confirm: 'Are you sure?' } %><br>
+
       <% if Song.find(song).link_to_purchase? && Song.find(song).link_to_download? %>
         <%= link_to 'Purchase', "http://#{Song.find(song).link_to_purchase}" %> |
         <%= link_to 'Download', "http://#{Song.find(song).link_to_download}" %><br>
@@ -53,9 +55,6 @@
         <br>
       <% end %>
 
-      <%= link_to 'Remove from favorites', delete_favorite_user_album_song_path(@band, @album, @song), method: :put, data: { confirm: 'Are you sure?' } %>
-
-      <br>
     <% end %>
   <% else %>
     <p>It looks like you don't have any favorites. Get crackin' and they'll show up here!</p>
