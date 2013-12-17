@@ -1,6 +1,6 @@
 class SongsController < ApplicationController
   before_filter :load_album_and_user
-  before_action :set_song, except: [:new, :create]
+  before_action :set_song, only: [:show, :edit, :update, :destroy, :rating, :vote, :favorite, :delete_favorite]
 
   # GET /songs
   # GET /songs.json
