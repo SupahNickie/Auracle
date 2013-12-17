@@ -19,7 +19,7 @@
               <li><%= link_to 'Manage My Albums', user_albums_path(current_user) %></li>
             <% end %>
             <% if current_user %>
-              <li><%= link_to 'My Playlists', user_playlists_path(current_user) %></li>
+              <li><%= link_to 'My Playlists and Faves', user_playlists_path(current_user) %></li>
               <li><%= link_to "#{current_user.username}'s Profile", user_path(current_user) %></li>
               <li><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></li>
             <% elsif current_user.nil? %>

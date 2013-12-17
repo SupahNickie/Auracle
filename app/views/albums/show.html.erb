@@ -10,22 +10,30 @@
   <% end %>
 
   <% @album.songs.each do |song| %>
-    <strong><%= song.title %></strong><br>
+    <strong><%= User.find(Album.find(song.album_id).user_id).username %> - <%= song.title %></strong><br>
     <%= audio_tag(song.mp3.url, controls: true) %><br>
 
+    <% if (current_user.present?) && (current_user.favorites.include? song.id) %>
+      <%= 'Favorited! <3' %>
+    <% elsif (current_user.present?) && (current_user.favorites.exclude? song.id) %>
+      <%= link_to 'Add to Favorites!', favorite_user_album_song_path(@user, @album, song), method: :put %>
+    <% end %> |
+
     <% if (current_user.present?) && (current_user.ratings.include? song.id) %>
-      <p>Thank you for rating <%= song.title %>! Our system will get more accurate with every vote!</p>
+      <%= "Thank you for rating #{song.title}!" %>
     <% elsif (current_user.present?) && (current_user.ratings.exclude? song.id) %>
       <%= link_to_modal "What do you think the song's qualities are? Vote here!", rating_user_album_song_path(@user, @album, song), :class=>"button" %><br>
     <% end %>
 
     <% if song.link_to_purchase? && song.link_to_download? %>
       <%= link_to 'Purchase', "http://#{song.link_to_purchase}" %> |
-      <%= link_to 'Download', "http://#{song.link_to_download}" %>
+      <%= link_to 'Download', "http://#{song.link_to_download}" %><br>
     <% elsif song.link_to_purchase? && song.link_to_download.empty? %>
-      <%= link_to 'Purchase', "http://#{song.link_to_purchase}" %>
+      <%= link_to 'Purchase', "http://#{song.link_to_purchase}" %><br>
     <% elsif song.link_to_download? && song.link_to_purchase.empty? %>
-      <%= link_to 'Download', "http://#{song.link_to_download}" %>
+      <%= link_to 'Download', "http://#{song.link_to_download}" %><br>
+    <% else %>
+      <br>
     <% end %>
 
     <br><%= link_to_modal "Edit #{song.title}", edit_user_album_song_path(@user, @album, song) %> |

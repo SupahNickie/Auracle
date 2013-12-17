@@ -18,4 +18,13 @@ class User < ActiveRecord::Base
     @user.update(:ratings => new_ratings_list)
   end
 
+  def add_song_to_favorites(song, user)
+    @song = song
+    @user = user
+    favorites_will_change!
+    array = @user.favorites
+    array << @song.id
+    @user.update(:favorites => array)
+  end
+
 end

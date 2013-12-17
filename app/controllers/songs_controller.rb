@@ -1,6 +1,6 @@
 class SongsController < ApplicationController
   before_filter :load_album_and_user
-  before_action :set_song, only: [:show, :edit, :update, :destroy, :rating, :vote]
+  before_action :set_song, only: [:show, :edit, :update, :destroy, :rating, :vote, :favorite]
 
   # GET /songs
   # GET /songs.json
@@ -40,19 +40,6 @@ class SongsController < ApplicationController
     end
   end
 
-  def rating
-  end
-
-  def vote
-    @song.add_attributes_to_array(@song, params["song"]["mood"], params["song"]["timbre"], params["song"]["intensity"], params["song"]["tone"])
-    @song.new_average(@song)
-    current_user.push_song_id_to_ratings_list(@song, current_user)
-
-    respond_to do |format|
-      format.html { redirect_to user_album_path(@user, @album), notice: 'Thank you for your vote!' }
-    end
-  end
-
   # PATCH/PUT /songs/1
   # PATCH/PUT /songs/1.json
   def update
@@ -74,6 +61,27 @@ class SongsController < ApplicationController
     @song.destroy
     respond_to do |format|
       format.html { redirect_to user_album_path(@user, @album) }
+      format.json { head :no_content }
+    end
+  end
+
+  def rating
+  end
+
+  def vote
+    @song.add_attributes_to_array(@song, params["song"]["mood"], params["song"]["timbre"], params["song"]["intensity"], params["song"]["tone"])
+    @song.new_average(@song)
+    current_user.push_song_id_to_ratings_list(@song, current_user)
+
+    respond_to do |format|
+      format.html { redirect_to user_album_path(@user, @album), notice: 'Thank you for your vote!' }
+    end
+  end
+
+  def favorite
+    current_user.add_song_to_favorites(@song, current_user)
+    respond_to do |format|
+      format.html { redirect_to user_album_path(@user, @album), notice: 'Song was successfully favorited!' }
       format.json { head :no_content }
     end
   end

@@ -7,14 +7,23 @@
   <strong><%= User.find(Album.find(Song.find(song).album_id).user_id).username %></strong> - <strong><%= Song.find(song).title %></strong><br>
   <%= audio_tag(Song.find(song).mp3.url, controls: true) %><br>
 
+  <% if current_user.favorites.include? song.id %>
+    <%= 'Favorited! <3' %>
+  <% elsif current_user.favorites.exclude? song.id %>
+    <%= link_to 'Add to Favorites!', favorite_user_album_song_path(User.find(Album.find(song.album_id).user_id), Album.find(song.album_id), Song.find(song)), method: :put %>
+  <% end %><br>
+
   <% if Song.find(song).link_to_purchase? && Song.find(song).link_to_download? %>
     <%= link_to 'Purchase', "http://#{Song.find(song).link_to_purchase}" %> |
-    <%= link_to 'Download', "http://#{Song.find(song).link_to_download}" %>
+    <%= link_to 'Download', "http://#{Song.find(song).link_to_download}" %><br>
   <% elsif Song.find(song).link_to_purchase? && Song.find(song).link_to_download.empty? %>
-    <%= link_to 'Purchase', "http://#{Song.find(song).link_to_purchase}" %>
+    <%= link_to 'Purchase', "http://#{Song.find(song).link_to_purchase}" %><br>
   <% elsif Song.find(song).link_to_download? && Song.find(song).link_to_purchase.empty? %>
-    <%= link_to 'Download', "http://#{Song.find(song).link_to_download}" %>
-  <% end %>
+    <%= link_to 'Download', "http://#{Song.find(song).link_to_download}" %><br>
+  <% else %>
+    <br>
+  <% end %><br>
+
 <% end %>
 
 <%= link_to 'Edit', edit_user_playlist_path(@user, @playlist) %> |

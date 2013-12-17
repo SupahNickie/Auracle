@@ -9,6 +9,8 @@ Minstrel::Application.routes.draw do
           get :rating
           put :vote
           patch :vote
+          put :favorite
+          patch :favorite
         end
       end
     end
