@@ -2,17 +2,23 @@ Minstrel::Application.routes.draw do
   devise_for :users
 
   resources :users, only: [:index, :show, :edit, :update] do
-    resources :playlists
+    resources :playlists do
+      member do
+        put :whitelist
+        patch :whitelist
+        put :blacklist
+        patch :blacklist
+        put :unblacklist
+        patch :unblacklist
+      end
+      get :view_blacklist
+    end
     resources :albums do
       resources :songs, except: [:show] do
         member do
           get :rating
           put :vote
           patch :vote
-          put :favorite
-          patch :favorite
-          put :delete_favorite
-          patch :delete_favorite
         end
       end
     end

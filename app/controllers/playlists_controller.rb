@@ -1,11 +1,10 @@
 class PlaylistsController < ApplicationController
   before_filter :set_user
-  before_action :set_playlist, only: [:show, :edit, :update, :destroy]
+  before_action :set_playlist, only: [:show, :edit, :update, :destroy, :whitelist, :blacklist, :unblacklist]
 
   # GET /playlists
   # GET /playlists.json
   def index
-    current_user.check_favorites(current_user)
     @playlists = @user.playlists.all
   end
 
@@ -13,7 +12,6 @@ class PlaylistsController < ApplicationController
   # GET /playlists/1.json
   def show
     @songs = Song.all
-    @playlist.check_if_songs_present(@playlist)
     @playlist.find_music(@playlist, @songs, @playlist.mood, @playlist.timbre, @playlist.intensity, @playlist.tone)
   end
 
@@ -71,6 +69,40 @@ class PlaylistsController < ApplicationController
     end
   end
 
+  def whitelist
+    @song = Song.find(params[:song_id])
+    @playlist.change_whitelist(@playlist, @song, "add")
+    respond_to do |format|
+      format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Song was successfully favorited to this playlist!' }
+      format.json { head :no_content }
+      format.js
+    end
+  end
+
+  def blacklist
+    @song = Song.find(params[:song_id])
+    @playlist.change_whitelist(@playlist, @song, "remove")
+    respond_to do |format|
+      format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Song was successfully removed from this playlist.'}
+      format.json { head :no_content }
+      format.js
+    end
+  end
+
+  def unblacklist
+    @song = Song.find(params[:song_id])
+    @playlist.change_whitelist(@playlist, @song, "unblacklist")
+    respond_to do |format|
+      format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Song was successfully given another chance!' }
+      format.json { head :no_content }
+      format.js
+    end
+  end
+
+  def view_blacklist
+    @playlist = @user.playlists.find(params[:playlist_id])
+  end
+
   private
 
     def set_user
@@ -84,6 +116,6 @@ class PlaylistsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def playlist_params
-      params.require(:playlist).permit(:name, :mood, :timbre, :intensity, :tone, :songs_list, :user_id)
+      params.require(:playlist).permit(:name, :mood, :timbre, :intensity, :tone, :songs_list, :user_id, :whitelist, :blacklist)
     end
 end

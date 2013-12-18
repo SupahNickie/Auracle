@@ -10,7 +10,6 @@ class Playlist < ActiveRecord::Base
     @timbre = timbre.to_i
     @intensity = intensity.to_i
     @tone = tone.to_i
-    songs_list_will_change!
     array = []
     @songs.each do |song|
       if
@@ -18,22 +17,39 @@ class Playlist < ActiveRecord::Base
         check_fit(@timbre, song.average_timbre) &&
         check_fit(@intensity, song.average_intensity) &&
         check_fit(@tone, song.average_tone)
-        array << song
+        array << song.id unless @playlist.blacklist.include? song.id
       end
     end
-    @playlist.update(:songs_list => array)
+    final_array = (@playlist.whitelist + array)
+    last_check_of_presence(final_array, @playlist)
   end
 
-  def check_if_songs_present(playlist)
+  def change_whitelist(playlist, song, action)
     @playlist = playlist
-    songs_list_will_change!
-    array = @playlist.songs_list
-    array.each do |song|
-      if Song.find_by_id(song).nil?
-        array.delete(song)
+    @song = song
+    @action = action
+    if @action == "add"
+      whitelist_will_change!
+      array = @playlist.whitelist
+      array << @song.id
+      @playlist.update(:whitelist => array)
+    elsif @action == "remove"
+      blacklist_will_change!
+      array = @playlist.blacklist
+      array << @song.id
+      if @playlist.whitelist.include? @song.id
+        whitelist_will_change!
+        whitelist_array = @playlist.whitelist
+        whitelist_array.delete(@song.id)
+        @playlist.update(:whitelist => whitelist_array)
       end
+      @playlist.update(:blacklist => array)
+    elsif @action == "unblacklist"
+      blacklist_will_change!
+      array = @playlist.blacklist
+      array.delete(@song.id)
+      @playlist.update(:blacklist => array)
     end
-    @playlist.update(:songs_list => array)
   end
 
 private
@@ -45,3 +61,15 @@ private
       (attribute_score == 0)
   end
 end
+
+  def last_check_of_presence(songs, playlist)
+    @songs = songs
+    @playlist = playlist
+    songs_list_will_change!
+    @songs.each do |song|
+      if Song.find_by_id(song).nil?
+        @songs.delete(song)
+      end
+    end
+    @playlist.update(:songs_list => @songs.uniq)
+  end

@@ -18,34 +18,4 @@ class User < ActiveRecord::Base
     @user.update(:ratings => new_ratings_list)
   end
 
-  def add_song_to_favorites(song, user)
-    @song = song
-    @user = user
-    favorites_will_change!
-    array = @user.favorites
-    array << @song.id
-    @user.update(:favorites => array)
-  end
-
-  def check_favorites(user)
-    @user = user
-    favorites_will_change!
-    array = @user.favorites
-    array.each do |song|
-      if Song.find_by_id(song).nil?
-        array.delete(song)
-      end
-    end
-    @user.update(:favorites => array)
-  end
-
-  def delete_song_from_favorites(song, user)
-    @song = song
-    @user = user
-    favorites_will_change!
-    array = @user.favorites
-    array.delete(@song.id)
-    @user.update(:favorites => array)
-  end
-
 end
