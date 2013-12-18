@@ -28,8 +28,6 @@ class PlaylistsController < ApplicationController
   # POST /playlists.json
   def create
     @playlist = @user.playlists.new(playlist_params)
-    @songs = Song.all
-    @playlist.find_music(@playlist, @songs, params["playlist"]["mood"], params["playlist"]["timbre"], params["playlist"]["intensity"], params["playlist"]["tone"])
 
     respond_to do |format|
       if @playlist.save
@@ -45,9 +43,6 @@ class PlaylistsController < ApplicationController
   # PATCH/PUT /playlists/1
   # PATCH/PUT /playlists/1.json
   def update
-    @songs = Song.all
-    @playlist.find_music(@playlist, @songs, params["playlist"]["mood"], params["playlist"]["timbre"], params["playlist"]["intensity"], params["playlist"]["tone"])
-
     respond_to do |format|
       if @playlist.update(playlist_params)
         format.html { redirect_to user_playlists_path(@user), notice: 'Playlist was successfully updated.' }

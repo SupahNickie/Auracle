@@ -63,7 +63,7 @@ private
 end
 
   def last_check_of_presence(songs, playlist)
-    @songs = songs.shuffle
+    @songs = songs
     @playlist = playlist
     songs_list_will_change!
     @songs.each do |song|
@@ -71,5 +71,7 @@ end
         @songs.delete(song)
       end
     end
-    @playlist.update(:songs_list => @songs.uniq)
+    if @playlist.songs_list.sort != @songs.uniq.sort
+      @playlist.update(:songs_list => @songs.uniq.shuffle)
+    end
   end

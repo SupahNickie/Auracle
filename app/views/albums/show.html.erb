@@ -11,7 +11,7 @@
 
   <% @album.songs.each do |song| %>
     <strong><%= User.find(Album.find(song.album_id).user_id).username %> - <%= song.title %></strong><br>
-    <%= audio_tag(song.mp3.url, controls: true) %><br>ww.
+    <%= audio_tag(song.mp3.url, controls: true) %><br>
 
     <% if (current_user.present?) && (current_user.ratings.include? song.id) %>
       <%= "Thank you for rating #{song.title}!" %>
