@@ -71,7 +71,8 @@ end
         @songs.delete(song)
       end
     end
-    if @playlist.songs_list.sort != @songs.uniq.sort
-      @playlist.update(:songs_list => @songs.uniq.shuffle)
+    @songs = @songs.uniq.sort
+    if @playlist.songs_list != @songs
+      @playlist.update(:songs_list => @songs)
     end
   end
