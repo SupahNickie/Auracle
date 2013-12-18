@@ -63,7 +63,7 @@ private
 end
 
   def last_check_of_presence(songs, playlist)
-    @songs = songs
+    @songs = songs.shuffle
     @playlist = playlist
     songs_list_will_change!
     @songs.each do |song|

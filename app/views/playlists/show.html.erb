@@ -8,7 +8,11 @@
   <% @album = Album.find(@song.album_id) %>
   <% @band = User.find(@album.user_id) %>
   <strong><%= @band.username %></strong> - <strong><%= @song.title %></strong><br>
-  <%= audio_tag(@song.mp3.url, controls: true) %><br>
+  <% if song == @playlist.songs_list.first %>
+    <%= audio_tag(@song.mp3.url, controls: true, autoplay: true) %><br>
+  <% else %>
+    <%= audio_tag(@song.mp3.url, controls: true) %><br>
+  <% end %>
 
   <% if @playlist.whitelist.include? song %>
     <%= 'Favorited! <3' %>
