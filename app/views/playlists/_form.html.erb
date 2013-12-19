@@ -31,6 +31,12 @@
     <%= f.label :tone %><br>
     <%= f.number_field :tone %>
   </div>
+  <div class="field">
+    <%= f.label :scope, "How expansive do you want the search results?" %><br>
+    <%= f.radio_button(:scope, "strict") %> Strict<br>
+    <%= f.radio_button(:scope, "loose") %> Loose<br>
+    <%= f.radio_button(:scope, "expansive") %> Expansive<br>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

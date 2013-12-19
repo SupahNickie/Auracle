@@ -3,25 +3,30 @@ class Playlist < ActiveRecord::Base
   has_many :songs
   has_many :albums, through: :songs
 
-  def find_music(playlist, songs, mood, timbre, intensity, tone)
+  def find_music(playlist, songs, mood, timbre, intensity, tone, scope)
     @playlist = playlist
     @songs = songs
     @mood = mood.to_i
     @timbre = timbre.to_i
     @intensity = intensity.to_i
     @tone = tone.to_i
+    @scope = scope
     array = []
+    whitelist_array = []
+    @playlist.whitelist.each do |song|
+      whitelist_array << song
+    end
     @songs.each do |song|
       if
-        check_fit(@mood, song.average_mood) &&
-        check_fit(@timbre, song.average_timbre) &&
-        check_fit(@intensity, song.average_intensity) &&
-        check_fit(@tone, song.average_tone)
+        check_fit(@mood, song.average_mood, @scope) &&
+        check_fit(@timbre, song.average_timbre, @scope) &&
+        check_fit(@intensity, song.average_intensity, @scope) &&
+        check_fit(@tone, song.average_tone, @scope)
         array << song.id unless @playlist.blacklist.include? song.id
       end
     end
     final_array = (@playlist.whitelist + array)
-    last_check_of_presence(final_array, @playlist)
+    last_check_of_presence(final_array, @playlist, whitelist_array)
   end
 
   def change_whitelist(playlist, song, action)
@@ -59,22 +64,37 @@ class Playlist < ActiveRecord::Base
 
 private
 
-  def check_fit(attribute_score, attribute)
+  def check_fit(attribute_score, attribute, scope)
+    @scope = scope
+    if @scope == "expansive"
+      @scope = 8
+    elsif @scope == "loose"
+      @scope = 5
+    elsif @scope == "strict"
+      @scope = 2
+    end
     return true if
-      ((attribute_score - attribute) >= -5 &&
-      (attribute_score - attribute) <= 5) ||
+      ((attribute_score - attribute) >= -@scope &&
+      (attribute_score - attribute) <= @scope) ||
       (attribute_score == 0)
   end
 end
 
-  def last_check_of_presence(songs, playlist)
+  def last_check_of_presence(songs, playlist, original_whitelist)
     @songs = songs
     @playlist = playlist
+    @original_whitelist = original_whitelist
     songs_list_will_change!
+    whitelist_will_change!
+    array = @playlist.whitelist
     @songs.each do |song|
       if Song.find_by_id(song).nil?
         @songs.delete(song)
+        array.delete(song)
       end
+    end
+    if array != @original_whitelist
+      @playlist.update(:whitelist => array)
     end
     @songs = @songs.uniq.sort
     if @playlist.songs_list != @songs

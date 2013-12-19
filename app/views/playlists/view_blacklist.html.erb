@@ -1,21 +1,29 @@
 <h3>Here are your favorited songs for <%= @playlist.name %></h3>
 
-<% @playlist.whitelist.each do |song| %>
-  <% @song = Song.find(song) %>
-  <% @album = Album.find(@song.album_id) %>
-  <% @band = User.find(@album.user_id) %>
+<% if @playlist.whitelist.empty? %>
+  <p>You don't have any favorites set for this playlist yet!</p>
+<% else %>
+  <% @playlist.whitelist.each do |song| %>
+    <% @song = Song.find(song) %>
+    <% @album = Album.find(@song.album_id) %>
+    <% @band = User.find(@album.user_id) %>
 
-  <%= @band.username %> - <%= @song.title %><br>
-  <%= link_to 'Remove from favorites', unwhitelist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %><br><br>
+    <%= @band.username %> - <%= @song.title %><br>
+    <%= link_to 'Remove from favorites', unwhitelist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %><br><br>
+  <% end %>
 <% end %>
 
 <h3>Here's the blacklist for the playlist as well</h3>
 
-<% @playlist.blacklist.each do |song| %>
-  <% @song = Song.find(song) %>
-  <% @album = Album.find(@song.album_id) %>
-  <% @band = User.find(@album.user_id) %>
+<% if @playlist.blacklist.empty? %>
+  <p>You haven't banhammered any songs from this playlist yet!</p>
+<% else %>
+  <% @playlist.blacklist.each do |song| %>
+    <% @song = Song.find(song) %>
+    <% @album = Album.find(@song.album_id) %>
+    <% @band = User.find(@album.user_id) %>
 
-  <%= @band.username %> - <%= @song.title %><br>
-  <%= link_to 'Remove from blacklist', unblacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %><br><br>
+    <%= @band.username %> - <%= @song.title %><br>
+    <%= link_to 'Remove from blacklist', unblacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %><br><br>
+  <% end %>
 <% end %>

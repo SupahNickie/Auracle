@@ -12,7 +12,7 @@ class PlaylistsController < ApplicationController
   # GET /playlists/1.json
   def show
     @songs = Song.all
-    @playlist.find_music(@playlist, @songs, @playlist.mood, @playlist.timbre, @playlist.intensity, @playlist.tone)
+    @playlist.find_music(@playlist, @songs, @playlist.mood, @playlist.timbre, @playlist.intensity, @playlist.tone, @playlist.scope)
   end
 
   # GET /playlists/new
@@ -121,6 +121,6 @@ class PlaylistsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def playlist_params
-      params.require(:playlist).permit(:name, :mood, :timbre, :intensity, :tone, :songs_list, :user_id, :whitelist, :blacklist)
+      params.require(:playlist).permit(:name, :mood, :timbre, :intensity, :tone, :songs_list, :user_id, :whitelist, :blacklist, :scope)
     end
 end
