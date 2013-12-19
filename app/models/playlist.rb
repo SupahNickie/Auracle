@@ -16,6 +16,10 @@ class Playlist < ActiveRecord::Base
     @playlist.whitelist.each do |song|
       whitelist_array << song
     end
+    blacklist_array = []
+    @playlist.blacklist.each do |song|
+      blacklist_array << song
+    end
     @songs.each do |song|
       if
         check_fit(@mood, song.average_mood, @scope) &&
@@ -26,7 +30,7 @@ class Playlist < ActiveRecord::Base
       end
     end
     final_array = (@playlist.whitelist + array)
-    last_check_of_presence(final_array, @playlist, whitelist_array)
+    last_check_of_presence(final_array, @playlist, whitelist_array, blacklist_array)
   end
 
   def change_whitelist(playlist, song, action)
@@ -80,21 +84,32 @@ private
   end
 end
 
-  def last_check_of_presence(songs, playlist, original_whitelist)
+  def last_check_of_presence(songs, playlist, original_whitelist, original_blacklist)
     @songs = songs
     @playlist = playlist
     @original_whitelist = original_whitelist
+    @original_blacklist = original_blacklist
     songs_list_will_change!
     whitelist_will_change!
-    array = @playlist.whitelist
+    blacklist_will_change!
+    white_array = @playlist.whitelist
     @songs.each do |song|
       if Song.find_by_id(song).nil?
         @songs.delete(song)
-        array.delete(song)
+        white_array.delete(song)
+        black_array.delete(song)
       end
     end
-    if array != @original_whitelist
-      @playlist.update(:whitelist => array)
+    @playlist.blacklist.each do |song|
+      if Song.find_by_id(song).nil?
+        @playlist.blacklist.delete(song)
+      end
+    end
+    if white_array != @original_whitelist
+      @playlist.update(:whitelist => white_array)
+    end
+    if @playlist.blacklist != @original_blacklist
+      @playlist.update(:blacklist => @playlist.blacklist)
     end
     @songs = @songs.uniq.sort
     if @playlist.songs_list != @songs
