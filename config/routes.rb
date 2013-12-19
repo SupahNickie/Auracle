@@ -10,6 +10,8 @@ Minstrel::Application.routes.draw do
         patch :blacklist
         put :unblacklist
         patch :unblacklist
+        put :unwhitelist
+        patch :unwhitelist
       end
       get :view_blacklist
     end

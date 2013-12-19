@@ -34,6 +34,6 @@
 
 <% end %>
 
+<%= link_to_modal 'Review Favorited and Blacklisted Songs', user_playlist_view_blacklist_path(@user, @playlist) %> |
 <%= link_to 'Edit', edit_user_playlist_path(@user, @playlist) %> |
-<%= link_to_modal 'Review Blacklisted Songs', user_playlist_view_blacklist_path(@user, @playlist) %> |
 <%= link_to 'Back', user_playlists_path(@user) %>

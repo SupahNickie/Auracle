@@ -1,6 +1,6 @@
 class PlaylistsController < ApplicationController
   before_filter :set_user
-  before_action :set_playlist, only: [:show, :edit, :update, :destroy, :whitelist, :blacklist, :unblacklist]
+  before_action :set_playlist, only: [:show, :edit, :update, :destroy, :whitelist, :blacklist, :unblacklist, :unwhitelist]
 
   # GET /playlists
   # GET /playlists.json
@@ -89,6 +89,16 @@ class PlaylistsController < ApplicationController
     @playlist.change_whitelist(@playlist, @song, "unblacklist")
     respond_to do |format|
       format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Song was successfully given another chance!' }
+      format.json { head :no_content }
+      format.js
+    end
+  end
+
+  def unwhitelist
+    @song = Song.find(params[:song_id])
+    @playlist.change_whitelist(@playlist, @song, "unwhitelist")
+    respond_to do |format|
+      format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Song was successfully unfavorited.' }
       format.json { head :no_content }
       format.js
     end

@@ -49,6 +49,11 @@ class Playlist < ActiveRecord::Base
       array = @playlist.blacklist
       array.delete(@song.id)
       @playlist.update(:blacklist => array)
+    elsif @action == "unwhitelist"
+      whitelist_will_change!
+      array = @playlist.whitelist
+      array.delete(@song.id)
+      @playlist.update(:whitelist => array)
     end
   end
 
