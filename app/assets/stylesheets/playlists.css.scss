@@ -14,3 +14,15 @@
 #playlist_bottom_control {
   clear:both;
 }
+
+.song_box {
+  width: 150px;
+  height: 20px;
+  text-align: center;
+  float: left;
+}
+
+.song_box:hover {
+  font-weight: bold;
+  background-color: #aaaaaa;
+}
