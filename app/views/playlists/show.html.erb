@@ -3,18 +3,33 @@
   <%= @playlist.name %>
 </p>
 
+<!-- Declaring variables for Javascript playlist functions -->
+
 <% playlist = @playlist.songs_list.shuffle %>
 <% hash_of_song_urls = {} %>
+<% hash_of_song_artists = {} %>
+<% hash_of_song_titles = {} %>
 <% counter = 0 %>
 
+
 <% playlist.each do |song| %>
+  <% @song = Song.find(song) %>
+  <% @album = Album.find(@song.album_id) %>
+  <% @band = User.find(@album.user_id) %>
   <% counter += 1 %>
-  <% hash_of_song_urls[counter] = Song.find(song).mp3.url %>
+  <% hash_of_song_urls[counter] = @song.mp3.url %>
+  <% hash_of_song_artists[counter] = @band.username %>
+  <% hash_of_song_titles[counter] = @song.title %>
 <% end %>
 
 <%= javascript_tag do %>
   window.tracklist = <%=raw hash_of_song_urls.to_json %>;
+  window.song_artists = <%=raw hash_of_song_artists.to_json %>;
+  window.song_titles = <%=raw hash_of_song_titles.to_json %>;
 <% end %>
+
+<!-- End Ruby => JS variable declarations -->
+<!-- Begin JS functions for playlist autoplay/stream -->
 
 <script type="text/javascript">
   var song = 1;
@@ -23,50 +38,58 @@ window.onload = function(){
   audioPlayer.addEventListener('ended', function(e){
     song = song + 1;
     audioPlayer.src = tracklist[song];
-    $('#currently_playing').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
+    $('#song_info').html("<h3><strong>" + song_artists[song] + " - " + song_titles[song] + "</strong></h3>");
+    $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
   });
   $('#previous_song').click(function(){
     song = song - 1;
     audioPlayer.src = tracklist[song];
-    $('#currently_playing').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
+    $('#song_info').html("<h3><strong> " + song_artists[song] + " - " + song_titles[song] + " </strong></h3>");
+    $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
   });
   $('#next_song').click(function() {
     song = song + 1;
     audioPlayer.src = tracklist[song];
-    $('#currently_playing').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
+    $('#song_info').html("<h3><strong> " + song_artists[song] + " - " + song_titles[song] + " </strong></h3>");
+    $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
   });
 };
 </script>
 
-<div id="currently_playing"><p><strong>Currently Playing: Track 1</strong></p></div>
+<div id="currently_playing">
+  <% @first_song = Song.find(playlist[0]) %>
+  <% @first_album = Album.find(@first_song.album_id) %>
+  <% @first_band = User.find(@first_album.user_id) %>
+  <h3 id="song_info"><strong><%= @first_band.username %> - <%= @first_song.title %></strong></h3>
+  <p id="track_count_label"><strong>Currently Playing: Track 1</strong></p>
+</div>
+
 <%= audio_tag(Song.find(playlist[0]).mp3.url, controls: true, autoplay: true, autobuffer: true, id: 'audioPlayer') %><br>
 <div class="song_box" id="previous_song">Previous song</div>
-<div class="song_box" id="next_song">Next song</div><br>
+<div class="song_box" id="next_song">Next song</div><br><br>
 
 <% track_number = 0 %>
 <% playlist.each do |song| %>
-
   <% @song = Song.find(song) %>
   <% @album = Album.find(@song.album_id) %>
   <% @band = User.find(@album.user_id) %>
   <% track_number+=1 %>
 
-  <h3><%= "Track #{track_number}" %></h3>
-  <strong><%= @band.username %></strong> - <strong><%= @song.title %></strong><br>
+  <strong><%= "#{track_number}" %> ) <%= @band.username %> - <%= @song.title %></strong><br>
 
   <% if @playlist.whitelist.include? song %>
-    <%= 'Favorited! <3' %>
+    <%= '<3' %>
   <% elsif @playlist.whitelist.exclude? song %>
-    <%= link_to 'Save this song to my playlist!', whitelist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %>
-  <% end %> | <%= link_to 'Take this song off my playlist forever!', blacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %><br>
+    <%= link_to '+', whitelist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %>
+  <% end %> | <%= link_to 'X', blacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %>
 
   <% if @song.link_to_purchase? && @song.link_to_download? %>
-    <%= link_to 'Purchase', "http://#{@song.link_to_purchase}" %> |
-    <%= link_to 'Download', "http://#{@song.link_to_download}" %><br>
+    | <%= link_to '$', "http://#{@song.link_to_purchase}" %> |
+    <%= link_to '▼', "http://#{@song.link_to_download}" %><br>
   <% elsif @song.link_to_purchase? && @song.link_to_download.empty? %>
-    <%= link_to 'Purchase', "http://#{@song.link_to_purchase}" %><br>
+    | <%= link_to '$', "http://#{@song.link_to_purchase}" %><br>
   <% elsif @song.link_to_download? && @song.link_to_purchase.empty? %>
-    <%= link_to 'Download', "http://#{@song.link_to_download}" %><br>
+    | <%= link_to '▼', "http://#{@song.link_to_download}" %><br>
   <% else %>
     <br>
   <% end %><br>
