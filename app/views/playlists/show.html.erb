@@ -78,18 +78,20 @@ window.onload = function(){
   <strong><%= "#{track_number}" %> ) <%= @band.username %> - <%= @song.title %></strong><br>
 
   <% if @playlist.whitelist.include? song %>
-    <%= '<3' %>
+    <%= image_tag('glyphicons/png/glyphicons_012_heart.png', title: "Saved to this playlist!", id: "glyphicon") %>
   <% elsif @playlist.whitelist.exclude? song %>
-    <%= link_to '+', whitelist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %>
-  <% end %> | <%= link_to 'X', blacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %>
+    <%= link_to image_tag('glyphicons/png/glyphicons_019_heart_empty.png'), whitelist_user_playlist_path(@user, @playlist, :song_id => song), method: :put, title: "Save this song to my playlist!", id: "glyphicon" %>
+  <% end %>
+
+  <%= link_to image_tag('glyphicons/png/glyphicons_344_thumbs_down.png'), blacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put, title: "Blacklist this song from my playlist!", id: "glyphicon" %>
 
   <% if @song.link_to_purchase? && @song.link_to_download? %>
-    | <%= link_to '$', "http://#{@song.link_to_purchase}" %> |
-    <%= link_to '▼', "http://#{@song.link_to_download}" %><br>
+    <%= link_to image_tag('glyphicons/png/glyphicons_227_usd.png'), "http://#{@song.link_to_purchase}", title: "Purchase this song!", id: "glyphicon" %>
+    <%= link_to image_tag('glyphicons/png/glyphicons_181_download_alt.png'), "http://#{@song.link_to_download}", title: "Download this song!", id: "glyphicon" %><br>
   <% elsif @song.link_to_purchase? && @song.link_to_download.empty? %>
-    | <%= link_to '$', "http://#{@song.link_to_purchase}" %><br>
+    <%= link_to image_tag('glyphicons/png/glyphicons_227_usd.png'), "http://#{@song.link_to_purchase}", title: "Purchase this song!", id: "glyphicon" %><br>
   <% elsif @song.link_to_download? && @song.link_to_purchase.empty? %>
-    | <%= link_to '▼', "http://#{@song.link_to_download}" %><br>
+    <%= link_to image_tag('glyphicons/png/glyphicons_181_download_alt.png'), "http://#{@song.link_to_download}", title: "Download this song!", id: "glyphicon" %><br>
   <% else %>
     <br>
   <% end %><br>

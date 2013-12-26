@@ -14,3 +14,7 @@
  *= require jquery.modal
  *= require_tree .
  */
+
+#glyphicon {
+  padding: 0 10px;
+}
