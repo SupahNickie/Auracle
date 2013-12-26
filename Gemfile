@@ -27,7 +27,6 @@ group :test do
   gem 'minitest-rails-capybara'
   gem 'minitest-focus'
   gem 'minitest-rails'
-  gem 'minitest-focus'
   gem 'launchy'
   gem 'turn'
   gem 'capybara-webkit'
