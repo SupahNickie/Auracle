@@ -28,4 +28,14 @@ class ActionDispatch::IntegrationTest
   include Capybara::DSL
 end
 
+def enter_credentials
+  fill_in "Email", with: "user@example.com"
+  fill_in "Password", with: "password"
+end
+
+def enter_band_credentials
+  fill_in "Email", with: "band@example.com"
+  fill_in "Password", with: "password"
+end
+
 Turn.config.format = :outline
