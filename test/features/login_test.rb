@@ -26,16 +26,12 @@ end
 
 feature "signing in a registered user" do
   scenario "registered users are signed in properly" do
-    visit new_user_session_path
-    enter_credentials
-    click_on "Sign in"
+    login_personal
     page.text.must_include "Signed in successfully."
   end
 
   scenario "registered bands are signed in properly" do
-    visit new_user_session_path
-    enter_band_credentials
-    click_on "Sign in"
+    login_band
     page.text.must_include "Signed in successfully."
   end
 end
@@ -57,4 +53,3 @@ feature "signing in/up an invalid user" do
     page.text.must_include "errors prohibited this user from being saved:"
   end
 end
-

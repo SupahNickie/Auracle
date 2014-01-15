@@ -28,6 +28,29 @@ class ActionDispatch::IntegrationTest
   include Capybara::DSL
 end
 
+def create_playlist
+  visit new_user_playlist_path(@user = users(:user1).id)
+  fill_in "Name", with: "Example Playlist"
+  fill_in "Mood", with: 0
+  fill_in "Timbre", with: 0
+  fill_in "Intensity", with: 0
+  fill_in "Tone", with: 0
+  choose "playlist_scope_strict"
+  click_on "Create Playlist"
+end
+
+def login_personal
+  visit new_user_session_path
+  enter_credentials
+  click_on "Sign in"
+end
+
+def login_band
+  visit new_user_session_path
+  enter_band_credentials
+  click_on "Sign in"
+end
+
 def enter_credentials
   fill_in "Email", with: "user@example.com"
   fill_in "Password", with: "password"

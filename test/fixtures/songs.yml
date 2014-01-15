@@ -1,0 +1,21 @@
+song1:
+  title: "An awesome song"
+  average_mood: 5
+  average_timbre: 3
+  average_intensity: 14
+  average_tone: 40
+  mood:
+  - 3
+  - 5
+  - 7
+  timbre:
+  - 2
+  - 3
+  - 4
+  intensity:
+  - 16
+  - 12
+  tone:
+  - 40
+  user_id: 999
+  album_id: 999
