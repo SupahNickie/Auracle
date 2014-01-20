@@ -28,6 +28,38 @@ class ActionDispatch::IntegrationTest
   include Capybara::DSL
 end
 
+# ALBUM UTILITIES
+
+def create_album
+  visit new_user_album_path(users(:user2).id)
+  fill_in "Title", with: "Example Album 1"
+  click_on "Create Album"
+end
+
+# SONG UTILITIES
+
+def create_song
+  visit new_user_album_song_path(999, 999)
+  fill_in "Title", with: "Example Song 1"
+  fill_in "The track's mood", with: 1
+  fill_in "The track's timbre", with: 1
+  fill_in "The track's intensity", with: 1
+  fill_in "The track's tone", with: 1
+  click_on "Create Song"
+end
+
+def create_second_song
+  visit new_user_album_song_path(999, 999)
+  fill_in "Title", with: "Example Song 2"
+  fill_in "The track's mood", with: 99
+  fill_in "The track's timbre", with: 99
+  fill_in "The track's intensity", with: 99
+  fill_in "The track's tone", with: 99
+  click_on "Create Song"
+end
+
+# PLAYLIST UTILITIES
+
 def create_playlist
   visit new_user_playlist_path(@user = users(:user1).id)
   fill_in "Name", with: "Example Playlist"
@@ -38,6 +70,8 @@ def create_playlist
   choose "playlist_scope_strict"
   click_on "Create Playlist"
 end
+
+# LOGIN UTILITIES
 
 def login_personal
   visit new_user_session_path
