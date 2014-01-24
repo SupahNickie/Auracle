@@ -3,7 +3,7 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Minstrel::Application.load_tasks
+Auracle::Application.load_tasks
 
 if Rails.env.test?
   MiniTest::Rails::Testing.default_tasks << 'features'

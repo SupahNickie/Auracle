@@ -7,13 +7,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Minstrel</a>
+          <a class="navbar-brand" href="/">Auracle</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
-            <li><%= link_to 'What is Minstrel?', '/about' %></li>
+            <li><%= link_to 'What is Auracle?', '/about' %></li>
             <li><%= link_to 'Explore Artists', users_path %></li>
             <% if current_user && current_user.role == "band" %>
               <li><%= link_to 'Manage My Albums', user_albums_path(current_user) %></li>
