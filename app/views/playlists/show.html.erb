@@ -35,6 +35,9 @@
   var song = 1;
 window.onload = function(){
   var audioPlayer = document.getElementById('audioPlayer');
+  audioPlayer.src = tracklist[song];
+  $('#song_info').html("<h3><strong>" + song_artists[song] + " - " + song_titles[song] + "</strong></h3>");
+  $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
   audioPlayer.addEventListener('ended', function(e){
     song = song + 1;
     audioPlayer.src = tracklist[song];
@@ -55,18 +58,6 @@ window.onload = function(){
   });
 };
 </script>
-
-<div id="currently_playing">
-  <% @first_song = Song.find(playlist[0]) %>
-  <% @first_album = Album.find(@first_song.album_id) %>
-  <% @first_band = User.find(@first_album.user_id) %>
-  <h3 id="song_info"><strong><%= @first_band.username %> - <%= @first_song.title %></strong></h3>
-  <p id="track_count_label"><strong>Currently Playing: Track 1</strong></p>
-</div>
-
-<%= audio_tag(Song.find(playlist[0]).mp3.url, controls: true, autoplay: true, autobuffer: true, id: 'audioPlayer') %><br>
-<div class="song_box" id="previous_song">Previous song</div>
-<div class="song_box" id="next_song">Next song</div><br><br>
 
 <% track_number = 0 %>
 <% playlist.each do |song| %>
@@ -98,6 +89,6 @@ window.onload = function(){
 
 <% end %>
 
-<%= link_to_modal 'Review Favorited and Blacklisted Songs', user_playlist_view_blacklist_path(@user, @playlist) %> |
+<%= link_to 'Review Favorited and Blacklisted Songs', user_playlist_view_blacklist_path(@user, @playlist) %> |
 <%= link_to 'Edit Attributes and Scope', edit_user_playlist_path(@user, @playlist) %> |
 <%= link_to 'Back', user_playlists_path(@user) %>

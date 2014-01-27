@@ -16,7 +16,7 @@
         <td><%= link_to user.username, user_path(user) %></td>
         <td><%= link_to image_tag(user.avatar.url(:avatar)), user_path(user) %></td>
         <td><%= link_to 'Show', user_path(user) %></td>
-        <td><%= link_to_modal 'Edit', edit_user_path(user) %></td>
+        <td><%= link_to 'Edit', edit_user_path(user) %></td>
         <td><%= link_to 'Destroy', user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

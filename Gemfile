@@ -13,6 +13,7 @@ gem 'mime-types'
 gem 'postmark-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-modal-rails'
+gem 'pjax_rails'
 
 group :production do
   gem 'rails_12factor'

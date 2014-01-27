@@ -14,6 +14,12 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require jquery.modal
+//= require jquery.pjax
 //= require turbolinks
 //= require_tree .
+
+$(function() {
+  $(document).pjax('a:not([data-remote]):not([data-behavior]):not([data-skip-pjax])', '[data-pjax-container]')
+});
+
 $.modal.defaults.zIndex = 1000

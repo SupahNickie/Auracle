@@ -30,7 +30,7 @@
       <br>
     <% end %>
 
-    <br><%= link_to_modal "Edit #{song.title}", edit_user_album_song_path(@user, @album, song) %> |
+    <br><%= link_to "Edit #{song.title}", edit_user_album_song_path(@user, @album, song) %> |
     <%= link_to "Delete #{song.title}", user_album_song_path(@user, @album, song), method: :delete, data: { confirm: 'Are you sure?' } %><br><br>
   <% end %>
 <% else %>
@@ -38,6 +38,6 @@
 <% end %>
 
 <br><br>
-<%= link_to_modal 'Add New Song to Album', new_user_album_song_path(@user, @album) %> |
-<%= link_to_modal 'Edit Album Details', edit_user_album_path(@user, @album) %> |
+<%= link_to 'Add New Song to Album', new_user_album_song_path(@user, @album) %> |
+<%= link_to 'Edit Album Details', edit_user_album_path(@user, @album) %> |
 <%= link_to 'Back', user_albums_path(@user) %>

@@ -11,10 +11,19 @@
 <%= render 'layouts/navbar' %>
 
 <div class="container">
-  <% flash.each do |key, value| %>
-    <h4><%= value %></h4>
-  <% end %>
-  <%= yield %>
+  <div id="currently_playing">
+    <h3 id="song_info"></h3>
+  </div>
+  <%= audio_tag("", controls: true, autoplay: true, autobuffer: true, id: 'audioPlayer') %><br>
+  <div class="song_box" id="previous_song">Previous song</div>
+  <div class="song_box" id="next_song">Next song</div><br><br>
+
+  <div data-pjax-container>
+    <% flash.each do |key, value| %>
+      <h4><%= value %></h4>
+    <% end %>
+    <%= yield %>
+  </div>
 </div>
 
 </body>
