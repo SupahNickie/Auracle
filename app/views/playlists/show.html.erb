@@ -14,11 +14,9 @@
 
 <% playlist.each do |song| %>
   <% @song = Song.find(song) %>
-  <% @album = Album.find(@song.album_id) %>
-  <% @band = User.find(@album.user_id) %>
   <% counter += 1 %>
   <% hash_of_song_urls[counter] = @song.mp3.url %>
-  <% hash_of_song_artists[counter] = @band.username %>
+  <% hash_of_song_artists[counter] = @song.album.band.username %>
   <% hash_of_song_titles[counter] = @song.title %>
 <% end %>
 
@@ -62,11 +60,9 @@ window.onload = function(){
 <% track_number = 0 %>
 <% playlist.each do |song| %>
   <% @song = Song.find(song) %>
-  <% @album = Album.find(@song.album_id) %>
-  <% @band = User.find(@album.user_id) %>
   <% track_number+=1 %>
 
-  <strong><%= "#{track_number}" %> ) <%= @band.username %> - <%= @song.title %></strong><br>
+  <strong><%= "#{track_number}" %> ) <%= @song.album.band.username %> - <%= @song.title %></strong><br>
 
   <% if @playlist.whitelist.include? song %>
     <%= image_tag('glyphicons/png/glyphicons_012_heart.png', title: "Saved to this playlist!", id: "glyphicon") %>

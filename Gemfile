@@ -14,6 +14,7 @@ gem 'postmark-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-modal-rails'
 gem 'pjax_rails'
+gem 'omniauth'
 
 group :production do
   gem 'rails_12factor'

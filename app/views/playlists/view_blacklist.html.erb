@@ -5,10 +5,8 @@
 <% else %>
   <% @playlist.whitelist.each do |song| %>
     <% @song = Song.find(song) %>
-    <% @album = Album.find(@song.album_id) %>
-    <% @band = User.find(@album.user_id) %>
 
-    <%= @band.username %> - <%= @song.title %><br>
+    <%= @song.album.band.username %> - <%= @song.title %><br>
     <%= link_to 'Remove from favorites', unwhitelist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %><br><br>
   <% end %>
 <% end %>
@@ -20,10 +18,8 @@
 <% else %>
   <% @playlist.blacklist.each do |song| %>
     <% @song = Song.find(song) %>
-    <% @album = Album.find(@song.album_id) %>
-    <% @band = User.find(@album.user_id) %>
 
-    <%= @band.username %> - <%= @song.title %><br>
+    <%= @song.album.band.username %> - <%= @song.title %><br>
     <%= link_to 'Remove from blacklist', unblacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %><br><br>
   <% end %>
 <% end %>
