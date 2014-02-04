@@ -23,7 +23,7 @@
           <td><%= playlist.timbre %></td>
           <td><%= playlist.intensity %></td>
           <td><%= playlist.tone %></td>
-          <td><%= link_to 'Show', user_playlist_path(@user, playlist) %></td>
+          <td><%= link_to 'Show', user_playlist_path(@user, playlist), data: {"skip-pjax" => true} %></td>
           <td><%= link_to 'Edit', edit_user_playlist_path(@user, playlist) %></td>
           <td><%= link_to 'Destroy', user_playlist_path(@user, playlist), method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>

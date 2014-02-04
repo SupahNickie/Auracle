@@ -15,7 +15,6 @@
 //= require jquery.ui.all
 //= require jquery.modal
 //= require jquery.pjax
-//= require turbolinks
 //= require_tree .
 
 $(function() {
