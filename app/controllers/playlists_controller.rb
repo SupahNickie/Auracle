@@ -67,6 +67,11 @@ class PlaylistsController < ApplicationController
   def whitelist
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "add")
+    unless current_user.ratings.include? @song.id
+      @song.add_attributes_to_array(@song, @song.average_mood, @song.average_timbre, @song.average_intensity, @song.average_tone)
+      @song.new_average(@song)
+      current_user.push_song_id_to_ratings_list(@song, current_user)
+    end
     respond_to do |format|
       format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Song was successfully favorited to this playlist!' }
       format.json { head :no_content }
@@ -78,7 +83,7 @@ class PlaylistsController < ApplicationController
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "remove")
     respond_to do |format|
-      format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Song was successfully removed from this playlist.'}
+      format.html { redirect_to rating_user_album_song_path(@user, @song.album, @song), notice: 'Song was successfully removed from this playlist.'}
       format.json { head :no_content }
       format.js
     end

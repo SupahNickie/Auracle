@@ -1,4 +1,4 @@
-<%= form_for [@user, @album, @song], :url => "#{@album.id}/songs/#{@song.id}/vote" do |f| %>
+<%= form_for [@band, @album, @song], url: { action: "vote" } do |f| %>
   <% if @song.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@song.errors.count, "error") %> prohibited your vote from counting:</h2>
@@ -11,27 +11,44 @@
     </div>
   <% end %>
 
-<h3>Your vote counts!</h3>
+<h3>We're sorry you didn't like that song!</h3>
 <p>Let us know what you think this song's qualities are and you'll help us make the database better for you and all your friends in the future!</p><br>
-<p>Please do note that leaving a value blank <strong>does not</strong> affect the song's rating and scores are valid from 1 to 100.</p>
 
   <div class="field">
     <%= f.label :mood, "The track's mood" %><br>
-    <%= f.number_field :mood %>
+    <%= f.radio_button(:mood, (@song.average_mood - 10)) %> This song was way too happy<br>
+    <%= f.radio_button(:mood, (@song.average_mood - 5)) %> This song was a bit too happy<br>
+    <%= f.radio_button(:mood, (@song.average_mood)) %> This song was just right in terms of mood (I just don't like this song)<br>
+    <%= f.radio_button(:mood, (@song.average_mood + 5)) %> This song was a bit too dark<br>
+    <%= f.radio_button(:mood, (@song.average_mood + 10)) %> This song was way too dark<br>
   </div>
   <div class="field">
     <%= f.label :timbre, "The track's timbre" %><br>
-    <%= f.number_field :timbre %>
+    <%= f.radio_button(:timbre, (@song.average_timbre - 10)) %> This song was way too smooth sounding<br>
+    <%= f.radio_button(:timbre, (@song.average_timbre - 5)) %> This song was a bit too smooth sounding<br>
+    <%= f.radio_button(:timbre, (@song.average_timbre)) %> This song was just right in terms of timbre (I just don't like this song)<br>
+    <%= f.radio_button(:timbre, (@song.average_timbre + 5)) %> This song was a bit too rough sounding<br>
+    <%= f.radio_button(:timbre, (@song.average_timbre + 10)) %> This song was way too rough sounding<br>
   </div>
   <div class="field">
     <%= f.label :intensity, "The track's intensity" %><br>
-    <%= f.number_field :intensity %>
+    <%= f.radio_button(:intensity, (@song.average_intensity - 10)) %> This song was way too chill<br>
+    <%= f.radio_button(:intensity, (@song.average_intensity - 5)) %> This song was a bit too chill<br>
+    <%= f.radio_button(:intensity, (@song.average_intensity)) %> This song was just right in terms of intensity (I just don't like this song)<br>
+    <%= f.radio_button(:intensity, (@song.average_intensity + 5)) %> This song was a bit too suffocating<br>
+    <%= f.radio_button(:intensity, (@song.average_intensity + 10)) %> This song was way too suffocating<br>
   </div>
   <div class="field">
     <%= f.label :tone, "The track's tone" %><br>
-    <%= f.number_field :tone %>
+    <%= f.radio_button(:tone, (@song.average_tone - 10)) %> This song was way too rhythmic<br>
+    <%= f.radio_button(:tone, (@song.average_tone - 5)) %> This song was a bit too rhythmic<br>
+    <%= f.radio_button(:tone, (@song.average_tone)) %> This song was just right in terms of tone balance (I just don't like this song)<br>
+    <%= f.radio_button(:tone, (@song.average_tone + 5)) %> This song was a bit too melodic<br>
+    <%= f.radio_button(:tone, (@song.average_tone + 10)) %> This song was way too melodic<br>
   </div>
   <div class="actions">
     <%= f.submit "Add My Rating!" %>
   </div>
 <% end %>
+
+<h4 class="decline">No thanks, I'd rather not rate this song.</h4>

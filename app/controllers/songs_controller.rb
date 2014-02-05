@@ -1,5 +1,5 @@
 class SongsController < ApplicationController
-  before_filter :load_album_and_user
+  before_filter :load_album_and_user, except: [:rating, :vote]
   before_action :set_song, only: [:show, :edit, :update, :destroy, :rating, :vote, :favorite, :delete_favorite]
 
   # GET /songs
@@ -66,9 +66,13 @@ class SongsController < ApplicationController
   end
 
   def rating
+    @user = @song.album.band
+    @album = @user.albums.find(params[:album_id])
   end
 
   def vote
+    @user = @song.album.band
+    @album = @user.albums.find(params[:album_id])
     @song.add_attributes_to_array(@song, params["song"]["mood"], params["song"]["timbre"], params["song"]["intensity"], params["song"]["tone"])
     @song.new_average(@song)
     current_user.push_song_id_to_ratings_list(@song, current_user)
@@ -87,7 +91,7 @@ class SongsController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_song
-      @song = @album.songs.find(params[:id])
+      @song = Song.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
