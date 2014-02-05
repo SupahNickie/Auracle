@@ -13,12 +13,6 @@
     <strong><%= @album.band.username %> - <%= song.title %></strong><br>
     <%= audio_tag(song.mp3.url, controls: true) %><br>
 
-    <% if (current_user.present?) && (current_user.ratings.include? song.id) %>
-      <%= "Thank you for rating #{song.title}!" %>
-    <% elsif (current_user.present?) && (current_user.ratings.exclude? song.id) %>
-      <%= link_to "What do you think the song's qualities are? Vote here!", rating_user_album_song_path(@user, @album, song), :class=>"button" %><br>
-    <% end %>
-
     <% if song.link_to_purchase? && song.link_to_download? %>
       <%= link_to 'Purchase', "http://#{song.link_to_purchase}" %> |
       <%= link_to 'Download', "http://#{song.link_to_download}" %><br>

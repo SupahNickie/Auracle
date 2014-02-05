@@ -68,17 +68,19 @@ class SongsController < ApplicationController
   def rating
     @user = @song.album.band
     @album = @user.albums.find(params[:album_id])
+    @playlist = current_user.playlists.find(params[:playlist_id])
   end
 
   def vote
     @user = @song.album.band
+    @playlist = current_user.playlists.find(params[:playlist_id])
     @album = @user.albums.find(params[:album_id])
-    @song.add_attributes_to_array(@song, params["song"]["mood"], params["song"]["timbre"], params["song"]["intensity"], params["song"]["tone"])
+    @song.add_attributes_to_array(@song, params["playlist"]["mood"], params["playlist"]["timbre"], params["playlist"]["intensity"], params["playlist"]["tone"])
     @song.new_average(@song)
     current_user.push_song_id_to_ratings_list(@song, current_user)
 
     respond_to do |format|
-      format.html { redirect_to user_album_path(@user, @album), notice: 'Thank you for your vote!' }
+      format.html { redirect_to user_playlist_view_blacklist_path(current_user, @playlist), notice: 'Thank you for your vote!' }
     end
   end
 

@@ -31,7 +31,7 @@ class PlaylistsController < ApplicationController
 
     respond_to do |format|
       if @playlist.save
-        format.html { redirect_to user_playlists_path(@user), notice: 'Playlist was successfully created.' }
+        format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Playlist was successfully created.' }
         format.json { render action: 'show', status: :created, location: @playlist }
       else
         format.html { render action: 'new' }
@@ -45,7 +45,7 @@ class PlaylistsController < ApplicationController
   def update
     respond_to do |format|
       if @playlist.update(playlist_params)
-        format.html { redirect_to user_playlists_path(@user), notice: 'Playlist was successfully updated.' }
+        format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Playlist was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -73,7 +73,7 @@ class PlaylistsController < ApplicationController
       current_user.push_song_id_to_ratings_list(@song, current_user)
     end
     respond_to do |format|
-      format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Song was successfully favorited to this playlist!' }
+      format.html { redirect_to user_playlist_view_blacklist_path(@user, @playlist), notice: 'Song was successfully favorited to this playlist!' }
       format.json { head :no_content }
       format.js
     end
@@ -83,7 +83,7 @@ class PlaylistsController < ApplicationController
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "remove")
     respond_to do |format|
-      format.html { redirect_to rating_user_album_song_path(@user, @song.album, @song), notice: 'Song was successfully removed from this playlist.'}
+      format.html { redirect_to rating_user_album_song_path(@user, @song.album, @song, playlist_id: @playlist.id), notice: 'Song was successfully removed from this playlist.'}
       format.json { head :no_content }
       format.js
     end
@@ -93,7 +93,7 @@ class PlaylistsController < ApplicationController
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "unblacklist")
     respond_to do |format|
-      format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Song was successfully given another chance!' }
+      format.html { redirect_to user_playlist_view_blacklist_path(@user, @playlist), notice: 'Song was successfully given another chance!' }
       format.json { head :no_content }
       format.js
     end
@@ -103,7 +103,7 @@ class PlaylistsController < ApplicationController
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "unwhitelist")
     respond_to do |format|
-      format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Song was successfully unfavorited.' }
+      format.html { redirect_to user_playlist_view_blacklist_path(@user, @playlist), notice: 'Song was successfully unfavorited.' }
       format.json { head :no_content }
       format.js
     end

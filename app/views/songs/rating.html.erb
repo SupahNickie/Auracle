@@ -1,4 +1,4 @@
-<%= form_for [@band, @album, @song], url: { action: "vote" } do |f| %>
+<%= form_for [@band, @album, @song, @playlist], url: { action: "vote" } do |f| %>
   <% if @song.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@song.errors.count, "error") %> prohibited your vote from counting:</h2>
@@ -46,6 +46,7 @@
     <%= f.radio_button(:tone, (@song.average_tone + 5)) %> This song was a bit too melodic<br>
     <%= f.radio_button(:tone, (@song.average_tone + 10)) %> This song was way too melodic<br>
   </div>
+  <%= hidden_field_tag(:playlist_id, @playlist.id) %>
   <div class="actions">
     <%= f.submit "Add My Rating!" %>
   </div>

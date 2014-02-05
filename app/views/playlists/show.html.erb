@@ -48,6 +48,12 @@ window.onload = function(){
     $('#song_info').html("<h3><strong> " + song_artists[song] + " - " + song_titles[song] + " </strong></h3>");
     $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
   });
+  $('#remove_song').click(function() {
+    song = song + 1;
+    audioPlayer.src = tracklist[song];
+    $('#song_info').html("<h3><strong> " + song_artists[song] + " - " + song_titles[song] + " </strong></h3>");
+    $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
+  })
   $('#next_song').click(function() {
     song = song + 1;
     audioPlayer.src = tracklist[song];
@@ -65,26 +71,26 @@ window.onload = function(){
   <strong><%= "#{track_number}" %> ) <%= @song.album.band.username %> - <%= @song.title %></strong><br>
 
   <% if @playlist.whitelist.include? song %>
-    <%= image_tag('glyphicons/png/glyphicons_012_heart.png', title: "Saved to this playlist!", id: "glyphicon") %>
+    <%= image_tag('glyphicons/png/glyphicons_012_heart.png', title: "Saved to this playlist!", class: "glyphicons") %>
   <% elsif @playlist.whitelist.exclude? song %>
-    <%= link_to image_tag('glyphicons/png/glyphicons_019_heart_empty.png'), whitelist_user_playlist_path(@user, @playlist, :song_id => song), method: :put, title: "Save this song to my playlist!", id: "glyphicon" %>
+    <%= link_to image_tag('glyphicons/png/glyphicons_019_heart_empty.png'), whitelist_user_playlist_path(@user, @playlist, :song_id => song), method: :put, title: "Save this song to my playlist!", class: "glyphicons", target: '_blank', data: {"skip-pjax" => true}  %>
   <% end %>
 
-  <%= link_to image_tag('glyphicons/png/glyphicons_344_thumbs_down.png'), blacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put, title: "Blacklist this song from my playlist!", id: "glyphicon" %>
+  <%= link_to image_tag('glyphicons/png/glyphicons_344_thumbs_down.png'), blacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put, title: "Blacklist this song from my playlist!", class: "glyphicons", target: "_blank", data: {"skip-pjax" => true}, id: "remove_song" %>
 
   <% if @song.link_to_purchase? && @song.link_to_download? %>
-    <%= link_to image_tag('glyphicons/png/glyphicons_227_usd.png'), "http://#{@song.link_to_purchase}", title: "Purchase this song!", id: "glyphicon" %>
-    <%= link_to image_tag('glyphicons/png/glyphicons_181_download_alt.png'), "http://#{@song.link_to_download}", title: "Download this song!", id: "glyphicon" %><br>
+    <%= link_to image_tag('glyphicons/png/glyphicons_227_usd.png'), "http://#{@song.link_to_purchase}", title: "Purchase this song!", class: "glyphicons", target: '_blank' %>
+    <%= link_to image_tag('glyphicons/png/glyphicons_181_download_alt.png'), "http://#{@song.link_to_download}", title: "Download this song!", class: "glyphicons", target: '_blank' %><br>
   <% elsif @song.link_to_purchase? && @song.link_to_download.empty? %>
-    <%= link_to image_tag('glyphicons/png/glyphicons_227_usd.png'), "http://#{@song.link_to_purchase}", title: "Purchase this song!", id: "glyphicon" %><br>
+    <%= link_to image_tag('glyphicons/png/glyphicons_227_usd.png'), "http://#{@song.link_to_purchase}", title: "Purchase this song!", class: "glyphicons", target: '_blank' %><br>
   <% elsif @song.link_to_download? && @song.link_to_purchase.empty? %>
-    <%= link_to image_tag('glyphicons/png/glyphicons_181_download_alt.png'), "http://#{@song.link_to_download}", title: "Download this song!", id: "glyphicon" %><br>
+    <%= link_to image_tag('glyphicons/png/glyphicons_181_download_alt.png'), "http://#{@song.link_to_download}", title: "Download this song!", class: "glyphicons", target: '_blank' %><br>
   <% else %>
     <br>
   <% end %><br>
 
 <% end %>
 
-<%= link_to 'Review Favorited and Blacklisted Songs', user_playlist_view_blacklist_path(@user, @playlist) %> |
+<%= link_to 'Review Favorited and Blacklisted Songs', user_playlist_view_blacklist_path(@user, @playlist), target: '_blank', data: {"skip-pjax" => true} %> |
 <%= link_to 'Edit Attributes and Scope', edit_user_playlist_path(@user, @playlist) %> |
 <%= link_to 'Back', user_playlists_path(@user) %>
