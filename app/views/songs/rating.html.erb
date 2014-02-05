@@ -18,7 +18,7 @@
     <%= f.label :mood, "The track's mood" %><br>
     <%= f.radio_button(:mood, (@song.average_mood - 10)) %> This song was way too happy<br>
     <%= f.radio_button(:mood, (@song.average_mood - 5)) %> This song was a bit too happy<br>
-    <%= f.radio_button(:mood, (@song.average_mood)) %> This song was just right in terms of mood (I just don't like this song)<br>
+    <%= f.radio_button(:mood, (@song.average_mood), checked: true) %> This song was just right in terms of mood (I just don't like this song)<br>
     <%= f.radio_button(:mood, (@song.average_mood + 5)) %> This song was a bit too dark<br>
     <%= f.radio_button(:mood, (@song.average_mood + 10)) %> This song was way too dark<br>
   </div>
@@ -26,7 +26,7 @@
     <%= f.label :timbre, "The track's timbre" %><br>
     <%= f.radio_button(:timbre, (@song.average_timbre - 10)) %> This song was way too smooth sounding<br>
     <%= f.radio_button(:timbre, (@song.average_timbre - 5)) %> This song was a bit too smooth sounding<br>
-    <%= f.radio_button(:timbre, (@song.average_timbre)) %> This song was just right in terms of timbre (I just don't like this song)<br>
+    <%= f.radio_button(:timbre, (@song.average_timbre), checked: true) %> This song was just right in terms of timbre (I just don't like this song)<br>
     <%= f.radio_button(:timbre, (@song.average_timbre + 5)) %> This song was a bit too rough sounding<br>
     <%= f.radio_button(:timbre, (@song.average_timbre + 10)) %> This song was way too rough sounding<br>
   </div>
@@ -34,7 +34,7 @@
     <%= f.label :intensity, "The track's intensity" %><br>
     <%= f.radio_button(:intensity, (@song.average_intensity - 10)) %> This song was way too chill<br>
     <%= f.radio_button(:intensity, (@song.average_intensity - 5)) %> This song was a bit too chill<br>
-    <%= f.radio_button(:intensity, (@song.average_intensity)) %> This song was just right in terms of intensity (I just don't like this song)<br>
+    <%= f.radio_button(:intensity, (@song.average_intensity), checked: true) %> This song was just right in terms of intensity (I just don't like this song)<br>
     <%= f.radio_button(:intensity, (@song.average_intensity + 5)) %> This song was a bit too suffocating<br>
     <%= f.radio_button(:intensity, (@song.average_intensity + 10)) %> This song was way too suffocating<br>
   </div>
@@ -42,7 +42,7 @@
     <%= f.label :tone, "The track's tone" %><br>
     <%= f.radio_button(:tone, (@song.average_tone - 10)) %> This song was way too rhythmic<br>
     <%= f.radio_button(:tone, (@song.average_tone - 5)) %> This song was a bit too rhythmic<br>
-    <%= f.radio_button(:tone, (@song.average_tone)) %> This song was just right in terms of tone balance (I just don't like this song)<br>
+    <%= f.radio_button(:tone, (@song.average_tone), checked: true) %> This song was just right in terms of tone balance (I just don't like this song)<br>
     <%= f.radio_button(:tone, (@song.average_tone + 5)) %> This song was a bit too melodic<br>
     <%= f.radio_button(:tone, (@song.average_tone + 10)) %> This song was way too melodic<br>
   </div>
