@@ -22,8 +22,13 @@
     where(auth.slice(:provider, :uid)).first_or_create do |user|
       user.provider = auth.provider
       user.uid = auth.uid
-      user.username = auth.info.nickname
-      user.email = "#{user.username}-CHANGEME@#{auth.provider}.com"
+      if auth.provider == "google_oauth2"
+        user.username = auth.info.name
+        user.email = auth.info.email
+      else
+        user.username = auth.info.nickname
+        user.email = "#{user.username}-CHANGEME@#{auth.provider}.com"
+      end
       user.role = "personal"
     end
   end
