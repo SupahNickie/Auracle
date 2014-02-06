@@ -18,3 +18,7 @@
 .glyphicons {
   padding: 0 10px;
 }
+
+#audio_container {
+  display: none;
+}

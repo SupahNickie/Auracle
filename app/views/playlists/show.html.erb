@@ -60,6 +60,9 @@ window.onload = function(){
     $('#song_info').html("<h3><strong> " + song_artists[song] + " - " + song_titles[song] + " </strong></h3>");
     $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
   });
+  audioPlayer.addEventListener('playing', function(e){
+    $('#audio_container').css("display", "block");
+  });
 };
 </script>
 
