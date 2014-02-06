@@ -40,11 +40,11 @@
   end
 
   def password_required?
-    super && provider.blank?
+    super && provider.nil?
   end
 
   def update_with_password(params, *options)
-    if encrypted_password.blank?
+    if encrypted_password.nil?
       update_attributes(params, *options)
     else
       super
