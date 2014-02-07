@@ -39,10 +39,10 @@ end
 feature "signing in/up an invalid user" do
   scenario "the login doesn't work" do
     visit new_user_session_path
-    fill_in "Email", with: "asdfoin@asdf.com"
+    fill_in "Username", with: "asdfoin"
     fill_in "Password", with: "qweproiu"
     click_on "Sign in"
-    page.text.must_include "Invalid email or password."
+    page.text.must_include "Invalid username or password."
   end
 
   scenario "the signup doesn't work" do

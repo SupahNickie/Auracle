@@ -86,12 +86,12 @@ def login_band
 end
 
 def enter_credentials
-  fill_in "Email", with: "user@example.com"
+  fill_in "Username", with: "Example User"
   fill_in "Password", with: "password"
 end
 
 def enter_band_credentials
-  fill_in "Email", with: "band@example.com"
+  fill_in "Username", with: "Band Example"
   fill_in "Password", with: "password"
 end
 
