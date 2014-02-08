@@ -1,7 +1,13 @@
 class Playlist < ActiveRecord::Base
   belongs_to :user
-  has_many :songs
-  has_many :albums, through: :songs
+
+  def slug
+    name.downcase.gsub(" ", "-")
+  end
+
+  def to_param
+    "#{id}-#{slug}"
+  end
 
   def find_music(playlist, songs, mood, timbre, intensity, tone, scope)
     @playlist = playlist

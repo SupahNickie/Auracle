@@ -2,7 +2,16 @@ require 'mime/types'
 
 class Song < ActiveRecord::Base
   belongs_to :album
+  belongs_to :band
   has_attached_file :mp3
+
+  def slug
+    title.downcase.gsub(" ", "-")
+  end
+
+  def to_param
+    "#{id}-#{slug}"
+  end
 
   def add_attributes_to_array(song, mood_score, timbre_score, intensity_score, tone_score)
     @song = song

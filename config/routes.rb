@@ -2,7 +2,7 @@ Auracle::Application.routes.draw do
 
   devise_for :users, controllers: {omniauth_callbacks: "omniauth_callbacks"}
 
-  resources :users, only: [:index, :show, :edit, :update] do
+  resources :users, path: 'artists', only: [:index, :show, :edit, :update] do
     resources :playlists do
       member do
         put :whitelist
@@ -27,6 +27,7 @@ Auracle::Application.routes.draw do
     end
   end
 
+  match 'my_profile', to: 'users#profile', via: [:get]
   match 'about', to: 'home#about', via: [:get]
   root :to => 'home#home'
 

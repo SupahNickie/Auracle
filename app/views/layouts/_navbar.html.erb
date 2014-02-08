@@ -20,7 +20,11 @@
             <% end %>
             <% if current_user %>
               <li><%= link_to 'My Playlists', user_playlists_path(current_user) %></li>
+            <% if current_user && current_user.role == "band" %>
               <li><%= link_to "#{current_user.username}'s Profile", user_path(current_user) %></li>
+            <% else %>
+              <li><%= link_to "#{current_user.username}'s Profile", my_profile_path %></li>
+            <% end %>
               <li><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></li>
             <% elsif current_user.nil? %>
               <li><%= link_to 'Sign In', new_user_session_path %></li>
