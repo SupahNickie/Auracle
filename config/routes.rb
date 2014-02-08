@@ -27,7 +27,15 @@ Auracle::Application.routes.draw do
     end
   end
 
-  match 'my_profile', to: 'users#profile', via: [:get]
+  resources :users, only: [:profile, :edit_profile, :update_profile] do
+    member do
+      get :profile
+      get :edit_profile
+      put :update_profile
+      patch :update_profile
+    end
+  end
+
   match 'about', to: 'home#about', via: [:get]
   root :to => 'home#home'
 

@@ -21,7 +21,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to @user, notice: 'Your artist profile was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -32,6 +32,23 @@ class UsersController < ApplicationController
 
   def profile
     @user = current_user
+  end
+
+  def edit_profile
+    @user = current_user
+  end
+
+  def update_profile
+    @user = current_user
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html { redirect_to profile_user_path(@user), notice: 'Your profile was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit_profile' }
+        format.json {render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   private
