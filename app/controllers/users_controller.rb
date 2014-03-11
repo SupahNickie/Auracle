@@ -14,11 +14,14 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    authorize @user
   end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    authorize @user
+
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'Your artist profile was successfully updated.' }
@@ -36,10 +39,13 @@ class UsersController < ApplicationController
 
   def edit_profile
     @user = current_user
+    authorize @user
   end
 
   def update_profile
     @user = current_user
+    authorize @user
+
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to profile_user_path(@user), notice: 'Your profile was successfully updated.' }
