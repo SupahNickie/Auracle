@@ -16,16 +16,19 @@ class SongsController < ApplicationController
   # GET /songs/new
   def new
     @song = @album.songs.new
+    authorize @song
   end
 
   # GET /songs/1/edit
   def edit
+    authorize @song
   end
 
   # POST /songs
   # POST /songs.json
   def create
     @song = @album.songs.new(song_params)
+    authorize @song
     @song.add_attributes_to_array(@song, params["song"]["mood"], params["song"]["timbre"], params["song"]["intensity"], params["song"]["tone"])
     @song.new_average(@song)
 
@@ -43,6 +46,8 @@ class SongsController < ApplicationController
   # PATCH/PUT /songs/1
   # PATCH/PUT /songs/1.json
   def update
+    authorize @song
+
     respond_to do |format|
       if @song.update(song_params)
         format.html { redirect_to user_album_path(@user, @album), notice: 'Song was successfully updated.' }
@@ -57,8 +62,10 @@ class SongsController < ApplicationController
   # DELETE /songs/1
   # DELETE /songs/1.json
   def destroy
+    authorize @song
     @song.mp3 = nil
     @song.destroy
+
     respond_to do |format|
       format.html { redirect_to user_album_path(@user, @album) }
       format.json { head :no_content }
