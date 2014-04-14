@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
 ruby '2.1.1'
-gem 'rails', '4.0.4'
+gem 'rails', '4.1.0'
 
 gem 'aws-sdk'
 gem 'bootstrap-sass-rails'
-gem 'coffee-rails', '~> 4.0.0'
+gem 'coffee-rails'
 gem 'devise'
 gem 'figaro'
 gem 'jbuilder', '~> 1.2'
@@ -21,8 +21,8 @@ gem 'pg'
 gem 'pjax_rails'
 gem 'postmark-rails'
 gem 'pundit'
-gem 'sass-rails', '~> 4.0.0'
-gem 'thread_safe', '0.2.0'
+gem 'sass-rails'
+gem 'thread_safe'
 gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
@@ -36,12 +36,8 @@ end
 
 group :test do
   gem 'simplecov', :require => false
-  gem 'minitest-rails-capybara'
-  gem 'minitest-focus'
-  gem 'minitest-rails'
   gem 'launchy'
   gem 'turn'
-  gem 'capybara-webkit'
   gem 'letter_opener'
 end
 
