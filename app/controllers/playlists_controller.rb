@@ -12,7 +12,7 @@ class PlaylistsController < ApplicationController
   # GET /playlists/1.json
   def show
     @songs = Song.all
-    @playlist.find_music(@playlist, @songs, @playlist.mood, @playlist.timbre, @playlist.intensity, @playlist.tone, @playlist.scope)
+    @playlist.find_music(@playlist, @playlist.mood, @playlist.timbre, @playlist.intensity, @playlist.tone, @playlist.scope)
   end
 
   # GET /playlists/new
