@@ -5,19 +5,17 @@
 
 <!-- Declaring variables for Javascript playlist functions -->
 
-<% playlist = @playlist.songs_list.shuffle %>
 <% hash_of_song_urls = {} %>
 <% hash_of_song_artists = {} %>
 <% hash_of_song_titles = {} %>
 <% counter = 0 %>
 
 
-<% playlist.each do |song| %>
-  <% @song = Song.find(song) %>
+<% @songs.each do |song| %>
   <% counter += 1 %>
-  <% hash_of_song_urls[counter] = @song.mp3.url %>
-  <% hash_of_song_artists[counter] = @song.album.band.username %>
-  <% hash_of_song_titles[counter] = @song.title %>
+  <% hash_of_song_urls[counter] = song.mp3.url %>
+  <% hash_of_song_artists[counter] = song.album.band.username %>
+  <% hash_of_song_titles[counter] = song.title %>
 <% end %>
 
 <%= javascript_tag do %>
@@ -67,27 +65,26 @@ window.onload = function(){
 </script>
 
 <% track_number = 0 %>
-<% playlist.each do |song| %>
-  <% @song = Song.find(song) %>
+<% @songs.each do |song| %>
   <% track_number+=1 %>
 
-  <strong><%= "#{track_number}" %> ) <%= @song.album.band.username %> - <%= @song.title %></strong><br>
+  <strong><%= "#{track_number}" %> ) <%= song.album.band.username %> - <%= song.title %></strong><br>
 
-  <% if @playlist.whitelist.include? song %>
+  <% if @playlist.whitelist.include? song.id %>
     <%= image_tag('glyphicons/png/glyphicons_012_heart.png', title: "Saved to this playlist!", class: "glyphicons") %>
-  <% elsif @playlist.whitelist.exclude? song %>
-    <%= link_to image_tag('glyphicons/png/glyphicons_019_heart_empty.png'), whitelist_user_playlist_path(@user, @playlist, :song_id => song), method: :put, title: "Save this song to my playlist!", class: "glyphicons", target: '_blank', data: {"skip-pjax" => true}  %>
+  <% elsif @playlist.whitelist.exclude? song.id %>
+    <%= link_to image_tag('glyphicons/png/glyphicons_019_heart_empty.png'), whitelist_user_playlist_path(@user, @playlist, :song_id => song.id), method: :put, title: "Save this song to my playlist!", class: "glyphicons", target: '_blank', data: {"skip-pjax" => true}  %>
   <% end %>
 
-  <%= link_to image_tag('glyphicons/png/glyphicons_344_thumbs_down.png'), blacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put, title: "Blacklist this song from my playlist!", class: "glyphicons", target: "_blank", data: {"skip-pjax" => true}, id: "remove_song" %>
+  <%= link_to image_tag('glyphicons/png/glyphicons_344_thumbs_down.png'), blacklist_user_playlist_path(@user, @playlist, :song_id => song.id), method: :put, title: "Blacklist this song from my playlist!", class: "glyphicons", target: "_blank", data: {"skip-pjax" => true}, id: "remove_song" %>
 
-  <% if @song.link_to_purchase? && @song.link_to_download? %>
-    <%= link_to image_tag('glyphicons/png/glyphicons_227_usd.png'), "http://#{@song.link_to_purchase}", title: "Purchase this song!", class: "glyphicons", target: '_blank' %>
-    <%= link_to image_tag('glyphicons/png/glyphicons_181_download_alt.png'), "http://#{@song.link_to_download}", title: "Download this song!", class: "glyphicons", target: '_blank' %><br>
-  <% elsif @song.link_to_purchase? && @song.link_to_download.empty? %>
-    <%= link_to image_tag('glyphicons/png/glyphicons_227_usd.png'), "http://#{@song.link_to_purchase}", title: "Purchase this song!", class: "glyphicons", target: '_blank' %><br>
-  <% elsif @song.link_to_download? && @song.link_to_purchase.empty? %>
-    <%= link_to image_tag('glyphicons/png/glyphicons_181_download_alt.png'), "http://#{@song.link_to_download}", title: "Download this song!", class: "glyphicons", target: '_blank' %><br>
+  <% if song.link_to_purchase? && song.link_to_download? %>
+    <%= link_to image_tag('glyphicons/png/glyphicons_227_usd.png'), "http://#{song.link_to_purchase}", title: "Purchase this song!", class: "glyphicons", target: '_blank' %>
+    <%= link_to image_tag('glyphicons/png/glyphicons_181_download_alt.png'), "http://#{song.link_to_download}", title: "Download this song!", class: "glyphicons", target: '_blank' %><br>
+  <% elsif song.link_to_purchase? && song.link_to_download.empty? %>
+    <%= link_to image_tag('glyphicons/png/glyphicons_227_usd.png'), "http://#{song.link_to_purchase}", title: "Purchase this song!", class: "glyphicons", target: '_blank' %><br>
+  <% elsif song.link_to_download? && song.link_to_purchase.empty? %>
+    <%= link_to image_tag('glyphicons/png/glyphicons_181_download_alt.png'), "http://#{song.link_to_download}", title: "Download this song!", class: "glyphicons", target: '_blank' %><br>
   <% else %>
     <br>
   <% end %><br>
