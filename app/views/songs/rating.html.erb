@@ -1,4 +1,4 @@
-<%= form_for [@band, @album, @song, @playlist], url: { action: "vote" } do |f| %>
+  <%= form_for [@band, @album, @song, @playlist], url: { action: "vote" } do |f| %>
   <% if @song.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@song.errors.count, "error") %> prohibited your vote from counting:</h2>
@@ -52,4 +52,4 @@
   </div>
 <% end %>
 
-<h4 class="decline">No thanks, I'd rather not rate this song.</h4>
+<a href="javascript: self.close()"><h4 class="decline">No thanks, I'd rather not rate this song.</h4></a>

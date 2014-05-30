@@ -32,7 +32,7 @@ class Playlist < ActiveRecord::Base
     playlist.blacklist.each do |song|
       blacklist_array << song
     end
-    final_array = (playlist.whitelist + array)
+    final_array = (playlist.whitelist + array) - (playlist.blacklist)
     last_check_of_presence(final_array, playlist, whitelist_array, blacklist_array)
   end
 
