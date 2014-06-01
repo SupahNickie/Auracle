@@ -5,6 +5,7 @@ class Album < ActiveRecord::Base
   has_many :songs, dependent: :destroy
   accepts_nested_attributes_for :songs, allow_destroy: true
   has_attached_file :album_art, :styles => { :album_art => "700x700>" }
+  do_not_validate_attachment_file_type :album_art
 
   def slug
     title.downcase.gsub(" ", "-")

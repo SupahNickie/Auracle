@@ -8,6 +8,8 @@
   has_many :playlists
   has_attached_file :avatar, :styles => { :avatar => "200x200>" }
   has_attached_file :user_pic, :styles => { :user_pic => "700x500>" }
+  do_not_validate_attachment_file_type :avatar
+  do_not_validate_attachment_file_type :user_pic
   validates :role, presence: true
 
   def slug

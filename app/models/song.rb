@@ -4,7 +4,7 @@ class Song < ActiveRecord::Base
   belongs_to :album
   belongs_to :band
   has_attached_file :mp3
-  validates_attachment_content_type :mp3, :content_type => /\Aaudio/
+  do_not_validate_attachment_file_type :mp3
 
   def slug
     title.downcase.gsub(" ", "-")
