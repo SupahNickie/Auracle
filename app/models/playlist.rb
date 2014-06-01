@@ -16,17 +16,18 @@ class Playlist < ActiveRecord::Base
     when "loose" then scope = 5
     when "strict" then scope = 2
     end
-    playlist.blacklist.size > 0 ? found_music = blacklist_query(playlist, mood, timbre, intensity, tone, scope) : found_music = empty_blacklist_query(playlist, mood, timbre, intensity, tone, scope)
+    found_music = query_database(playlist, mood, timbre, intensity, tone, scope)
     playlist.songs_list = found_music
   end
 
   def change_whitelist(playlist, song, action)
-    if action == "add"
+    case action
+    when "add"
       whitelist_will_change!
       array = playlist.whitelist
       array << song.id
       playlist.update(:whitelist => array)
-    elsif action == "remove"
+    when "remove"
       blacklist_will_change!
       array = playlist.blacklist
       array << song.id
@@ -37,12 +38,12 @@ class Playlist < ActiveRecord::Base
         playlist.update(:whitelist => whitelist_array)
       end
       playlist.update(:blacklist => array)
-    elsif action == "unblacklist"
+    when "unblacklist"
       blacklist_will_change!
       array = playlist.blacklist
       array.delete(song.id)
       playlist.update(:blacklist => array)
-    elsif action == "unwhitelist"
+    when "unwhitelist"
       whitelist_will_change!
       array = playlist.whitelist
       array.delete(song.id)
@@ -52,30 +53,19 @@ class Playlist < ActiveRecord::Base
 
 private
 
-  def blacklist_query(playlist, mood, timbre, intensity, tone, scope)
-    Song.where("songs.average_mood - ? <= ? or ? = 0", mood, scope, mood)
-    .where("songs.average_mood - ? >= ? or ? = 0", mood, -scope, mood)
-    .where("songs.average_timbre - ? <= ? or ? = 0", timbre, scope, timbre)
-    .where("songs.average_timbre - ? >= ? or ? = 0", timbre, -scope, timbre)
-    .where("songs.average_intensity - ? <= ? or ? = 0", intensity, scope, intensity)
-    .where("songs.average_intensity - ? >= ? or ? = 0", intensity, -scope, intensity)
-    .where("songs.average_tone - ? <= ? or ? = 0", tone, scope, tone)
-    .where("songs.average_tone - ? >= ? or ? = 0 or songs.id in (?)", tone, -scope, tone, playlist.whitelist)
+  def query_database(playlist, mood, timbre, intensity, tone, scope)
+    (Song.where("songs.id in (?)", playlist.whitelist).includes(album: :band) +
+    Song.where("songs.id not in (?)", playlist.whitelist)
     .where("songs.id not in (?)", playlist.blacklist)
-    .includes(album: :band)
-    .shuffle
-  end
-
-  def empty_blacklist_query(playlist, mood, timbre, intensity, tone, scope)
-    Song.where("songs.average_mood - ? <= ? or ? = 0", mood, scope, mood)
+    .where("songs.average_mood - ? <= ? or ? = 0", mood, scope, mood)
     .where("songs.average_mood - ? >= ? or ? = 0", mood, -scope, mood)
     .where("songs.average_timbre - ? <= ? or ? = 0", timbre, scope, timbre)
     .where("songs.average_timbre - ? >= ? or ? = 0", timbre, -scope, timbre)
     .where("songs.average_intensity - ? <= ? or ? = 0", intensity, scope, intensity)
     .where("songs.average_intensity - ? >= ? or ? = 0", intensity, -scope, intensity)
     .where("songs.average_tone - ? <= ? or ? = 0", tone, scope, tone)
-    .where("songs.average_tone - ? >= ? or ? = 0 or songs.id in (?)", tone, -scope, tone, playlist.whitelist)
-    .includes(album: :band)
+    .where("songs.average_tone - ? >= ? or ? = 0", tone, -scope, tone)
+    .includes(album: :band))
     .shuffle
   end
 
