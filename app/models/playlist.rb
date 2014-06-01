@@ -10,30 +10,14 @@ class Playlist < ActiveRecord::Base
   end
 
   def find_music(playlist, mood, timbre, intensity, tone, scope)
+    songs_list_will_change!
     case scope
     when "expansive" then scope = 8
     when "loose" then scope = 5
     when "strict" then scope = 2
     end
-    array = Song.where("songs.average_mood - ? <= ? or ? = 0", mood, scope, mood)
-      .where("songs.average_mood - ? >= ? or ? = 0", mood, -scope, mood)
-      .where("songs.average_timbre - ? <= ? or ? = 0", timbre, scope, timbre)
-      .where("songs.average_timbre - ? >= ? or ? = 0", timbre, -scope, timbre)
-      .where("songs.average_intensity - ? <= ? or ? = 0", intensity, scope, intensity)
-      .where("songs.average_intensity - ? >= ? or ? = 0", intensity, -scope, intensity)
-      .where("songs.average_tone - ? <= ? or ? = 0", tone, scope, tone)
-      .where("songs.average_tone - ? >= ? or ? = 0", tone, -scope, tone)
-      .pluck(:id)
-    whitelist_array = []
-    playlist.whitelist.each do |song|
-      whitelist_array << song
-    end
-    blacklist_array = []
-    playlist.blacklist.each do |song|
-      blacklist_array << song
-    end
-    final_array = (playlist.whitelist + array) - (playlist.blacklist)
-    last_check_of_presence(final_array, playlist, whitelist_array, blacklist_array)
+    playlist.blacklist.size > 0 ? found_music = blacklist_query(playlist, mood, timbre, intensity, tone, scope) : found_music = empty_blacklist_query(playlist, mood, timbre, intensity, tone, scope)
+    playlist.songs_list = found_music
   end
 
   def change_whitelist(playlist, song, action)
@@ -68,33 +52,31 @@ class Playlist < ActiveRecord::Base
 
 private
 
-  def last_check_of_presence(songs, playlist, original_whitelist, original_blacklist)
-    songs_list_will_change!
-    whitelist_will_change!
-    blacklist_will_change!
-    white_array = playlist.whitelist
-    songs.each do |song|
-      if Song.find_by_id(song).nil?
-        songs.delete(song)
-        white_array.delete(song)
-        black_array.delete(song)
-      end
-    end
-    playlist.blacklist.each do |song|
-      if Song.find_by_id(song).nil?
-        playlist.blacklist.delete(song)
-      end
-    end
-    if white_array != original_whitelist
-      playlist.update(:whitelist => white_array)
-    end
-    if playlist.blacklist != original_blacklist
-      playlist.update(:blacklist => playlist.blacklist)
-    end
-    songs = songs.uniq.sort
-    if playlist.songs_list != songs
-      playlist.update(:songs_list => songs)
-    end
+  def blacklist_query(playlist, mood, timbre, intensity, tone, scope)
+    Song.where("songs.average_mood - ? <= ? or ? = 0", mood, scope, mood)
+    .where("songs.average_mood - ? >= ? or ? = 0", mood, -scope, mood)
+    .where("songs.average_timbre - ? <= ? or ? = 0", timbre, scope, timbre)
+    .where("songs.average_timbre - ? >= ? or ? = 0", timbre, -scope, timbre)
+    .where("songs.average_intensity - ? <= ? or ? = 0", intensity, scope, intensity)
+    .where("songs.average_intensity - ? >= ? or ? = 0", intensity, -scope, intensity)
+    .where("songs.average_tone - ? <= ? or ? = 0", tone, scope, tone)
+    .where("songs.average_tone - ? >= ? or ? = 0 or songs.id in (?)", tone, -scope, tone, playlist.whitelist)
+    .where("songs.id not in (?)", playlist.blacklist)
+    .includes(album: :band)
+    .shuffle
+  end
+
+  def empty_blacklist_query(playlist, mood, timbre, intensity, tone, scope)
+    Song.where("songs.average_mood - ? <= ? or ? = 0", mood, scope, mood)
+    .where("songs.average_mood - ? >= ? or ? = 0", mood, -scope, mood)
+    .where("songs.average_timbre - ? <= ? or ? = 0", timbre, scope, timbre)
+    .where("songs.average_timbre - ? >= ? or ? = 0", timbre, -scope, timbre)
+    .where("songs.average_intensity - ? <= ? or ? = 0", intensity, scope, intensity)
+    .where("songs.average_intensity - ? >= ? or ? = 0", intensity, -scope, intensity)
+    .where("songs.average_tone - ? <= ? or ? = 0", tone, scope, tone)
+    .where("songs.average_tone - ? >= ? or ? = 0 or songs.id in (?)", tone, -scope, tone, playlist.whitelist)
+    .includes(album: :band)
+    .shuffle
   end
 
 end

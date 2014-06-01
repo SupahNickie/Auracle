@@ -12,7 +12,6 @@ class PlaylistsController < ApplicationController
   # GET /playlists/1.json
   def show
     @playlist.find_music(@playlist, @playlist.mood, @playlist.timbre, @playlist.intensity, @playlist.tone, @playlist.scope)
-    @songs = Song.where(id: @playlist.songs_list).includes(album: :band).shuffle
   end
 
   # GET /playlists/new

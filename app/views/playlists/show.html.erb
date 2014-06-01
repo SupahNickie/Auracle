@@ -11,7 +11,7 @@
 <% counter = 0 %>
 
 
-<% @songs.each do |song| %>
+<% @playlist.songs_list.each do |song| %>
   <% counter += 1 %>
   <% hash_of_song_urls[counter] = song.mp3.url %>
   <% hash_of_song_artists[counter] = song.album.band.username %>
@@ -65,7 +65,7 @@ window.onload = function(){
 </script>
 
 <% track_number = 0 %>
-<% @songs.each do |song| %>
+<% @playlist.songs_list.each do |song| %>
   <% track_number+=1 %>
 
   <strong><%= "#{track_number}" %> ) <%= song.album.band.username %> - <%= song.title %></strong><br>
