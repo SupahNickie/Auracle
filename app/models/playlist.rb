@@ -54,19 +54,21 @@ class Playlist < ActiveRecord::Base
 private
 
   def query_database(playlist, mood, timbre, intensity, tone, scope)
-    (Song.where("songs.id in (?)", playlist.whitelist).includes(album: :band) +
-    Song.where("songs.id not in (?)", playlist.whitelist)
-    .where("songs.id not in (?)", playlist.blacklist)
-    .where("songs.average_mood - ? <= ? or ? = 0", mood, scope, mood)
-    .where("songs.average_mood - ? >= ? or ? = 0", mood, -scope, mood)
-    .where("songs.average_timbre - ? <= ? or ? = 0", timbre, scope, timbre)
-    .where("songs.average_timbre - ? >= ? or ? = 0", timbre, -scope, timbre)
-    .where("songs.average_intensity - ? <= ? or ? = 0", intensity, scope, intensity)
-    .where("songs.average_intensity - ? >= ? or ? = 0", intensity, -scope, intensity)
-    .where("songs.average_tone - ? <= ? or ? = 0", tone, scope, tone)
-    .where("songs.average_tone - ? >= ? or ? = 0", tone, -scope, tone)
-    .includes(album: :band))
-    .shuffle
+    results = Song.find_by_sql ["SELECT songs.* FROM songs WHERE
+      (songs.id IN (:whitelist)) OR
+      (songs.id NOT IN (:blacklist) AND
+      (songs.average_mood - :mood <= :scope OR :mood = 0) AND
+      (songs.average_mood - :mood >= -:scope OR :mood = 0) AND
+      (songs.average_timbre - :timbre <= :scope OR :timbre = 0) AND
+      (songs.average_timbre - :timbre >= -:scope OR :timbre = 0) AND
+      (songs.average_intensity - :intensity <= :scope OR :intensity = 0) AND
+      (songs.average_intensity - :intensity >= -:scope OR :intensity = 0) AND
+      (songs.average_tone - :tone <= :scope OR :tone = 0) AND
+      (songs.average_tone - :tone >= -:scope OR :tone = 0))",
+      {whitelist: playlist.whitelist, blacklist: playlist.blacklist,
+      scope: scope, mood: mood, timbre: timbre, intensity: intensity, tone: tone}]
+    ActiveRecord::Associations::Preloader.new.preload(results, [album: :band])
+    results.shuffle
   end
 
 end
