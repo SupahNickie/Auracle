@@ -9,7 +9,7 @@ Rather than focus on the particular artist or musical stylings, I've created a r
 
 -- Mood - Light to Dark; how "evil" or "happy" does a song sound?
 
--- Timbre - Smooth to Raw; how grating is the sound to the ears? Michael Buble is NOT going to be in the same park as Cannibal Corpse.
+-- Timbre - Smooth to Raw; how grating is the sound to the ears? Michael Buble is not going to be in the same park as Cannibal Corpse.
 
 -- Intensity - Backgroundy to Oppressive; how "up-front" and "in your face" is the music? A song with a lower score could be thrown on in the background while one does chores and be unintrusive while a score of 100 would leave the user breathless and unable to focus on anything but the song.
 

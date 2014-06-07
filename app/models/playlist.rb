@@ -10,8 +10,8 @@ class Playlist < ActiveRecord::Base
   end
 
   def find_music(playlist, mood, timbre, intensity, tone, scope, sorted)
-    if sorted == "order" # use caching to just view current playlist without regenerating intensity
-      playlist.songs_list = Rails.cache.fetch("found_music").sort_by {|x| [x.album.band.username, x.album.title]} if sorted == "order"
+    if sorted == "order" # use caching to just view current playlist without regenerating it
+      playlist.songs_list = Rails.cache.fetch("found_music").sort_by {|x| [x.album.band.username, x.album.title]}
     else # sorted == "shuffle" ~> Generate playlist from scratch
       case scope
       when "expansive" then scope = 8
