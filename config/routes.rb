@@ -13,8 +13,9 @@ Auracle::Application.routes.draw do
         patch :unblacklist
         put :unwhitelist
         patch :unwhitelist
+        get :view_blacklist
+        get :list
       end
-      get :view_blacklist
     end
     resources :albums do
       resources :songs, except: [:show] do

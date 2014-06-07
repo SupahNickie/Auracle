@@ -9,7 +9,7 @@ class Playlist < ActiveRecord::Base
     "#{id}-#{slug}"
   end
 
-  def find_music(playlist, mood, timbre, intensity, tone, scope)
+  def find_music(playlist, mood, timbre, intensity, tone, scope, sorted)
     songs_list_will_change!
     case scope
     when "expansive" then scope = 8
@@ -17,7 +17,8 @@ class Playlist < ActiveRecord::Base
     when "strict" then scope = 2
     end
     found_music = query_database(playlist, mood, timbre, intensity, tone, scope)
-    playlist.songs_list = found_music
+    playlist.songs_list = found_music.shuffle if sorted == "shuffle"
+    playlist.songs_list = found_music.sort_by {|x| [x.album.band.username, x.album]} if sorted == "order"
   end
 
   def change_whitelist(playlist, song, action)
@@ -26,7 +27,7 @@ class Playlist < ActiveRecord::Base
       whitelist_will_change!
       array = playlist.whitelist
       array << song.id
-      playlist.update(:whitelist => array)
+      playlist.update(whitelist: array)
     when "remove"
       blacklist_will_change!
       array = playlist.blacklist
@@ -35,19 +36,19 @@ class Playlist < ActiveRecord::Base
         whitelist_will_change!
         whitelist_array = playlist.whitelist
         whitelist_array.delete(song.id)
-        playlist.update(:whitelist => whitelist_array)
+        playlist.update(whitelist: whitelist_array)
       end
-      playlist.update(:blacklist => array)
+      playlist.update(blacklist: array)
     when "unblacklist"
       blacklist_will_change!
       array = playlist.blacklist
       array.delete(song.id)
-      playlist.update(:blacklist => array)
+      playlist.update(blacklist: array)
     when "unwhitelist"
       whitelist_will_change!
       array = playlist.whitelist
       array.delete(song.id)
-      playlist.update(:whitelist => array)
+      playlist.update(whitelist: array)
     end
   end
 
@@ -68,7 +69,7 @@ private
       {whitelist: playlist.whitelist, blacklist: playlist.blacklist,
       scope: scope, mood: mood, timbre: timbre, intensity: intensity, tone: tone}]
     ActiveRecord::Associations::Preloader.new.preload(results, [album: :band])
-    results.shuffle
+    results
   end
 
 end

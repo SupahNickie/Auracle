@@ -1,6 +1,8 @@
 class PlaylistsController < ApplicationController
   before_filter :set_user
-  before_action :set_playlist, only: [:show, :edit, :update, :destroy, :whitelist, :blacklist, :unblacklist, :unwhitelist]
+  before_action :set_playlist, only: [:show, :edit, :update, :destroy,
+                                      :whitelist, :blacklist, :unblacklist, :unwhitelist,
+                                      :view_blacklist, :list]
 
   # GET /playlists
   # GET /playlists.json
@@ -11,7 +13,8 @@ class PlaylistsController < ApplicationController
   # GET /playlists/1
   # GET /playlists/1.json
   def show
-    @playlist.find_music(@playlist, @playlist.mood, @playlist.timbre, @playlist.intensity, @playlist.tone, @playlist.scope)
+    @playlist.find_music(@playlist, @playlist.mood, @playlist.timbre, @playlist.intensity, @playlist.tone,
+      @playlist.scope, "shuffle")
   end
 
   # GET /playlists/new
@@ -72,7 +75,7 @@ class PlaylistsController < ApplicationController
       current_user.push_song_id_to_ratings_list(@song, current_user)
     end
     respond_to do |format|
-      format.html { redirect_to user_playlist_view_blacklist_path(@user, @playlist), notice: 'Song was successfully favorited to this playlist!' }
+      format.html { redirect_to view_blacklist_user_playlist_path(@user, @playlist), notice: 'Song was successfully favorited to this playlist!' }
       format.json { head :no_content }
       format.js
     end
@@ -92,7 +95,7 @@ class PlaylistsController < ApplicationController
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "unblacklist")
     respond_to do |format|
-      format.html { redirect_to user_playlist_view_blacklist_path(@user, @playlist), notice: 'Song was successfully given another chance!' }
+      format.html { redirect_to view_blacklist_user_playlist_path(@user, @playlist), notice: 'Song was successfully given another chance!' }
       format.json { head :no_content }
       format.js
     end
@@ -102,14 +105,18 @@ class PlaylistsController < ApplicationController
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "unwhitelist")
     respond_to do |format|
-      format.html { redirect_to user_playlist_view_blacklist_path(@user, @playlist), notice: 'Song was successfully unfavorited.' }
+      format.html { redirect_to view_blacklist_user_playlist_path(@user, @playlist), notice: 'Song was successfully unfavorited.' }
       format.json { head :no_content }
       format.js
     end
   end
 
   def view_blacklist
-    @playlist = @user.playlists.find(params[:playlist_id])
+  end
+
+  def list
+    @playlist.find_music(@playlist, @playlist.mood, @playlist.timbre, @playlist.intensity, @playlist.tone,
+      @playlist.scope, "order")
   end
 
   private

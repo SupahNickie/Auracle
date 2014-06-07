@@ -1,0 +1,6 @@
+<h1>Here are the songs that are currently in the playlist</h1>
+
+<% @playlist.songs_list.each do |song| %>
+  <h3><%= song.title %></h3>
+  <%= song.album.band.username %>, from the album <%= song.album.title %>
+<% end %>
