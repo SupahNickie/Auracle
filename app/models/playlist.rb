@@ -10,15 +10,17 @@ class Playlist < ActiveRecord::Base
   end
 
   def find_music(playlist, mood, timbre, intensity, tone, scope, sorted)
-    songs_list_will_change!
-    case scope
-    when "expansive" then scope = 8
-    when "loose" then scope = 5
-    when "strict" then scope = 2
+    if sorted == "order" # use caching to just view current playlist without regenerating intensity
+      playlist.songs_list = Rails.cache.fetch("found_music").sort_by {|x| [x.album.band.username, x.album.title]} if sorted == "order"
+    else # sorted == "shuffle" ~> Generate playlist from scratch
+      case scope
+      when "expansive" then scope = 8
+      when "loose" then scope = 5
+      when "strict" then scope = 2
+      end
+      Rails.cache.write("found_music", result = query_database(playlist, mood, timbre, intensity, tone, scope))
+      playlist.songs_list = Rails.cache.fetch("found_music").shuffle
     end
-    found_music = query_database(playlist, mood, timbre, intensity, tone, scope)
-    playlist.songs_list = found_music.shuffle if sorted == "shuffle"
-    playlist.songs_list = found_music.sort_by {|x| [x.album.band.username, x.album]} if sorted == "order"
   end
 
   def change_whitelist(playlist, song, action)

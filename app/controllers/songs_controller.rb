@@ -106,6 +106,6 @@ class SongsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def song_params
       params.require(:song).permit(:title, :mp3, :link_to_purchase, :link_to_download, :average_mood, :average_timbre,
-        :average_intensity, :average_tone, :mood, :timbre, :intensity, :tone, :album_id, :user_id)
+        :average_intensity, :average_tone, :mood, :timbre, :intensity, :tone, :album_id)
     end
 end
