@@ -87,7 +87,7 @@ class SongsController < ApplicationController
     current_user.push_song_id_to_ratings_list(@song, current_user)
 
     respond_to do |format|
-      format.html { redirect_to view_blacklist_user_playlist_path(@user, @playlist), notice: 'Thank you for your vote!' }
+      format.html { redirect_to view_blacklist_user_playlist_path(current_user, @playlist), notice: 'Thank you for your vote!' }
     end
   end
 

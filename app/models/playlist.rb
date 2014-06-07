@@ -10,16 +10,21 @@ class Playlist < ActiveRecord::Base
   end
 
   def find_music(playlist, mood, timbre, intensity, tone, scope, sorted)
-    if sorted == "order" # use caching to just view current playlist without regenerating it
-      playlist.songs_list = Rails.cache.fetch("found_music").sort_by {|x| [x.album.band.username, x.album.title]}
-    else # sorted == "shuffle" ~> Generate playlist from scratch
-      case scope
-      when "expansive" then scope = 8
-      when "loose" then scope = 5
-      when "strict" then scope = 2
+    case scope
+    when "expansive" then scope = 8
+    when "loose" then scope = 5
+    when "strict" then scope = 2
+    end
+    if sorted == "order" # use caching to just view current playlist without regenerating it if possible
+      begin
+        playlist.songs_list = Rails.cache.fetch("#{playlist.id}-found_music").sort_by {|x| [x.album.band.username, x.album.title]}
+      rescue
+        Rails.cache.write("#{playlist.id}-found_music", result = query_database(playlist, mood, timbre, intensity, tone, scope))
+        playlist.songs_list = Rails.cache.fetch("#{playlist.id}-found_music").sort_by {|x| [x.album.band.username, x.album.title]}
       end
-      Rails.cache.write("found_music", result = query_database(playlist, mood, timbre, intensity, tone, scope))
-      playlist.songs_list = Rails.cache.fetch("found_music").shuffle
+    else # Generate playlist from scratch for playback
+      Rails.cache.write("#{playlist.id}-found_music", result = query_database(playlist, mood, timbre, intensity, tone, scope))
+      playlist.songs_list = Rails.cache.fetch("#{playlist.id}-found_music").shuffle
     end
   end
 

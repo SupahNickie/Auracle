@@ -33,4 +33,4 @@ I've also included the methods necessary for users to be able to submit their ow
 
 Please feel free to contact me at nicholascase@live.com with any comments or questions! Thanks for taking a look at my code.
 
-Copyright © 2013 Nicholas Case
+Copyright © 2014 Nicholas Case
