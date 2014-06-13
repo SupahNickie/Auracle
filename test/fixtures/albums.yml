@@ -1,4 +1,3 @@
 album1:
-  id: 999
   title: "Example Album 1"
-  band_id: 999
+  band: user2

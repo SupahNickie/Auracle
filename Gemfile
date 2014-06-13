@@ -35,10 +35,11 @@ group :production do
 end
 
 group :test do
-  gem 'simplecov', :require => false
   gem 'launchy'
-  gem 'turn'
   gem 'letter_opener'
+  gem 'minitest-rails'
+  gem 'minitest-rails-capybara'
+  gem 'simplecov', :require => false
 end
 
 group :doc do

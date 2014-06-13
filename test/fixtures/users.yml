@@ -1,13 +1,12 @@
 user1:
-  id: 998
   username: "Example User"
   email: "user@example.com"
   encrypted_password: <%= User.new.send(:password_digest, 'password') %>
   role: "personal"
 
 user2:
-  id: 999
   username: "Band Example"
   email: "band@example.com"
   encrypted_password: <%= User.new.send(:password_digest, 'password') %>
   role: "band"
+  admin: true

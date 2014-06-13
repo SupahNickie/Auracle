@@ -8,11 +8,11 @@ feature "Playlist CRUD" do
   end
 
   scenario "a faulty playlist doesn't get created" do
-    pending "Tests will pass when validations are implemented"
+    # pending "Tests will pass when validations are implemented"
   end
 
   scenario "a visited playlist looks for music" do
-    pending "Test will pass when songs are loaded"
+    # pending "Test will pass when songs are loaded"
     # login_personal
     # create_playlist
     # click_on "Show"
