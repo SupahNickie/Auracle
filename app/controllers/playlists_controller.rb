@@ -32,17 +32,16 @@ class PlaylistsController < ApplicationController
     @playlist = @user.playlists.new(playlist_params)
 
     respond_to do |format|
-        if @playlist.save
-          if current_user.role == "band"
-            format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Playlist was successfully created.' }
-          else
-            format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}", notice: 'Playlist was successfully created.' }
-          end
-          format.json { render action: 'show', status: :created, location: @playlist }
+      if @playlist.save
+        if current_user.role == "band"
+          format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Playlist was successfully created.' }
         else
-          format.html { render action: 'new' }
-          format.json { render json: @playlist.errors, status: :unprocessable_entity }
+          format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}", notice: 'Playlist was successfully created.' }
         end
+        format.json { render action: 'show', status: :created, location: @playlist }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @playlist.errors, status: :unprocessable_entity }
       end
     end
   end
