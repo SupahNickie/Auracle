@@ -32,12 +32,17 @@ class PlaylistsController < ApplicationController
     @playlist = @user.playlists.new(playlist_params)
 
     respond_to do |format|
-      if @playlist.save
-        format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Playlist was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @playlist }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @playlist.errors, status: :unprocessable_entity }
+        if @playlist.save
+          if current_user.role == "band"
+            format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Playlist was successfully created.' }
+          else
+            format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}", notice: 'Playlist was successfully created.' }
+          end
+          format.json { render action: 'show', status: :created, location: @playlist }
+        else
+          format.html { render action: 'new' }
+          format.json { render json: @playlist.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -47,7 +52,11 @@ class PlaylistsController < ApplicationController
   def update
     respond_to do |format|
       if @playlist.update(playlist_params)
-        format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Playlist was successfully updated.' }
+        if current_user.role == "band"
+          format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Playlist was successfully updated.' }
+        else
+          format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}", notice: 'Playlist was successfully updated.' }
+        end
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -61,8 +70,13 @@ class PlaylistsController < ApplicationController
   def destroy
     @playlist.destroy
     respond_to do |format|
-      format.html { redirect_to user_playlists_path(@user) }
-      format.json { head :no_content }
+      if current_user.role == "band"
+        format.html { redirect_to user_playlists_path(@user) }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to "/users/#{current_user.to_param}/playlists" }
+        format.json { head :no_content }
+      end
     end
   end
 
