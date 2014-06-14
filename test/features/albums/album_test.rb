@@ -9,7 +9,7 @@ feature "Album CRUD" do
 
   scenario "creating a new album (as a personal account) fails" do
     login_personal
-    visit new_user_album_path(users(:user1).id)
+    visit new_user_album_path(users(:user1))
     page.text.must_include "only the admin"
   end
 end

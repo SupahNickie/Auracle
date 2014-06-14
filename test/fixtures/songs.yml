@@ -1,0 +1,29 @@
+song1:
+  title: "Example Song 1"
+  album: album1
+  mp3_file_name: "example_song.mp3"
+  mp3_content_type: "audio/mp3"
+  mp3_file_size: 999999
+  average_mood: 50
+  average_timbre: 50
+  average_intensity: 50
+  average_tone: 50
+  mood: [50, 40, 60]
+  timbre: [40, 60, 50]
+  intensity: [45, 50, 55]
+  tone: [65, 35, 50]
+
+song2:
+  title: "Example Song 2"
+  album: album1
+  mp3_file_name: "example_song2.mp3"
+  mp3_content_type: "audio/mp3"
+  mp3_file_size: 888888
+  average_mood: 60
+  average_timbre: 60
+  average_intensity: 60
+  average_tone: 60
+  mood: [50, 70, 60]
+  timbre: [70, 60, 50]
+  intensity: [55, 60, 65]
+  tone: [75, 45, 60]

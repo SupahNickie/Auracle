@@ -13,8 +13,7 @@ feature "Song CRUD" do
     create_second_song
     page.text.must_include "Song was successfully created"
     visit user_album_path(users(:user2), albums(:album1))
-    page.text.must_include "Example Song 1"
-    page.text.must_include "Example Song 2"
+    page.text.must_include "Example Created Song 1"
+    page.text.must_include "Example Created Song 2"
   end
-
 end

@@ -1,0 +1,8 @@
+playlist1:
+  name: Example Playlist 1
+  mood: 56
+  timbre: 56
+  intensity: 56
+  tone: 56
+  scope: "expansive"
+  user: user1
