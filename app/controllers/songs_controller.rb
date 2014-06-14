@@ -73,8 +73,8 @@ class SongsController < ApplicationController
   end
 
   def rating
-    @user = @song.album.band
-    @album = @user.albums.find(params[:album_id])
+    @album = @song.album
+    @user = @album.band
     @playlist = current_user.playlists.find(params[:playlist_id])
   end
 
@@ -87,7 +87,11 @@ class SongsController < ApplicationController
     current_user.push_song_id_to_ratings_list(@song, current_user)
 
     respond_to do |format|
-      format.html { redirect_to view_blacklist_user_playlist_path(current_user, @playlist), notice: 'Thank you for your vote!' }
+      if current_user.role == "band"
+        format.html { redirect_to view_blacklist_user_playlist_path(current_user, @playlist), notice: 'Thank you for your vote!' }
+      else
+        format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}/view_blacklist"}
+      end
     end
   end
 

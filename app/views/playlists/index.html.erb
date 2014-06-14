@@ -23,10 +23,17 @@
           <td><%= playlist.timbre %></td>
           <td><%= playlist.intensity %></td>
           <td><%= playlist.tone %></td>
+        <% if current_user.role == "band" %>
           <td><%= link_to 'Play', user_playlist_path(@user, playlist), data: {"skip-pjax" => true} %></td>
           <td><%= link_to 'View Songs', list_user_playlist_path(@user, playlist) %></td>
           <td><%= link_to 'Edit', edit_user_playlist_path(@user, playlist) %></td>
           <td><%= link_to 'Destroy', user_playlist_path(@user, playlist), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% else %>
+          <td><%= link_to 'Play', "/users/#{current_user.to_param}/playlists/#{playlist.id}", data: {"skip-pjax" => true} %></td>
+          <td><%= link_to 'View Songs', "/users/#{current_user.to_param}/playlists/#{playlist.id}/list" %></td>
+          <td><%= link_to 'Edit', "/users/#{current_user.to_param}/playlists/#{playlist.id}/edit" %></td>
+          <td><%= link_to 'Destroy', "/users/#{current_user.to_param}/playlists/#{playlist.id}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
         </tr>
       <% end %>
     </tbody>

@@ -70,13 +70,25 @@ window.onload = function(){
 
   <strong><%= "#{track_number}" %> ) <%= song.album.band.username %> - <%= song.title %></strong><br>
 
-  <% if @playlist.whitelist.include? song.id %>
-    <%= image_tag('glyphicons/png/glyphicons_012_heart.png', title: "Saved to this playlist!", class: "glyphicons") %>
-  <% elsif @playlist.whitelist.exclude? song.id %>
-    <%= link_to image_tag('glyphicons/png/glyphicons_019_heart_empty.png'), whitelist_user_playlist_path(@user, @playlist, :song_id => song.id), method: :put, title: "Save this song to my playlist!", class: "glyphicons", target: '_blank', data: {"skip-pjax" => true}  %>
+  <% if current_user.role == "band" %>
+    <% if @playlist.whitelist.include? song.id %>
+      <%= image_tag('glyphicons/png/glyphicons_012_heart.png', title: "Saved to this playlist!", class: "glyphicons") %>
+    <% elsif @playlist.whitelist.exclude? song.id %>
+      <%= link_to image_tag('glyphicons/png/glyphicons_019_heart_empty.png'), whitelist_user_playlist_path(@user, @playlist, :song_id => song.id), method: :put, title: "Save this song to my playlist!", class: "glyphicons", target: '_blank', data: {"skip-pjax" => true}  %>
+    <% end %>
+  <% else %>
+    <% if @playlist.whitelist.include? song.id %>
+      <%= image_tag('glyphicons/png/glyphicons_012_heart.png', title: "Saved to this playlist!", class: "glyphicons") %>
+    <% elsif @playlist.whitelist.exclude? song.id %>
+      <%= link_to image_tag('glyphicons/png/glyphicons_019_heart_empty.png'), "/users/#{current_user.to_param}/playlists/#{@playlist.id}/whitelist?song_id=#{song.id}", method: :put, title: "Save this song to my playlist!", class: "glyphicons", target: '_blank', data: {"skip-pjax" => true}  %>
+    <% end %>
   <% end %>
 
-  <%= link_to image_tag('glyphicons/png/glyphicons_344_thumbs_down.png'), blacklist_user_playlist_path(@user, @playlist, :song_id => song.id), method: :put, title: "Blacklist this song from my playlist!", class: "glyphicons", target: "_blank", data: {"skip-pjax" => true}, id: "remove_song" %>
+  <% if current_user.role == "band" %>
+    <%= link_to image_tag('glyphicons/png/glyphicons_344_thumbs_down.png'), blacklist_user_playlist_path(@user, @playlist, :song_id => song.id), method: :put, title: "Blacklist this song from my playlist!", class: "glyphicons", target: "_blank", data: {"skip-pjax" => true}, id: "remove_song" %>
+  <% else %>
+    <%= link_to image_tag('glyphicons/png/glyphicons_344_thumbs_down.png'), "/users/#{current_user.to_param}/playlists/#{@playlist.id}/blacklist?song_id=#{song.id}", method: :put, title: "Blacklist this song from my playlist!", class: "glyphicons", target: "_blank", data: {"skip-pjax" => true}, id: "remove_song" %>
+  <% end %>
 
   <% if song.link_to_purchase? && song.link_to_download? %>
     <%= link_to image_tag('glyphicons/png/glyphicons_227_usd.png'), "http://#{song.link_to_purchase}", title: "Purchase this song!", class: "glyphicons", target: '_blank' %>
@@ -90,7 +102,12 @@ window.onload = function(){
   <% end %><br>
 
 <% end %>
-
-<%= link_to 'Review Favorited and Blacklisted Songs', view_blacklist_user_playlist_path(@user, @playlist), target: '_blank', data: {"skip-pjax" => true} %> |
-<%= link_to 'Edit Attributes and Scope', edit_user_playlist_path(@user, @playlist) %> |
-<%= link_to 'Back', user_playlists_path(@user) %>
+<% if current_user.role == "band" %>
+  <%= link_to 'Review Favorited and Blacklisted Songs', view_blacklist_user_playlist_path(@user, @playlist), target: '_blank', data: {"skip-pjax" => true} %> |
+  <%= link_to 'Edit Attributes and Scope', edit_user_playlist_path(@user, @playlist) %> |
+  <%= link_to 'Back', user_playlists_path(@user) %>
+<% else %>
+  <%= link_to 'Review Favorited and Blacklisted Songs', "/users/#{current_user.to_param}/playlists/#{@playlist.id}/view_blacklist", target: '_blank', data: {"skip-pjax" => true} %> |
+  <%= link_to 'Edit Attributes and Scope', "/users/#{current_user.to_param}/playlists/#{@playlist.id}/edit" %> |
+  <%= link_to 'Back', "/users/#{current_user.to_param}/playlists" %>
+<% end %>

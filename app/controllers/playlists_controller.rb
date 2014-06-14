@@ -75,9 +75,15 @@ class PlaylistsController < ApplicationController
       current_user.push_song_id_to_ratings_list(@song, current_user)
     end
     respond_to do |format|
-      format.html { redirect_to view_blacklist_user_playlist_path(@user, @playlist), notice: 'Song was successfully favorited to this playlist!' }
-      format.json { head :no_content }
-      format.js
+      if current_user.role == "band"
+        format.html { redirect_to view_blacklist_user_playlist_path(@user, @playlist), notice: 'Song was successfully favorited to this playlist!' }
+        format.json { head :no_content }
+        format.js
+      else
+        format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}/view_blacklist", notice: 'Song was successfully favorited to this playlist!' }
+        format.json { head :no_content }
+        format.js
+      end
     end
   end
 
@@ -85,9 +91,15 @@ class PlaylistsController < ApplicationController
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "remove")
     respond_to do |format|
-      format.html { redirect_to rating_user_album_song_path(@user, @song.album, @song, playlist_id: @playlist.id), notice: 'Song was successfully removed from this playlist.'}
-      format.json { head :no_content }
-      format.js
+      if current_user.role == "band"
+        format.html { redirect_to rating_user_album_song_path(@user, @song.album, @song, playlist_id: @playlist.id), notice: 'Song was successfully removed from this playlist.' }
+        format.json { head :no_content }
+        format.js
+      else
+        format.html { redirect_to "/artists/#{@song.album.band.to_param}/albums/#{@song.album.to_param}/songs/#{@song.to_param}/rating?playlist_id=#{@playlist.id}", notice: 'Song was successfully removed from this playlist.' }
+        format.json { head :no_content }
+        format.js
+      end
     end
   end
 
@@ -95,9 +107,15 @@ class PlaylistsController < ApplicationController
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "unblacklist")
     respond_to do |format|
-      format.html { redirect_to view_blacklist_user_playlist_path(@user, @playlist), notice: 'Song was successfully given another chance!' }
-      format.json { head :no_content }
-      format.js
+      if current_user.role == "band"
+        format.html { redirect_to view_blacklist_user_playlist_path(@user, @playlist), notice: 'Song was successfully given another chance!' }
+        format.json { head :no_content }
+        format.js
+      else
+        format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}/view_blacklist", notice: 'Song was successfully given another chance!' }
+        format.json { head :no_content }
+        format.js
+      end
     end
   end
 
@@ -105,9 +123,15 @@ class PlaylistsController < ApplicationController
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "unwhitelist")
     respond_to do |format|
-      format.html { redirect_to view_blacklist_user_playlist_path(@user, @playlist), notice: 'Song was successfully unfavorited.' }
-      format.json { head :no_content }
-      format.js
+      if current_user.role == "band"
+        format.html { redirect_to view_blacklist_user_playlist_path(@user, @playlist), notice: 'Song was successfully unfavorited.' }
+        format.json { head :no_content }
+        format.js
+      else
+        format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}/view_blacklist", notice: 'Song was successully unfavorited.' }
+        format.json { head :no_content }
+        format.js
+      end
     end
   end
 

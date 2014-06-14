@@ -28,7 +28,21 @@ Auracle::Application.routes.draw do
     end
   end
 
-  resources :users, only: [:profile, :edit_profile, :update_profile] do
+  resources :users, path: 'users', only: [:profile, :edit_profile, :update_profile] do
+    resources :playlists do
+      member do
+        put :whitelist
+        patch :whitelist
+        put :blacklist
+        patch :blacklist
+        put :unblacklist
+        patch :unblacklist
+        put :unwhitelist
+        patch :unwhitelist
+        get :view_blacklist
+        get :list
+      end
+    end
     member do
       get :profile
       get :edit_profile

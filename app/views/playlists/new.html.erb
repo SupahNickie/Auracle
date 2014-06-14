@@ -2,4 +2,8 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Back', user_playlists_path(@user) %>
+<% if current_user.role == "band" %>
+  <%= link_to 'Back', user_playlists_path(@user) %>
+<% else %>
+  <%= link_to 'Back', "/users/#{current_user.to_param}/playlists" %>
+<% end %>

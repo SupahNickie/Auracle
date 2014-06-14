@@ -7,7 +7,11 @@
     <% @song = Song.find(song) %>
 
     <%= @song.album.band.username %> - <%= @song.title %><br>
-    <%= link_to 'Remove from favorites', unwhitelist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %><br><br>
+    <% if current_user.role == "band" %>
+      <%= link_to 'Remove from favorites', unwhitelist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %><br><br>
+    <% else %>
+      <%= link_to 'Remove from favorites', "/users/#{current_user.to_param}/playlists/#{@playlist.id}/unwhitelist?song_id=#{song}", method: :put %><br><br>
+    <% end %>
   <% end %>
 <% end %>
 
@@ -20,6 +24,10 @@
     <% @song = Song.find(song) %>
 
     <%= @song.album.band.username %> - <%= @song.title %><br>
-    <%= link_to 'Remove from blacklist', unblacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %><br><br>
+    <% if current_user.role == "band" %>
+      <%= link_to 'Remove from blacklist', unblacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %><br><br>
+    <% else %>
+      <%= link_to 'Remove from blacklist', "/users/#{current_user.to_param}/playlists/#{@playlist.id}/unblacklist?song_id=#{song}", method: :put %><br><br>
+    <% end %>
   <% end %>
 <% end %>

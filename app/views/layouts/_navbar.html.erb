@@ -17,16 +17,15 @@
             <li><%= link_to 'Explore Artists', users_path %></li>
             <% if current_user && current_user.role == "band" %>
               <li><%= link_to 'Manage My Albums', user_albums_path(current_user) %></li>
+              <li><%= link_to "#{current_user.username}'s Artist Profile", user_path(current_user) %></li>
+              <li><%= link_to 'My Playlists', user_playlists_path(current_user) %></li>
+            <% elsif current_user && current_user.role == "personal" %>
+              <li><%= link_to "#{current_user.username}'s Profile", profile_user_path(current_user) %></li>
+              <li><%= link_to 'My Playlists', "/users/#{current_user.to_param}/playlists" %></li>
             <% end %>
             <% if current_user %>
-              <li><%= link_to 'My Playlists', user_playlists_path(current_user) %></li>
-            <% if current_user && current_user.role == "band" %>
-              <li><%= link_to "#{current_user.username}'s Artist Profile", user_path(current_user) %></li>
-            <% else %>
-              <li><%= link_to "#{current_user.username}'s Profile", profile_user_path(current_user) %></li>
-            <% end %>
               <li><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></li>
-            <% elsif current_user.nil? %>
+            <% else %>
               <li><%= link_to 'Sign In', new_user_session_path %></li>
               <li><%= link_to 'Sign Up', new_user_registration_path %></li>
             <% end %>

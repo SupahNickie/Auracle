@@ -13,8 +13,7 @@
   validates :role, presence: true
 
   def slug
-    username.downcase.gsub(" ", "-")
-    username.gsub(".", "-")
+    username.downcase.gsub(/[\s\.]/, "-")
   end
 
   def to_param
