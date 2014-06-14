@@ -16,8 +16,13 @@ class Playlist < ActiveRecord::Base
     when "strict" then scope = 2
     end
     if sorted == "order" # use caching to just view current playlist without regenerating it if possible
-      playlist.songs_list = Rails.cache.fetch("#{playlist.id}-found_music").sort_by {|x| [x.album.band.username, x.album.title]}
-      if playlist.songs_list.empty?
+      begin
+        playlist.songs_list = Rails.cache.fetch("#{playlist.id}-found_music").sort_by {|x| [x.album.band.username, x.album.title]}
+        if playlist.songs_list.empty?
+          Rails.cache.write("#{playlist.id}-found_music", result = query_database(playlist, mood, timbre, intensity, tone, scope))
+          playlist.songs_list = Rails.cache.fetch("#{playlist.id}-found_music").sort_by {|x| [x.album.band.username, x.album.title]}
+        end
+      rescue
         Rails.cache.write("#{playlist.id}-found_music", result = query_database(playlist, mood, timbre, intensity, tone, scope))
         playlist.songs_list = Rails.cache.fetch("#{playlist.id}-found_music").sort_by {|x| [x.album.band.username, x.album.title]}
       end
