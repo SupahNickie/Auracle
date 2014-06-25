@@ -28,7 +28,7 @@ class Playlist < ActiveRecord::Base
       end
     else # Generate playlist from scratch for playback
       Rails.cache.write("#{playlist.id}-found_music", result = query_database(playlist, mood, timbre, intensity, tone, scope))
-      playlist.songs_list = Rails.cache.fetch("#{playlist.id}-found_music").sample(25)
+      playlist.songs_list = Rails.cache.fetch("#{playlist.id}-found_music").shuffle
     end
   end
 
