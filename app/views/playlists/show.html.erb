@@ -37,8 +37,12 @@ window.onload = function(){
   audioPlayer.addEventListener('ended', function(e){
     song = song + 1;
     audioPlayer.src = tracklist[song];
-    $('#song_info').html("<h3><strong>" + song_artists[song] + " - " + song_titles[song] + "</strong></h3>");
-    $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
+    if (tracklist[song] == null) {
+      alert("Your playlist has ended. Please visit your playlist again to find new music to listen to!");
+    } else {
+      $('#song_info').html("<h3><strong>" + song_artists[song] + " - " + song_titles[song] + "</strong></h3>");
+      $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
+    }
   });
   $('#previous_song').click(function(){
     song = song - 1;
