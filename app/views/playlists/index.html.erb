@@ -43,5 +43,9 @@
 <br>
 
 <div id="playlist_bottom_control">
-  <%= link_to 'New Playlist', new_user_playlist_path(@user) %>
+  <% if current_user.role == "band" %>
+    <%= link_to 'New Playlist', new_user_playlist_path(@user) %>
+  <% else %>
+    <%= link_to 'New Playlist', "/users/#{current_user.to_param}/playlists/new" %>
+  <% end %>
 </div>

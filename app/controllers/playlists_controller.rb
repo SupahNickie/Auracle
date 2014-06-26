@@ -33,10 +33,12 @@ class PlaylistsController < ApplicationController
 
     respond_to do |format|
       if @playlist.save
-        if current_user.role == "band"
+        if current_user && current_user.role == "band"
           format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Playlist was successfully created.' }
-        else
+        elsif current_user && current_user.role == "personal"
           format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}", notice: 'Playlist was successfully created.' }
+        else
+          format.html { redirect_to "/users/#{guest_user.to_param}/playlists/#{@playlist.id}", notice: 'We hope you enjoy trying Auracle!' }
         end
         format.json { render action: 'show', status: :created, location: @playlist }
       else
