@@ -1,19 +1,59 @@
 require 'test_helper'
 
 feature "Playlist CRUD" do
-  scenario "a new playlist gets created in the first place" do
+  scenario "a new playlist can be created by a user with a personal account" do
     login_personal
     create_all_songs_playlist
     page.text.must_include "Playlist was successfully created."
+  end
+
+  scenario "a new playlist can also be created by a band account" do
+    login_band
+    create_all_songs_playlist
+    page.text.must_include "Playlist was successfully created."
+  end
+
+  scenario "a guest user can even create a playlist" do
+    visit root_path
+    click_on "Make a playlist to try out!"
+    fill_in "Name", with: "Example Created Playlist 1"
+    fill_in "Mood", with: 0
+    fill_in "Timbre", with: 0
+    fill_in "Intensity", with: 0
+    fill_in "Tone", with: 0
+    choose "playlist_scope_strict"
+    click_on "Create Playlist"
+    page.text.must_include "We hope you enjoy trying Auracle!"
   end
 
   scenario "a faulty playlist doesn't get created" do
     # pending "Tests will pass when validations are implemented"
   end
 
-  scenario "a visited playlist finds all music when asked to" do
+  scenario "a visited playlist finds all music when asked to (personal account)" do
     login_personal
     create_all_songs_playlist
+    page.text.must_include "Band Example - Example Song 1"
+    page.text.must_include "Band Example - Example Song 2"
+  end
+
+  scenario "a visited playlist finds all music when asked to (band account)" do
+    login_band
+    create_all_songs_playlist
+    page.text.must_include "Band Example - Example Song 1"
+    page.text.must_include "Band Example - Example Song 2"
+  end
+
+  scenario "a visited playlist finds all music when asked to (guest user, no account)" do
+    visit root_path
+    click_on "Make a playlist to try out!"
+    fill_in "Name", with: "Example Created Playlist 1"
+    fill_in "Mood", with: 0
+    fill_in "Timbre", with: 0
+    fill_in "Intensity", with: 0
+    fill_in "Tone", with: 0
+    choose "playlist_scope_strict"
+    click_on "Create Playlist"
     page.text.must_include "Band Example - Example Song 1"
     page.text.must_include "Band Example - Example Song 2"
   end
@@ -34,9 +74,66 @@ feature "Playlist CRUD" do
 
   scenario "a playlist can be viewed without playing music first (even though it still queries the database)" do
     login_personal
-    visit user_playlists_path(users(:user1))
-    click_on "Play"
-    page.text.must_include "Band Example - Example Song 1"
-    page.text.must_include "Band Example - Example Song 2"
+    visit root_path
+    click_on "My Playlists"
+    click_on "View Songs"
+    page.text.must_include "Example Song 1"
+    page.text.must_include "Example Song 2"
+    page.text.must_include "Band Example, from the album Example Album 1"
+  end
+
+  scenario "a playlist can be deleted (personal account)" do
+    login_personal
+    visit root_path
+    click_on "My Playlists"
+    click_on "Destroy"
+    page.text.must_include "Playlist was successfully destroyed."
+  end
+
+  scenario "a playlist can be deleted (band account)" do
+    login_band
+    visit user_playlists_path(users(:user2))
+    click_on "Destroy"
+    page.text.must_include "Playlist was successfully destroyed."
+  end
+
+  scenario "a playlist can NOT be deleted by a guest" do
+    # pending "Test will pass when authorization for guests is implemented"
+  end
+
+  scenario "a playlist can be edited (personal account)" do
+    login_personal
+    visit root_path
+    click_on "My Playlists"
+    click_on "Edit"
+    fill_in "Name", with: "Edited Playlist 1"
+    fill_in "Mood", with: 80
+    click_on "Update Playlist"
+    page.text.must_include "Playlist was successfully updated."
+  end
+
+  scenario "a playlist can be edited (band account)" do
+    login_band
+    visit user_playlists_path(users(:user2))
+    click_on "Edit"
+    fill_in "Name", with: "Edited Playlist 2"
+    fill_in "Mood", with: 80
+    click_on "Update Playlist"
+    page.text.must_include "Playlist was successfully updated."
+  end
+
+  scenario "a playlist can NOT be edited by a guest" do
+    visit root_path
+    click_on "Make a playlist to try out!"
+    fill_in "Name", with: "Example Created Playlist 1"
+    fill_in "Mood", with: 0
+    fill_in "Timbre", with: 0
+    fill_in "Intensity", with: 0
+    fill_in "Tone", with: 0
+    choose "playlist_scope_strict"
+    click_on "Create Playlist"
+    assert_raises(ActionView::Template::Error) { visit "/users/#{User.last.to_param}/playlists" }
+    # assert_raises(Pundit::NotAuthorizedError) { visit "/users/#{User.last.to_param}/playlists" }
+    # Test will raise Pundit error instead when authorization for guests is implemented
   end
 end

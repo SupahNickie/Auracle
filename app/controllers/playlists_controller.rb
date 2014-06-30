@@ -72,10 +72,10 @@ class PlaylistsController < ApplicationController
     @playlist.destroy
     respond_to do |format|
       if current_user.role == "band"
-        format.html { redirect_to user_playlists_path(@user) }
+        format.html { redirect_to user_playlists_path(@user), notice: 'Playlist was successfully destroyed.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to "/users/#{current_user.to_param}/playlists" }
+        format.html { redirect_to "/users/#{current_user.to_param}/playlists", notice: 'Playlist was successfully destroyed.' }
         format.json { head :no_content }
       end
     end

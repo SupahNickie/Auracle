@@ -53,7 +53,9 @@ end
 # PLAYLIST UTILITIES
 
 def create_all_songs_playlist
-  visit new_user_playlist_path(users(:user1))
+  visit root_path
+  click_on "My Playlists"
+  click_on "New Playlist"
   fill_in "Name", with: "Example Created Playlist 1"
   fill_in "Mood", with: 0
   fill_in "Timbre", with: 0
@@ -64,7 +66,9 @@ def create_all_songs_playlist
 end
 
 def create_54_scores_playlist
-  visit new_user_playlist_path(users(:user1))
+  visit root_path
+  click_on "My Playlists"
+  click_on "New Playlist"
   fill_in "Name", with: "Example Created Playlist 2"
   fill_in "Mood", with: 54
   fill_in "Timbre", with: 54
@@ -75,7 +79,9 @@ def create_54_scores_playlist
 end
 
 def create_55_scores_playlist
-  visit new_user_playlist_path(users(:user1))
+  visit root_path
+  click_on "My Playlists"
+  click_on "New Playlist"
   fill_in "Name", with: "Example Created Playlist 3"
   fill_in "Mood", with: 55
   fill_in "Timbre", with: 55

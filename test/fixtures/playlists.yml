@@ -6,3 +6,12 @@ playlist1:
   tone: 56
   scope: "expansive"
   user: user1
+
+playlist2:
+  name: Example Playlist 2
+  mood: 70
+  timbre: 70
+  intensity: 70
+  tone: 70
+  scope: "strict"
+  user: user2
