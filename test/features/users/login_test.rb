@@ -24,14 +24,42 @@ feature "signing up a new user" do
   end
 end
 
+feature "using Oauth to sign in" do
+  scenario "a visitor can sign in with twitter (will be a personal account)" do
+    visit new_user_session_path
+    login_twitter_user
+    click_on "Sign in with Twitter"
+    page.text.must_include "Sign Out"
+    page.text.must_include "Signed in as test_twitter_user"
+  end
+
+  scenario "a visitor can sign in with google (will be a personal account)" do
+    visit new_user_session_path
+    login_google_user
+    click_on "Sign in with Google Oauth2"
+    page.text.must_include "Sign Out"
+    page.text.must_include "Signed in as test_google_user"
+  end
+
+  scenario "a visitor can sign in with twitter (will be a personal account)" do
+    visit new_user_session_path
+    login_facebook_user
+    click_on "Sign in with Facebook"
+    page.text.must_include "Sign Out"
+    page.text.must_include "Signed in as test_facebook_user"
+  end
+end
+
 feature "signing in a registered user" do
   scenario "registered users are signed in properly" do
     login_personal
+    page.text.must_include "Sign Out"
     page.text.must_include "Signed in successfully."
   end
 
   scenario "registered bands are signed in properly" do
     login_band
+    page.text.must_include "Sign Out"
     page.text.must_include "Signed in successfully."
   end
 end

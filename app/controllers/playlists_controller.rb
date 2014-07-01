@@ -143,7 +143,7 @@ class PlaylistsController < ApplicationController
         format.json { head :no_content }
         format.js
       else
-        format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}/view_blacklist", notice: 'Song was successully unfavorited.' }
+        format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}/view_blacklist", notice: 'Song was successfully unfavorited.' }
         format.json { head :no_content }
         format.js
       end

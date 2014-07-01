@@ -105,6 +105,27 @@ def login_band
   click_on "Sign in"
 end
 
+def login_twitter_user
+  OmniAuth.config.test_mode = true
+  Capybara.current_session.driver.request.env['devise.mapping'] = Devise.mappings[:user]
+  Capybara.current_session.driver.request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:twitter]
+  OmniAuth.config.add_mock(:twitter, { uid: '12345', info: { nickname: 'test_twitter_user' } })
+end
+
+def login_facebook_user
+  OmniAuth.config.test_mode = true
+  Capybara.current_session.driver.request.env['devise.mapping'] = Devise.mappings[:user]
+  Capybara.current_session.driver.request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:facebook]
+  OmniAuth.config.add_mock(:facebook, { uid: '12345', info: { nickname: 'test_facebook_user' } })
+end
+
+def login_google_user
+  OmniAuth.config.test_mode = true
+  Capybara.current_session.driver.request.env['devise.mapping'] = Devise.mappings[:user]
+  Capybara.current_session.driver.request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
+  OmniAuth.config.add_mock(:google_oauth2, { uid: '12345', info: { name: 'test_google_user', email: "go_away@example.com" } })
+end
+
 def enter_credentials
   fill_in "Username", with: "Example User"
   fill_in "Password", with: "password"
