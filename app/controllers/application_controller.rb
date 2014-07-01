@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from NoMethodError, with: :root_redirect
 
   def reload_page
     redirect_to :back
@@ -44,6 +45,11 @@ class ApplicationController < ActionController::Base
     u.save!(validate: false)
     session[:guest_user_id] = u.id
     u
+  end
+
+  def root_redirect
+    flash[:error] = "Sorry, that last request either didn't work out or you don't have permission to do that."
+    redirect_to root_path
   end
 
   def user_not_authorized

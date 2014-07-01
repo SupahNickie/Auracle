@@ -28,6 +28,9 @@ Auracle::Application.routes.draw do
     end
   end
 
+  get '/playlists/try', to: 'playlists#try'
+  post '/playlists/trial_create', to: 'playlists#trial_create'
+
   resources :users, path: 'users', only: [:profile, :edit_profile, :update_profile] do
     resources :playlists do
       member do

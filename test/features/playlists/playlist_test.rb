@@ -14,9 +14,7 @@ feature "Playlist CRUD" do
   end
 
   scenario "a guest user can even create a playlist" do
-    visit root_path
-    click_on "Make a playlist to try out!"
-    fill_in "Name", with: "Example Created Playlist 1"
+    visit playlists_try_path
     fill_in "Mood", with: 0
     fill_in "Timbre", with: 0
     fill_in "Intensity", with: 0
@@ -46,7 +44,8 @@ feature "Playlist CRUD" do
   end
 
   scenario "a playlist can NOT be deleted by a guest" do
-    # pending "Test will pass when authorization for guests is implemented"
+    visit user_playlists_path(users(:user2))
+    page.text.must_include "Sorry, that last request either didn't work out or you don't have permission to do that."
   end
 
   scenario "a playlist can be edited (personal account)" do
@@ -73,16 +72,14 @@ feature "Playlist CRUD" do
   scenario "a playlist can NOT be edited by a guest" do
     visit root_path
     click_on "Make a playlist to try out!"
-    fill_in "Name", with: "Example Created Playlist 1"
     fill_in "Mood", with: 0
     fill_in "Timbre", with: 0
     fill_in "Intensity", with: 0
     fill_in "Tone", with: 0
     choose "playlist_scope_strict"
     click_on "Create Playlist"
-    assert_raises(ActionView::Template::Error) { visit "/users/#{User.last.to_param}/playlists" }
-    # assert_raises(Pundit::NotAuthorizedError) { visit "/users/#{User.last.to_param}/playlists" }
-    # Test will raise Pundit error instead when authorization for guests is implemented
+    visit "/users/#{User.last.to_param}/playlists"
+    page.text.must_include "Sorry, that last request either didn't work out or you don't have permission to do that."
   end
 end
 
@@ -104,7 +101,6 @@ feature "Playlists finding music" do
   scenario "a visited playlist finds all music when asked to (guest user, no account)" do
     visit root_path
     click_on "Make a playlist to try out!"
-    fill_in "Name", with: "Example Created Playlist 1"
     fill_in "Mood", with: 0
     fill_in "Timbre", with: 0
     fill_in "Intensity", with: 0
@@ -220,8 +216,7 @@ feature "Playlist favoriting/unfavoriting" do
     click_on "Play"
     favorite_links = page.all(".glyphicons")
     favorite_links[1].click
-    page.text.must_include "Song was successfully removed from this playlist."
-    page.text.must_include "We're sorry you didn't like that song!"
+    page.text.must_include "" # Pop-up rating window will be closed because the user is not allowed to rate more than once
   end
 
   scenario "a song can be blacklisted even after being favorited (band account)" do
@@ -234,8 +229,7 @@ feature "Playlist favoriting/unfavoriting" do
     click_on "Play"
     favorite_links = page.all(".glyphicons")
     favorite_links[1].click
-    page.text.must_include "Song was successfully removed from this playlist."
-    page.text.must_include "We're sorry you didn't like that song!"
+    page.text.must_include "" # Pop-up rating window will be closed because the user is not allowed to rate more than once
   end
 
   scenario "a song can be voted on after being blacklisted (personal account)" do

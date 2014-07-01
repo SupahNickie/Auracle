@@ -7,22 +7,30 @@ class SongPolicy
   end
 
   def new?
-    user.admin?
+    user.admin? || (song.album.band_id == user.id)
   end
 
   def create?
-    user.admin?
+    user.admin? || (song.album.band_id == user.id)
   end
 
   def edit?
-    user.admin?
+    user.admin? || (song.album.band_id == user.id)
   end
 
   def update?
-    user.admin?
+    user.admin? || (song.album.band_id == user.id)
   end
 
   def destroy?
-    user.admin?
+    user.admin? || (song.album.band_id == user.id)
+  end
+
+  def rating?
+    user.admin? || (user.ratings.exclude?(song.id))
+  end
+
+  def vote?
+    user.admin? || (user.ratings.exclude?(song.id))
   end
 end

@@ -1,5 +1,5 @@
 class PlaylistsController < ApplicationController
-  before_filter :set_user
+  before_filter :set_user, except: [:try, :trial_create]
   before_action :set_playlist, only: [:show, :edit, :update, :destroy,
                                       :whitelist, :blacklist, :unblacklist, :unwhitelist,
                                       :view_blacklist, :list]
@@ -8,6 +8,7 @@ class PlaylistsController < ApplicationController
   # GET /playlists.json
   def index
     @playlists = @user.playlists.all
+    authorize @playlists
   end
 
   # GET /playlists/1
@@ -20,16 +21,34 @@ class PlaylistsController < ApplicationController
   # GET /playlists/new
   def new
     @playlist = @user.playlists.new
+    authorize @playlist
+  end
+
+  def try
+    @playlist = guest_user.playlists.new
+  end
+
+  def trial_create
+    @playlist = guest_user.playlists.new(playlist_params)
+    respond_to do |format|
+      if @playlist.save
+        format.html { redirect_to "/users/#{guest_user.to_param}/playlists/#{@playlist.id}", notice: 'We hope you enjoy trying Auracle!' }
+      else
+        format.html { render action: 'try' }
+      end
+    end
   end
 
   # GET /playlists/1/edit
   def edit
+    authorize @playlist
   end
 
   # POST /playlists
   # POST /playlists.json
   def create
     @playlist = @user.playlists.new(playlist_params)
+    authorize @playlist
 
     respond_to do |format|
       if @playlist.save
@@ -51,6 +70,8 @@ class PlaylistsController < ApplicationController
   # PATCH/PUT /playlists/1
   # PATCH/PUT /playlists/1.json
   def update
+    authorize @playlist
+
     respond_to do |format|
       if @playlist.update(playlist_params)
         if current_user.role == "band"
@@ -69,6 +90,8 @@ class PlaylistsController < ApplicationController
   # DELETE /playlists/1
   # DELETE /playlists/1.json
   def destroy
+    authorize @playlist
+
     @playlist.destroy
     respond_to do |format|
       if current_user.role == "band"
@@ -82,6 +105,8 @@ class PlaylistsController < ApplicationController
   end
 
   def whitelist
+    authorize @playlist
+
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "add")
     unless current_user.ratings.include? @song.id
@@ -103,22 +128,34 @@ class PlaylistsController < ApplicationController
   end
 
   def blacklist
+    authorize @playlist
+
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "remove")
     respond_to do |format|
       if current_user.role == "band"
-        format.html { redirect_to rating_user_album_song_path(@user, @song.album, @song, playlist_id: @playlist.id), notice: 'Song was successfully removed from this playlist.' }
-        format.json { head :no_content }
-        format.js
+        if current_user.ratings.include? @song.id
+          format.html { render :text => '<script type="text/javascript">window.open("", "_self", ""); window.close();</script>' }
+        else
+          format.html { redirect_to rating_user_album_song_path(@user, @song.album, @song, playlist_id: @playlist.id), notice: 'Song was successfully removed from this playlist.' }
+          format.json { head :no_content }
+          format.js
+        end
       else
-        format.html { redirect_to "/artists/#{@song.album.band.to_param}/albums/#{@song.album.to_param}/songs/#{@song.to_param}/rating?playlist_id=#{@playlist.id}", notice: 'Song was successfully removed from this playlist.' }
-        format.json { head :no_content }
-        format.js
+        if current_user.ratings.include? @song.id
+          format.html { render :text => '<script type="text/javascript">window.open("", "_self", ""); window.close();</script>' }
+        else
+          format.html { redirect_to "/artists/#{@song.album.band.to_param}/albums/#{@song.album.to_param}/songs/#{@song.to_param}/rating?playlist_id=#{@playlist.id}", notice: 'Song was successfully removed from this playlist.' }
+          format.json { head :no_content }
+          format.js
+        end
       end
     end
   end
 
   def unblacklist
+    authorize @playlist
+
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "unblacklist")
     respond_to do |format|
@@ -135,6 +172,8 @@ class PlaylistsController < ApplicationController
   end
 
   def unwhitelist
+    authorize @playlist
+
     @song = Song.find(params[:song_id])
     @playlist.change_whitelist(@playlist, @song, "unwhitelist")
     respond_to do |format|
@@ -151,6 +190,7 @@ class PlaylistsController < ApplicationController
   end
 
   def view_blacklist
+    authorize @playlist
   end
 
   def list

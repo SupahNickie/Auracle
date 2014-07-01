@@ -29,9 +29,9 @@ class SongsController < ApplicationController
   def create
     @song = @album.songs.new(song_params)
     authorize @song
+
     @song.add_attributes_to_array(@song, params["song"]["mood"], params["song"]["timbre"], params["song"]["intensity"], params["song"]["tone"])
     @song.new_average(@song)
-
     respond_to do |format|
       if @song.save
         format.html { redirect_to user_album_path(@user, @album), notice: 'Song was successfully created.' }
@@ -63,9 +63,9 @@ class SongsController < ApplicationController
   # DELETE /songs/1.json
   def destroy
     authorize @song
+
     @song.mp3 = nil
     @song.destroy
-
     respond_to do |format|
       format.html { redirect_to user_album_path(@user, @album) }
       format.json { head :no_content }
@@ -73,12 +73,16 @@ class SongsController < ApplicationController
   end
 
   def rating
+    authorize @song
+
     @album = @song.album
     @user = @album.band
     @playlist = current_user.playlists.find(params[:playlist_id])
   end
 
   def vote
+    authorize @song
+
     @user = @song.album.band
     @playlist = current_user.playlists.find(params[:playlist_id])
     @album = @user.albums.find(params[:album_id])

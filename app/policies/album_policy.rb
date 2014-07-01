@@ -7,22 +7,22 @@ class AlbumPolicy
   end
 
   def new?
-    user.admin?
+    user.admin? || (user.role == "band" && album.band_id == user.id)
   end
 
   def create?
-    user.admin?
+    user.admin? || (user.role == "band" && album.band_id == user.id)
   end
 
   def edit?
-    user.admin?
+    user.admin? || (user.role == "band" && album.band_id == user.id)
   end
 
   def update?
-    user.admin?
+    user.admin? || (user.role == "band" && album.band_id == user.id)
   end
 
   def destroy?
-    user.admin?
+    user.admin? || (user.role == "band" && album.band_id == user.id)
   end
 end

@@ -62,8 +62,8 @@ class AlbumsController < ApplicationController
   # DELETE /albums/1.json
   def destroy
     authorize @album
-    @album.destroy
 
+    @album.destroy
     respond_to do |format|
       format.html { redirect_to user_albums_url(@user) }
       format.json { head :no_content }
