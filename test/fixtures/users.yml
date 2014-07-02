@@ -11,7 +11,7 @@ user2:
   role: "band"
 
 user3:
-  username: "Band Example2"
+  username: "Band Example 2"
   email: "band2@example.com"
   encrypted_password: <%= User.new.send(:password_digest, 'password') %>
   role: "band"

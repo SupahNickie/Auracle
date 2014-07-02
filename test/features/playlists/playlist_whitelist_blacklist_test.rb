@@ -9,7 +9,8 @@ feature "Playlist favoriting/unfavoriting" do
     favorite_links = page.all(".glyphicons")
     favorite_links[0].click
     page.text.must_include "Song was successfully favorited to this playlist!"
-    page.text.must_include "Band Example - Example Song"
+    page.text.must_include "Band Example"
+    page.text.must_include "Example Song"
   end
 
   scenario "a song can be favorited (band account)" do
@@ -19,7 +20,8 @@ feature "Playlist favoriting/unfavoriting" do
     favorite_links = page.all(".glyphicons")
     favorite_links[0].click
     page.text.must_include "Song was successfully favorited to this playlist!"
-    page.text.must_include "Band Example - Example Song"
+    page.text.must_include "Band Example"
+    page.text.must_include "Example Song"
   end
 
   scenario "a song can be unfavorited once favorited already (personal account)" do
@@ -30,7 +32,8 @@ feature "Playlist favoriting/unfavoriting" do
     favorite_links = page.all(".glyphicons")
     favorite_links[0].click
     page.text.must_include "Song was successfully favorited to this playlist!"
-    page.text.must_include "Band Example - Example Song"
+    page.text.must_include "Band Example"
+    page.text.must_include "Example Song"
     click_on "Remove from favorites"
     page.text.must_include "Song was successfully unfavorited!"
     page.text.must_include "You don't have any favorites set for this playlist yet!"
@@ -43,7 +46,8 @@ feature "Playlist favoriting/unfavoriting" do
     favorite_links = page.all(".glyphicons")
     favorite_links[0].click
     page.text.must_include "Song was successfully favorited to this playlist!"
-    page.text.must_include "Band Example - Example Song"
+    page.text.must_include "Band Example"
+    page.text.must_include "Example Song"
     click_on "Remove from favorites"
     page.text.must_include "Song was successfully unfavorited!"
     page.text.must_include "You don't have any favorites set for this playlist yet!"

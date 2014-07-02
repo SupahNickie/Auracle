@@ -27,3 +27,18 @@ song2:
   timbre: [70, 60, 50]
   intensity: [55, 60, 65]
   tone: [75, 45, 60]
+
+song3:
+  title: "Example Song 3"
+  album: album2
+  mp3_file_name: "example_song3.mp3"
+  mp3_content_type: "audio/mp3"
+  mp3_file_size: 777777
+  average_mood: 60
+  average_timbre: 60
+  average_intensity: 60
+  average_tone: 60
+  mood: [50, 70, 60]
+  timbre: [70, 60, 50]
+  intensity: [55, 60, 65]
+  tone: [75, 45, 60]
