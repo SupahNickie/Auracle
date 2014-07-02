@@ -1,3 +1,7 @@
 album1:
   title: "Example Album 1"
   band: user2
+
+album2:
+  title: "Example Album 2"
+  band: user3

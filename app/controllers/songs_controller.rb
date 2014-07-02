@@ -34,7 +34,7 @@ class SongsController < ApplicationController
     @song.new_average(@song)
     respond_to do |format|
       if @song.save
-        format.html { redirect_to user_album_path(@user, @album), notice: 'Song was successfully created.' }
+        format.html { redirect_to user_album_path(@user, @album), notice: 'Song was successfully created!' }
         format.json { render action: 'show', status: :created, location: @song }
       else
         format.html { render action: 'new' }
@@ -50,7 +50,7 @@ class SongsController < ApplicationController
 
     respond_to do |format|
       if @song.update(song_params)
-        format.html { redirect_to user_album_path(@user, @album), notice: 'Song was successfully updated.' }
+        format.html { redirect_to user_album_path(@user, @album), notice: 'Song was successfully updated!' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -67,7 +67,7 @@ class SongsController < ApplicationController
     @song.mp3 = nil
     @song.destroy
     respond_to do |format|
-      format.html { redirect_to user_album_path(@user, @album) }
+      format.html { redirect_to user_album_path(@user, @album), notice: 'Song was successfully deleted!' }
       format.json { head :no_content }
     end
   end

@@ -53,9 +53,9 @@ class PlaylistsController < ApplicationController
     respond_to do |format|
       if @playlist.save
         if current_user && current_user.role == "band"
-          format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Playlist was successfully created.' }
+          format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Playlist was successfully created!' }
         elsif current_user && current_user.role == "personal"
-          format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}", notice: 'Playlist was successfully created.' }
+          format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}", notice: 'Playlist was successfully created!' }
         else
           format.html { redirect_to "/users/#{guest_user.to_param}/playlists/#{@playlist.id}", notice: 'We hope you enjoy trying Auracle!' }
         end
@@ -75,9 +75,9 @@ class PlaylistsController < ApplicationController
     respond_to do |format|
       if @playlist.update(playlist_params)
         if current_user.role == "band"
-          format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Playlist was successfully updated.' }
+          format.html { redirect_to user_playlist_path(@user, @playlist), notice: 'Playlist was successfully updated!' }
         else
-          format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}", notice: 'Playlist was successfully updated.' }
+          format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}", notice: 'Playlist was successfully updated!' }
         end
         format.json { head :no_content }
       else
@@ -95,10 +95,10 @@ class PlaylistsController < ApplicationController
     @playlist.destroy
     respond_to do |format|
       if current_user.role == "band"
-        format.html { redirect_to user_playlists_path(@user), notice: 'Playlist was successfully destroyed.' }
+        format.html { redirect_to user_playlists_path(@user), notice: 'Playlist was successfully deleted!' }
         format.json { head :no_content }
       else
-        format.html { redirect_to "/users/#{current_user.to_param}/playlists", notice: 'Playlist was successfully destroyed.' }
+        format.html { redirect_to "/users/#{current_user.to_param}/playlists", notice: 'Playlist was successfully deleted!' }
         format.json { head :no_content }
       end
     end
@@ -137,7 +137,7 @@ class PlaylistsController < ApplicationController
         if current_user.ratings.include? @song.id
           format.html { render :text => '<script type="text/javascript">window.open("", "_self", ""); window.close();</script>' }
         else
-          format.html { redirect_to rating_user_album_song_path(@user, @song.album, @song, playlist_id: @playlist.id), notice: 'Song was successfully removed from this playlist.' }
+          format.html { redirect_to rating_user_album_song_path(@user, @song.album, @song, playlist_id: @playlist.id), notice: 'Song was successfully removed from this playlist!' }
           format.json { head :no_content }
           format.js
         end
@@ -145,7 +145,7 @@ class PlaylistsController < ApplicationController
         if current_user.ratings.include? @song.id
           format.html { render :text => '<script type="text/javascript">window.open("", "_self", ""); window.close();</script>' }
         else
-          format.html { redirect_to "/artists/#{@song.album.band.to_param}/albums/#{@song.album.to_param}/songs/#{@song.to_param}/rating?playlist_id=#{@playlist.id}", notice: 'Song was successfully removed from this playlist.' }
+          format.html { redirect_to "/artists/#{@song.album.band.to_param}/albums/#{@song.album.to_param}/songs/#{@song.to_param}/rating?playlist_id=#{@playlist.id}", notice: 'Song was successfully removed from this playlist!' }
           format.json { head :no_content }
           format.js
         end
@@ -178,11 +178,11 @@ class PlaylistsController < ApplicationController
     @playlist.change_whitelist(@playlist, @song, "unwhitelist")
     respond_to do |format|
       if current_user.role == "band"
-        format.html { redirect_to view_blacklist_user_playlist_path(@user, @playlist), notice: 'Song was successfully unfavorited.' }
+        format.html { redirect_to view_blacklist_user_playlist_path(@user, @playlist), notice: 'Song was successfully unfavorited!' }
         format.json { head :no_content }
         format.js
       else
-        format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}/view_blacklist", notice: 'Song was successfully unfavorited.' }
+        format.html { redirect_to "/users/#{current_user.to_param}/playlists/#{@playlist.id}/view_blacklist", notice: 'Song was successfully unfavorited!' }
         format.json { head :no_content }
         format.js
       end
