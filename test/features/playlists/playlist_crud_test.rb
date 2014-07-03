@@ -3,29 +3,32 @@ require 'test_helper'
 feature "Playlist CRUD" do
   scenario "a new playlist can be created by a user with a personal account" do
     login_personal
-    create_all_songs_playlist
+    create_55_scores_playlist
     page.text.must_include "Playlist was successfully created!"
   end
 
   scenario "a new playlist can also be created by a band account" do
     login_band
-    create_all_songs_playlist
+    create_55_scores_playlist
     page.text.must_include "Playlist was successfully created!"
   end
 
   scenario "a guest user can even create a playlist" do
     visit playlists_try_path
-    fill_in "Mood", with: 0
-    fill_in "Timbre", with: 0
-    fill_in "Intensity", with: 0
-    fill_in "Tone", with: 0
+    fill_in "Mood", with: 55
+    fill_in "Timbre", with: 55
+    fill_in "Intensity", with: 55
+    fill_in "Tone", with: 55
     choose "playlist_scope_strict"
     click_on "Create Playlist"
     page.text.must_include "We hope you enjoy trying Auracle!"
   end
 
   scenario "a faulty playlist doesn't get created" do
-    # pending "Tests will pass when validations are implemented"
+    login_band
+    visit new_user_playlist_path(users(:user2))
+    click_on "Create Playlist"
+    page.text.must_include "6 errors prohibited"
   end
 
   scenario "a playlist can be deleted (personal account)" do

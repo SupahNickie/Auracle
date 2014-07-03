@@ -44,7 +44,7 @@
 <br>
 
 <div id="playlist_bottom_control">
-  <% if current_user && current_user.id == @playlists.first.user_id %>
+  <% if current_user && current_user.id == @user.id %>
     <% if current_user.role == "band" %>
       <%= link_to 'New Playlist', new_user_playlist_path(@user) %>
     <% else %>
@@ -52,7 +52,7 @@
     <% end %>
   <% else %>
     <% if current_user && current_user.role == "band" %>
-      <%= link_to 'Back to My Playlists', user_playlists_path(@user) %>
+      <%= link_to 'Back to My Playlists', user_playlists_path(current_user) %>
     <% elsif current_user && current_user.role == "personal" %>
       <%= link_to 'Back to My Playlists', "/users/#{current_user.to_param}/playlists" %>
     <% end %>

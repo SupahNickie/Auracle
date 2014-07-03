@@ -5,10 +5,10 @@ class Song < ActiveRecord::Base
   belongs_to :band
   has_attached_file :mp3
   validates :title, presence: true
-  validates :mood, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
-  validates :timbre, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
-  validates :intensity, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
-  validates :tone, :numericality => { greater_than: 0, less_than_or_equal_to: 100 }
+  validates :mood, numericality: { greater_than: 0, less_than_or_equal_to: 100 }, on: :create
+  validates :timbre, numericality: { greater_than: 0, less_than_or_equal_to: 100 }, on: :create
+  validates :intensity, numericality: { greater_than: 0, less_than_or_equal_to: 100 }, on: :create
+  validates :tone, :numericality => { greater_than: 0, less_than_or_equal_to: 100 }, on: :create
   validates_attachment :mp3, presence: true,
                        content_type: { content_type: ["audio/mpeg", "audio/mp3"] },
                        file_name: { matches: [/mp3\Z/] },

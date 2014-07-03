@@ -25,6 +25,7 @@ end
 def create_album
   visit new_user_album_path(users(:user2))
   fill_in "Title", with: "Example Created Album 1"
+  attach_file("Album art", 'test/fixtures/files/sample_picture.jpg')
   click_on "Create Album"
 end
 
@@ -33,6 +34,7 @@ end
 def create_song
   visit new_user_album_song_path(users(:user2), albums(:album1))
   fill_in "Title", with: "Example Created Song 1"
+  attach_file("Mp3", 'test/fixtures/files/sample_song.mp3')
   fill_in "The track's mood", with: 1
   fill_in "The track's timbre", with: 1
   fill_in "The track's intensity", with: 1
@@ -43,6 +45,7 @@ end
 def create_second_song
   visit new_user_album_song_path(users(:user2), albums(:album1))
   fill_in "Title", with: "Example Created Song 2"
+  attach_file("Mp3", 'test/fixtures/files/sample_song.mp3')
   fill_in "The track's mood", with: 99
   fill_in "The track's timbre", with: 99
   fill_in "The track's intensity", with: 99
@@ -51,19 +54,6 @@ def create_second_song
 end
 
 # PLAYLIST UTILITIES
-
-def create_all_songs_playlist
-  visit root_path
-  click_on "My Playlists"
-  click_on "New Playlist"
-  fill_in "Name", with: "Example Created Playlist 1"
-  fill_in "Mood", with: 0
-  fill_in "Timbre", with: 0
-  fill_in "Intensity", with: 0
-  fill_in "Tone", with: 0
-  choose "playlist_scope_strict"
-  click_on "Create Playlist"
-end
 
 def create_54_scores_playlist
   visit root_path

@@ -1,42 +1,42 @@
 require 'test_helper'
 
 feature "Playlists finding music" do
-  scenario "a visited playlist finds all music when asked to (personal account)" do
-    login_personal
-    create_all_songs_playlist
-    page.text.must_include "Band Example - Example Song 1"
-    page.text.must_include "Band Example - Example Song 2"
-  end
-
-  scenario "a visited playlist finds all music when asked to (band account)" do
-    login_band
-    create_all_songs_playlist
-    page.text.must_include "Band Example - Example Song 1"
-    page.text.must_include "Band Example - Example Song 2"
-  end
-
   scenario "a visited playlist finds all music when asked to (guest user, no account)" do
     visit root_path
     click_on "Make a playlist to try out!"
-    fill_in "Mood", with: 0
-    fill_in "Timbre", with: 0
-    fill_in "Intensity", with: 0
-    fill_in "Tone", with: 0
-    choose "playlist_scope_strict"
+    fill_in "Mood", with: 55
+    fill_in "Timbre", with: 55
+    fill_in "Intensity", with: 55
+    fill_in "Tone", with: 55
+    choose "playlist_scope_expansive"
     click_on "Create Playlist"
     page.text.must_include "Band Example - Example Song 1"
     page.text.must_include "Band Example - Example Song 2"
   end
 
-  scenario "a playlist with defined scores of 54 and a mid scope will not find the second song" do
+  scenario "a playlist with defined scores of 54 and a mid scope will not find the second song (personal account)" do
     login_personal
     create_54_scores_playlist
     page.text.must_include "Band Example - Example Song 1"
     page.text.wont_include "Band Example - Example Song 2"
   end
 
-  scenario "a playlist with defined scores of 55 and an expansive scope will find both songs" do
+  scenario "a playlist with defined scores of 54 and a mid scope will not find the second song (band account)" do
+    login_band
+    create_54_scores_playlist
+    page.text.must_include "Band Example - Example Song 1"
+    page.text.wont_include "Band Example - Example Song 2"
+  end
+
+  scenario "a playlist with defined scores of 55 and an expansive scope will find both songs (personal account)" do
     login_personal
+    create_55_scores_playlist
+    page.text.must_include "Band Example - Example Song 1"
+    page.text.must_include "Band Example - Example Song 2"
+  end
+
+  scenario "a playlist with defined scores of 55 and an expansive scope will find both songs (band account)" do
+    login_band
     create_55_scores_playlist
     page.text.must_include "Band Example - Example Song 1"
     page.text.must_include "Band Example - Example Song 2"

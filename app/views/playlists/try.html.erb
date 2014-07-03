@@ -35,6 +35,7 @@
     <%= f.radio_button(:scope, "loose") %> Loose<br>
     <%= f.radio_button(:scope, "expansive") %> Expansive<br>
   </div>
+  <%= f.hidden_field :name, value: "Guest Playlist" %>
   <div class="actions">
     <%= f.submit %>
   </div>

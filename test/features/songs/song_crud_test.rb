@@ -17,22 +17,27 @@ feature "Song CRUD" do
     page.text.must_include "Example Created Song 2"
   end
 
+  scenario "uploading a faulty song won't work" do
+    login_band
+    visit new_user_album_song_path(users(:user2), albums(:album1))
+    click_on "Create Song"
+    page.text.must_include "6 errors prohibited"
+  end
+
   scenario "trying to add a song to another band's album fails" do
     login_band
     visit user_album_path(users(:user3), albums(:album2))
-    click_on "Add New Song to Album"
+    page.wont_have_content "Add New Song to Album"
+    visit new_user_album_song_path(users(:user3), albums(:album2))
     page.text.must_include "only the admin"
-    page.wont_have_content "Title"
-    page.wont_have_content "Timbre" # Won't render the form for uploading a song
   end
 
   scenario "trying to somehow load a song as a personal account fails" do
     login_personal
     visit user_album_path(users(:user2), albums(:album1))
-    click_on "Add New Song to Album"
+    page.wont_have_content "Add New Song to Album"
+    visit new_user_album_song_path(users(:user3), albums(:album2))
     page.text.must_include "only the admin"
-    page.wont_have_content "Title"
-    page.wont_have_content "Timbre" # Won't render the form for uploading a song
   end
 
   scenario "editing a song (as a band) succeeds" do
@@ -69,22 +74,16 @@ feature "Song CRUD" do
   end
 
   scenario "deleting another band's song (as a band) fails" do
-    # Shall be changed when the views are configured to not show unauthorized links in the first place
     login_band
     visit user_album_path(users(:user3), albums(:album2))
-    click_on "Delete Example Song 3"
-    page.text.must_include "only the admin"
-    visit user_album_path(users(:user3), albums(:album2))
+    page.wont_have_content "Delete Example Song 3"
     page.text.must_include "Example Song 3"
   end
 
   scenario "deleting any band's song (as a personal account) fails" do
-    # Shall be changed when the views are configured to not show unauthorized links in the first place
     login_personal
     visit user_album_path(users(:user2), albums(:album1))
-    click_on "Delete Example Song 1"
-    page.text.must_include "only the admin"
-    visit user_album_path(users(:user2), albums(:album1))
+    page.wont_have_content "Delete Example Song 1"
     page.text.must_include "Example Song 1"
   end
 end
