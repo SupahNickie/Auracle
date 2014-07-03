@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all.where(role: "band")
+    @users = User.where(role: "band")
   end
 
   # GET /users/1
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
   end
 
   def profile
-    @user = current_user
+    @user = User.find_by_id(request.path.split("/")[2][/^[0-9]*/].to_i)
   end
 
   def edit_profile

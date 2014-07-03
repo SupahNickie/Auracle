@@ -4,3 +4,11 @@
   <h3><%= song.title %></h3>
   <%= song.album.band.username %>, from the album <%= song.album.title %>
 <% end %>
+
+<br><br>
+
+<% if current_user && current_user.role == "band" %>
+  <%= link_to "Back to My Playlists", user_playlists_path(@user) %>
+<% elsif current_user && current_user.role == "personal" %>
+  <%= link_to "Back to My Playlists", "/users/#{current_user.to_param}/playlists" %>
+<% end %>

@@ -24,14 +24,19 @@
       <br>
     <% end %>
 
-    <br><%= link_to "Edit #{song.title}", edit_user_album_song_path(@user, @album, song) %> |
-    <%= link_to "Delete #{song.title}", user_album_song_path(@user, @album, song), method: :delete, data: { confirm: 'Are you sure?' } %><br><br>
+    <% if current_user && policy(@album).edit? %>
+      <br><%= link_to "Edit #{song.title}", edit_user_album_song_path(@user, @album, song) %> |
+      <%= link_to "Delete #{song.title}", user_album_song_path(@user, @album, song), method: :delete, data: { confirm: 'Are you sure?' } %><br><br>
+    <% end %>
   <% end %>
 <% else %>
   <p>This artist hasn't uploaded any songs yet!</p>
 <% end %>
 
 <br><br>
-<%= link_to 'Add New Song to Album', new_user_album_song_path(@user, @album) %> |
-<%= link_to 'Edit Album Details', edit_user_album_path(@user, @album) %> |
+
+<% if current_user && policy(@album).edit? %>
+  <%= link_to 'Add New Song to Album', new_user_album_song_path(@user, @album) %> |
+  <%= link_to 'Edit Album Details', edit_user_album_path(@user, @album) %> |
+<% end %>
 <%= link_to 'Back', user_albums_path(@user) %>
