@@ -16,6 +16,7 @@ class PlaylistsController < ApplicationController
   def show
     @playlist.find_music(@playlist, @playlist.mood, @playlist.timbre, @playlist.intensity, @playlist.tone,
       @playlist.scope, "shuffle")
+    @playlist.songs_list.sort_by! {|x| [x.album.band.username, x.album.title, x.title]} if Rails.env.test?
   end
 
   # GET /playlists/new

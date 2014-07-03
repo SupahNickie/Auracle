@@ -84,7 +84,7 @@ feature "Playlist favoriting/unfavoriting" do
     click_on "My Playlists"
     click_on "Play"
     favorite_links = page.all(".glyphicons")
-    favorite_links[1].click
+    favorite_links[0].click # The first link, which would have been the one to favorite it, is disabled once a song is favorited
     page.text.must_include "" # Pop-up rating window will be closed because the user is not allowed to rate more than once
   end
 
