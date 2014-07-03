@@ -52,9 +52,10 @@ class ApplicationController < ActionController::Base
     redirect_to root_path
   end
 
-  def user_not_authorized
-    flash[:error] = "Sorry, only the admin is allowed to do anything of value yet."
-    redirect_to request.headers["Referer"] || root_path
+  def user_not_authorized(exception)
+    policy_name = exception.policy.class.to_s.underscore
+    flash[:error] = I18n.t "pundit.#{policy_name}.#{exception.query}", default: 'Sorry, you cannot perform this action.'
+    redirect_to root_path, data: {"skip-pjax" => true}
   end
 
 end

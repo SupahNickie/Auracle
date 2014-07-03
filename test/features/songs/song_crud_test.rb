@@ -29,7 +29,7 @@ feature "Song CRUD" do
     visit user_album_path(users(:user3), albums(:album2))
     page.wont_have_content "Add New Song to Album"
     visit new_user_album_song_path(users(:user3), albums(:album2))
-    page.text.must_include "only the admin"
+    page.text.must_include "Sorry, you cannot"
   end
 
   scenario "trying to somehow load a song as a personal account fails" do
@@ -37,7 +37,7 @@ feature "Song CRUD" do
     visit user_album_path(users(:user2), albums(:album1))
     page.wont_have_content "Add New Song to Album"
     visit new_user_album_song_path(users(:user3), albums(:album2))
-    page.text.must_include "only the admin"
+    page.text.must_include "Sorry, you cannot"
   end
 
   scenario "editing a song (as a band) succeeds" do
@@ -52,7 +52,7 @@ feature "Song CRUD" do
   scenario "editing another band's song (as a band) fails" do
     login_band
     visit edit_user_album_song_path(users(:user3), albums(:album2), songs(:song3))
-    page.text.must_include "only the admin"
+    page.text.must_include "Sorry, you cannot"
     page.wont_have_content "Title"
     page.wont_have_content "Link to purchase" # Won't render the form for updating a song
   end
@@ -60,7 +60,7 @@ feature "Song CRUD" do
   scenario "editing any band's song (as a personal account) fails" do
     login_personal
     visit edit_user_album_song_path(users(:user2), albums(:album1), songs(:song2))
-    page.text.must_include "only the admin"
+    page.text.must_include "Sorry, you cannot"
     page.wont_have_content "Title"
     page.wont_have_content "Link to purchase" # Won't render the form for updating a song
   end

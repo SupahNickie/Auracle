@@ -10,7 +10,7 @@ feature "Album CRUD" do
   scenario "creating a new album (as a personal account) fails" do
     login_personal
     visit new_user_album_path(users(:user1))
-    page.text.must_include "only the admin"
+    page.text.must_include "Sorry, you cannot"
   end
 
   scenario "a faulty album will not get saved" do
@@ -36,7 +36,7 @@ feature "Album CRUD" do
     visit user_album_path(users(:user3), albums(:album2))
     page.wont_have_content "Edit Album Details"
     visit edit_user_album_path(users(:user3), albums(:album2))
-    page.text.must_include "only the admin"
+    page.text.must_include "Sorry, you cannot"
     page.wont_have_content "Title"
   end
 
@@ -45,7 +45,7 @@ feature "Album CRUD" do
     visit user_album_path(users(:user3), albums(:album2))
     page.wont_have_content "Edit Album Details"
     visit edit_user_album_path(users(:user3), albums(:album2))
-    page.text.must_include "only the admin"
+    page.text.must_include "Sorry, you cannot"
     page.wont_have_content "Title"
   end
 

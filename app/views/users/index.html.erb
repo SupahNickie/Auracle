@@ -19,7 +19,7 @@
           <td><%= link_to 'View playlists this artist has made!', user_playlists_path(user) %></td>
         <% end %>
         <% if current_user && policy(user).edit? %>
-          <td><%= link_to 'Edit', edit_user_path(user) %></td>
+          <td><%= link_to 'Edit Artist Profile', edit_user_path(user) %></td>
           <td><%= link_to 'Destroy', user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>

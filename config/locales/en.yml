@@ -20,4 +20,35 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  pundit:
+    album_policy:
+      new?: "Sorry, you cannot create an album for this artist."
+      create?: "Sorry, you cannot create an album for this artist."
+      edit?: "Sorry, you cannot edit this artist's album."
+      update?: "Sorry, you cannot edit this artist's album."
+      destroy?: "Sorry, you cannot delete this artist's album."
+    playlist_policy:
+      index?: "Sorry, without an account you cannot have any saved playlists."
+      new?: "Sorry, you cannot create a playlist for another user."
+      create?: "Sorry, you cannot create a playlist for another user."
+      edit?: "Sorry, you cannot edit another user's playlist."
+      update?: "Sorry, you cannot edit another user's playlist."
+      destroy?: "Sorry, you cannot delete another user's playlist."
+      whitelist?: "Sorry, you cannot favorite songs for another user's playlist."
+      blacklist?: "Sorry, you cannot blacklist songs on another user's playlist."
+      unwhitelist?: "Sorry, you cannot remove songs from another user's favorites list."
+      unblacklist?: "Sorry, you cannot remove songs from another user's blacklist."
+      view_blacklist?: "Sorry, you cannot view another user's favorited or blacklisted songs."
+    song_policy:
+      new?: "Sorry, you cannot add songs to this artist's album."
+      create?: "Sorry, you cannot add songs to this artist's album."
+      edit?: "Sorry, you cannot edit this artist's songs."
+      update?: "Sorry, you cannot edit this artist's songs."
+      destroy?: "Sorry, you cannot delete this artist's songs."
+      rating?: "Sorry, you have already rated this song before."
+      vote?: "Sorry, you have already rated this song before."
+    user_policy:
+      edit?: "Sorry, you cannot edit another user's profile."
+      update?: "Sorry, you cannot edit another user's profile."
+      edit_profile?: "Sorry, you cannot edit another user's profile."
+      update_profile?: "Sorry, you cannot edit another user's profile."
