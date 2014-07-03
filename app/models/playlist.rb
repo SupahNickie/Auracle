@@ -1,5 +1,11 @@
 class Playlist < ActiveRecord::Base
   belongs_to :user
+  validates :name, presence: true
+  validates :mood, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
+  validates :timbre, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
+  validates :intensity, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
+  validates :tone, :numericality => { greater_than: 0, less_than_or_equal_to: 100 }
+  validates :scope, presence: true
 
   def slug
     name.downcase.gsub(" ", "-")

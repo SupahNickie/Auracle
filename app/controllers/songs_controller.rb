@@ -30,13 +30,15 @@ class SongsController < ApplicationController
     @song = @album.songs.new(song_params)
     authorize @song
 
-    @song.add_attributes_to_array(@song, params["song"]["mood"], params["song"]["timbre"], params["song"]["intensity"], params["song"]["tone"])
-    @song.new_average(@song)
-    respond_to do |format|
-      if @song.save
+    if @song.save
+      @song.add_attributes_to_array(@song, params["song"]["mood"], params["song"]["timbre"], params["song"]["intensity"], params["song"]["tone"])
+      @song.new_average(@song)
+      respond_to do |format|
         format.html { redirect_to user_album_path(@user, @album), notice: 'Song was successfully created!' }
         format.json { render action: 'show', status: :created, location: @song }
-      else
+      end
+    else
+      respond_to do |format|
         format.html { render action: 'new' }
         format.json { render json: @song.errors, status: :unprocessable_entity }
       end

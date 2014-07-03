@@ -7,18 +7,18 @@ class UserPolicy
   end
 
   def edit?
-    user.admin?
+    user.admin? || user.id == record.id
   end
 
   def update?
-    user.admin?
+    user.admin? || user.id == record.id
   end
 
   def edit_profile?
-    user.admin?
+    user.admin? || user.id == record.id
   end
 
   def update_profile?
-    user.admin?
+    user.admin? || user.id == record.id
   end
 end

@@ -7,9 +7,13 @@
   has_many :songs, through: :albums
   has_many :playlists
   has_attached_file :avatar, :styles => { :avatar => "200x200>" }
+  validates_attachment :avatar,
+                       content_type: { content_type: ["image/jpeg", "image/png"] },
+                       size: { in: 0..2.megabytes }
   has_attached_file :user_pic, :styles => { :user_pic => "700x500>" }
-  do_not_validate_attachment_file_type :avatar
-  do_not_validate_attachment_file_type :user_pic
+  validates_attachment :user_pic,
+                       content_type: { content_type: ["image/jpeg", "image/png"] },
+                       size: { in: 0..5.megabytes }
   validates :role, presence: true
 
   def slug
