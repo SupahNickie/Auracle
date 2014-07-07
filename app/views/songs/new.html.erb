@@ -1,3 +1,16 @@
+<script type="text/javascript">
+  window.onload = function() {
+    $("[data-slider]")
+      .each(function () {
+        var input = $(this);
+        $("<span>").addClass("output")
+      })
+      .bind("slider:ready slider:changed", function (event, data) {
+        $(this).nextAll(".output:first").html("<p>Current Score: " + data.value + "</p>");
+      });
+    };
+</script>
+
 <h1>New song</h1>
 
 <%= form_for [@user, @album, @song], :html => { :multipart => true } do |f| %>
@@ -34,20 +47,24 @@
   <p>Each song's original scores cannot be altered beyond this point! Choose your beginning score wisely!</p><br>
 
   <div class="field">
-    <%= f.label :mood, "The track's mood" %><br>
-    <%= f.number_field :mood %>
+    <div class="attr_description"><div>Light</div><div><strong>Mood</strong></div><div>Dark</div></div>
+    <input id="song_mood" name="song[mood]" type="text" data-slider="true", data-slider-range="1, 100", data-slider-theme="volume", data-slider-step="1", data-slider-highlight="true">
+    <p class="output">Current Score: (None)</p>
   </div>
   <div class="field">
-    <%= f.label :timbre, "The track's timbre" %><br>
-    <%= f.number_field :timbre %>
+    <div class="attr_description"><div>Smooth</div><div><strong>Timbre</strong></div><div>Raw</div></div>
+    <input id="song_timbre" name="song[timbre]" type="text" data-slider="true", data-slider-range="1, 100", data-slider-theme="volume", data-slider-step="1", data-slider-highlight="true">
+    <p class="output">Current Score: (None)</p>
   </div>
   <div class="field">
-    <%= f.label :intensity, "The track's intensity" %><br>
-    <%= f.number_field :intensity %>
+    <div class="attr_description"><div>Chill</div><div><strong>Intensity</strong></div><div>Oppressive</div></div>
+    <input id="song_intensity" name="song[intensity]" type="text" data-slider="true", data-slider-range="1, 100", data-slider-theme="volume", data-slider-step="1", data-slider-highlight="true">
+    <p class="output">Current Score: (None)</p>
   </div>
   <div class="field">
-    <%= f.label :tone, "The track's tone" %><br>
-    <%= f.number_field :tone %>
+    <div class="attr_description"><div>Melodic</div><div><strong>Tone</strong></div><div>Rhythmic</div></div>
+    <input id="song_tone" name="song[tone]" type="text" data-slider="true", data-slider-range="1, 100", data-slider-theme="volume", data-slider-step="1", data-slider-highlight="true">
+    <p class="output">Current Score: (None)</p>
   </div>
   <div class="actions">
     <%= f.submit %>

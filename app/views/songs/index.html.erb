@@ -18,7 +18,7 @@
         <td><%= song.link_to_purchase %></td>
         <td><%= song.link_to_download %></td>
         <% if current_user && policy(song).edit? %>
-          <td><%= link_to 'Edit', edit_song_path(song) %></td>
+          <td><%= link_to 'Edit', edit_song_path(song), data: {"skip-pjax" => true} %></td>
           <td><%= link_to 'Destroy', song, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>
@@ -29,5 +29,5 @@
 <br>
 
 <% if current_user && policy(@album).edit? %>
-  <%= link_to 'New Song', new_user_album_song_path(@user, @album) %>
+  <%= link_to 'New Song', new_user_album_song_path(@user, @album), data: {"skip-pjax" => true} %>
 <% end %>

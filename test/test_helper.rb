@@ -35,10 +35,10 @@ def create_song
   visit new_user_album_song_path(users(:user2), albums(:album1))
   fill_in "Title", with: "Example Created Song 1"
   attach_file("Mp3", 'test/fixtures/files/sample_song.mp3')
-  fill_in "The track's mood", with: 1
-  fill_in "The track's timbre", with: 1
-  fill_in "The track's intensity", with: 1
-  fill_in "The track's tone", with: 1
+  page.find("#song_mood").set 1
+  page.find("#song_timbre").set 1
+  page.find("#song_intensity").set 1
+  page.find("#song_tone").set 1
   click_on "Create Song"
 end
 
@@ -46,10 +46,10 @@ def create_second_song
   visit new_user_album_song_path(users(:user2), albums(:album1))
   fill_in "Title", with: "Example Created Song 2"
   attach_file("Mp3", 'test/fixtures/files/sample_song.mp3')
-  fill_in "The track's mood", with: 99
-  fill_in "The track's timbre", with: 99
-  fill_in "The track's intensity", with: 99
-  fill_in "The track's tone", with: 99
+  page.find("#song_mood").set 99
+  page.find("#song_timbre").set 99
+  page.find("#song_intensity").set 99
+  page.find("#song_tone").set 99
   click_on "Create Song"
 end
 
