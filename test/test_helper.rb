@@ -60,10 +60,10 @@ def create_54_scores_playlist
   click_on "My Playlists"
   click_on "New Playlist"
   fill_in "Name", with: "Example Created Playlist 2"
-  fill_in "Mood", with: 54
-  fill_in "Timbre", with: 54
-  fill_in "Intensity", with: 54
-  fill_in "Tone", with: 54
+  page.all("#playlist_mood").first.set 54
+  page.all("#playlist_timbre").first.set 54
+  page.all("#playlist_intensity").first.set 54
+  page.all("#playlist_tone").first.set 54
   choose "playlist_scope_loose"
   click_on "Create Playlist"
 end
@@ -73,10 +73,10 @@ def create_55_scores_playlist
   click_on "My Playlists"
   click_on "New Playlist"
   fill_in "Name", with: "Example Created Playlist 3"
-  fill_in "Mood", with: 55
-  fill_in "Timbre", with: 55
-  fill_in "Intensity", with: 55
-  fill_in "Tone", with: 55
+  page.all("#playlist_mood").first.set 55
+  page.all("#playlist_timbre").first.set 55
+  page.all("#playlist_intensity").first.set 55
+  page.all("#playlist_tone").first.set 55
   choose "playlist_scope_expansive"
   click_on "Create Playlist"
 end

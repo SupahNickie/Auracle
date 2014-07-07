@@ -15,10 +15,10 @@ feature "Playlist CRUD" do
 
   scenario "a guest user can even create a playlist" do
     visit playlists_try_path
-    fill_in "Mood", with: 55
-    fill_in "Timbre", with: 55
-    fill_in "Intensity", with: 55
-    fill_in "Tone", with: 55
+    page.all("#playlist_mood").first.set 55
+    page.all("#playlist_timbre").first.set 55
+    page.all("#playlist_intensity").first.set 55
+    page.all("#playlist_tone").first.set 55
     choose "playlist_scope_strict"
     click_on "Create Playlist"
     page.text.must_include "We hope you enjoy trying Auracle!"
@@ -57,7 +57,7 @@ feature "Playlist CRUD" do
     click_on "My Playlists"
     click_on "Edit"
     fill_in "Name", with: "Edited Playlist 1"
-    fill_in "Mood", with: 80
+    page.all("#playlist_mood").first.set 80
     click_on "Update Playlist"
     page.text.must_include "Playlist was successfully updated!"
   end
@@ -67,7 +67,7 @@ feature "Playlist CRUD" do
     visit user_playlists_path(users(:user2))
     click_on "Edit"
     fill_in "Name", with: "Edited Playlist 2"
-    fill_in "Mood", with: 80
+    page.all("#playlist_mood").first.set 80
     click_on "Update Playlist"
     page.text.must_include "Playlist was successfully updated!"
   end
@@ -75,10 +75,10 @@ feature "Playlist CRUD" do
   scenario "a playlist can NOT be edited by a guest" do
     visit root_path
     click_on "Make a playlist to try out!"
-    fill_in "Mood", with: 0
-    fill_in "Timbre", with: 0
-    fill_in "Intensity", with: 0
-    fill_in "Tone", with: 0
+    page.all("#playlist_mood").first.set 55
+    page.all("#playlist_timbre").first.set 55
+    page.all("#playlist_intensity").first.set 55
+    page.all("#playlist_tone").first.set 55
     choose "playlist_scope_strict"
     click_on "Create Playlist"
     visit "/users/#{User.last.to_param}/playlists"

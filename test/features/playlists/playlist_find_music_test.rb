@@ -4,10 +4,10 @@ feature "Playlists finding music" do
   scenario "a visited playlist finds all music when asked to (guest user, no account)" do
     visit root_path
     click_on "Make a playlist to try out!"
-    fill_in "Mood", with: 55
-    fill_in "Timbre", with: 55
-    fill_in "Intensity", with: 55
-    fill_in "Tone", with: 55
+    page.all("#playlist_mood").first.set 55
+    page.all("#playlist_timbre").first.set 55
+    page.all("#playlist_intensity").first.set 55
+    page.all("#playlist_tone").first.set 55
     choose "playlist_scope_expansive"
     click_on "Create Playlist"
     page.text.must_include "Band Example - Example Song 1"
