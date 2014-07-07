@@ -14,10 +14,9 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require jquery.pjax
+//= require simple-slider.min
 //= require_tree .
 
 $(function() {
   $(document).pjax('a:not([data-remote]):not([data-behavior]):not([data-skip-pjax])', '[data-pjax-container]')
 });
-
-$.modal.defaults.zIndex = 1000

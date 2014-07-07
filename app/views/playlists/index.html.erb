@@ -24,14 +24,14 @@
           <td><%= link_to 'Play', user_playlist_path(User.find(playlist.user_id), playlist), data: {"skip-pjax" => true} %></td>
           <td><%= link_to 'View Songs', list_user_playlist_path(User.find(playlist.user_id), playlist) %></td>
           <% if current_user && policy(playlist).edit? %>
-            <td><%= link_to 'Edit', edit_user_playlist_path(@user, playlist) %></td>
+            <td><%= link_to 'Edit', edit_user_playlist_path(@user, playlist), data: {"skip-pjax" => true} %></td>
             <td><%= link_to 'Destroy', user_playlist_path(@user, playlist), method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <% end %>
         <% else %>
           <td><%= link_to 'Play', "/users/#{User.find(playlist.user_id).to_param}/playlists/#{playlist.id}", data: {"skip-pjax" => true} %></td>
           <td><%= link_to 'View Songs', "/users/#{User.find(playlist.user_id).to_param}/playlists/#{playlist.id}/list" %></td>
           <% if current_user && policy(playlist).edit? %>
-            <td><%= link_to 'Edit', "/users/#{current_user.to_param}/playlists/#{playlist.id}/edit" %></td>
+            <td><%= link_to 'Edit', "/users/#{current_user.to_param}/playlists/#{playlist.id}/edit", data: {"skip-pjax" => true}  %></td>
             <td><%= link_to 'Destroy', "/users/#{current_user.to_param}/playlists/#{playlist.id}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <% end %>
         <% end %>
@@ -46,9 +46,9 @@
 <div id="playlist_bottom_control">
   <% if current_user && current_user.id == @user.id %>
     <% if current_user.role == "band" %>
-      <%= link_to 'New Playlist', new_user_playlist_path(@user) %>
+      <%= link_to 'New Playlist', new_user_playlist_path(@user), data: {"skip-pjax" => true} %>
     <% else %>
-      <%= link_to 'New Playlist', "/users/#{current_user.to_param}/playlists/new" %>
+      <%= link_to 'New Playlist', "/users/#{current_user.to_param}/playlists/new", data: {"skip-pjax" => true}  %>
     <% end %>
   <% else %>
     <% if current_user && current_user.role == "band" %>

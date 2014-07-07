@@ -113,13 +113,13 @@ window.onload = function(){
 <% if current_user && current_user.role == "band" %>
   <% if policy(@playlist).edit? %>
     <%= link_to 'Review Favorited and Blacklisted Songs', view_blacklist_user_playlist_path(@user, @playlist), target: '_blank', data: {"skip-pjax" => true} %> |
-    <%= link_to 'Edit Attributes and Scope', edit_user_playlist_path(@user, @playlist) %> |
+    <%= link_to 'Edit Attributes and Scope', edit_user_playlist_path(@user, @playlist), data: {"skip-pjax" => true} %> |
   <% end %>
   <%= link_to 'Back to My Playlists', user_playlists_path(@user) %>
 <% elsif current_user && current_user.role == "personal"  %>
   <% if policy(@playlist).edit? %>
     <%= link_to 'Review Favorited and Blacklisted Songs', "/users/#{current_user.to_param}/playlists/#{@playlist.id}/view_blacklist", target: '_blank', data: {"skip-pjax" => true} %> |
-    <%= link_to 'Edit Attributes and Scope', "/users/#{current_user.to_param}/playlists/#{@playlist.id}/edit" %> |
+    <%= link_to 'Edit Attributes and Scope', "/users/#{current_user.to_param}/playlists/#{@playlist.id}/edit", data: {"skip-pjax" => true} %> |
   <% end %>
   <%= link_to 'Back to My Playlists', "/users/#{current_user.to_param}/playlists" %>
 <% end %>
