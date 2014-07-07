@@ -21,13 +21,15 @@
   <p>You haven't banhammered any songs from this playlist yet!</p>
 <% else %>
   <% @playlist.blacklist[1..-1].each do |song| %>
-    <% @song = Song.find(song) %>
+    <% unless @playlist.whitelist.include?(song) %>
+      <% @song = Song.find(song) %>
 
-    <%= @song.album.band.username %> - <%= @song.title %><br>
-    <% if current_user.role == "band" %>
-      <%= link_to 'Remove from blacklist', unblacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %><br><br>
-    <% else %>
-      <%= link_to 'Remove from blacklist', "/users/#{current_user.to_param}/playlists/#{@playlist.id}/unblacklist?song_id=#{song}", method: :put %><br><br>
+      <%= @song.album.band.username %> - <%= @song.title %><br>
+      <% if current_user.role == "band" %>
+        <%= link_to 'Remove from blacklist', unblacklist_user_playlist_path(@user, @playlist, :song_id => song), method: :put %><br><br>
+      <% else %>
+        <%= link_to 'Remove from blacklist', "/users/#{current_user.to_param}/playlists/#{@playlist.id}/unblacklist?song_id=#{song}", method: :put %><br><br>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

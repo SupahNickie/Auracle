@@ -15,6 +15,15 @@
  *= require_tree .
  */
 
+.attr_description > div {
+  width: 100px;
+  display: inline-block;
+  display: -moz-inline-box;
+  *display: inline; /* For IE7 */
+  zoom: 1; /* Trigger hasLayout */
+  text-align: center;
+}
+
 .glyphicons {
   padding: 0 10px;
 }

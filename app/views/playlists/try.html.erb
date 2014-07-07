@@ -14,20 +14,24 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :mood %><br>
+    <div class="attr_description"><div>Light</div><div><strong>Mood</strong></div><div>Dark</div></div>
     <input id="playlist_mood" name="playlist[mood]" type="text" data-slider="true", data-slider-range="1, 100", data-slider-theme="volume", data-slider-step="1">
+    <%= check_box("playlist", "mood", {}, "0", nil) %> I don't care about how light or dark the mood of the songs are.
   </div>
   <div class="field">
-    <%= f.label :timbre %><br>
+    <div class="attr_description"><div>Smooth</div><div><strong>Timbre</strong></div><div>Raw</div></div>
     <input id="playlist_timbre" name="playlist[timbre]" type="text" data-slider="true", data-slider-range="1, 100", data-slider-theme="volume", data-slider-step="1">
+    <%= check_box("playlist", "timbre", {}, "0", nil) %> I don't care about whether the songs are smooth or raw sounding.
   </div>
   <div class="field">
-    <%= f.label :intensity %><br>
+    <div class="attr_description"><div>Chill</div><div><strong>Intensity</strong></div><div>Oppressive</div></div>
     <input id="playlist_intensity" name="playlist[intensity]" type="text" data-slider="true", data-slider-range="1, 100", data-slider-theme="volume", data-slider-step="1">
+    <%= check_box("playlist", "intensity", {}, "0", nil) %> I don't care about how intense the songs are.
   </div>
   <div class="field">
-    <%= f.label :tone %><br>
+    <div class="attr_description"><div>Melodic</div><div><strong>Tone</strong></div><div>Rhythmic</div></div>
     <input id="playlist_tone" name="playlist[tone]" type="text" data-slider="true", data-slider-range="1, 100", data-slider-theme="volume", data-slider-step="1">
+    <%= check_box("playlist", "tone", {}, "0", nil) %> I don't care about the balance between melodic and rhythmic elements.
   </div>
   <div class="field">
     <%= f.label :scope, "How expansive do you want the search results?" %><br>
