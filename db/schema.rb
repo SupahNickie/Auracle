@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140607060409) do
+ActiveRecord::Schema.define(version: 20140708155128) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,10 +38,11 @@ ActiveRecord::Schema.define(version: 20140607060409) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
-    t.integer  "songs_list", default: [],  array: true
-    t.integer  "whitelist",  default: [0], array: true
-    t.integer  "blacklist",  default: [0], array: true
+    t.integer  "songs_list", default: [],    array: true
+    t.integer  "whitelist",  default: [0],   array: true
+    t.integer  "blacklist",  default: [0],   array: true
     t.string   "scope"
+    t.boolean  "invisible",  default: false
   end
 
   create_table "songs", force: true do |t|

@@ -29,6 +29,7 @@ en:
       destroy?: "Sorry, you cannot delete this artist's album."
     playlist_policy:
       index?: "Sorry, without an account you cannot have any saved playlists."
+      show?: "Sorry, you cannot view this playlist."
       new?: "Sorry, you cannot create a playlist for another user."
       create?: "Sorry, you cannot create a playlist for another user."
       edit?: "Sorry, you cannot edit another user's playlist."

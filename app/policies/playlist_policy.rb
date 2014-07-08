@@ -14,6 +14,10 @@ class PlaylistPolicy
     user.admin? || (playlist.user_id == user.id)
   end
 
+  def show?
+    playlist.invisible ? user.admin? || (playlist.user_id == user.id) : true
+  end
+
   def create?
     user.admin? || (playlist.user_id == user.id)
   end

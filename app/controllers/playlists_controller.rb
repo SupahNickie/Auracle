@@ -14,6 +14,7 @@ class PlaylistsController < ApplicationController
   # GET /playlists/1
   # GET /playlists/1.json
   def show
+    authorize @playlist
     @playlist.find_music(@playlist, @playlist.mood, @playlist.timbre, @playlist.intensity, @playlist.tone,
       @playlist.scope, "shuffle")
     @playlist.songs_list.sort_by! {|x| [x.album.band.username, x.album.title, x.title]} if Rails.env.test?
@@ -212,6 +213,6 @@ class PlaylistsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def playlist_params
-      params.require(:playlist).permit(:name, :mood, :timbre, :intensity, :tone, :songs_list, :user_id, :whitelist, :blacklist, :scope)
+      params.require(:playlist).permit(:name, :mood, :timbre, :intensity, :tone, :songs_list, :user_id, :whitelist, :blacklist, :scope, :invisible)
     end
 end

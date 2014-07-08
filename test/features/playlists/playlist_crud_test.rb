@@ -31,6 +31,19 @@ feature "Playlist CRUD" do
     page.text.must_include "6 errors prohibited"
   end
 
+  scenario "a playlist can be marked as private" do
+    login_personal
+    visit edit_user_playlist_path(users(:user1), playlists(:playlist1))
+    fill_in "Name", with: "Private!"
+    page.find('#playlist_invisible').set true
+    click_on "Update Playlist"
+    page.text.must_include "Playlist was successfully updated!"
+    click_on "Sign Out"
+    login_band
+    visit user_playlists_path(users(:user1))
+    page.wont_have_content "Private!"
+  end
+
   scenario "a playlist can be deleted (personal account)" do
     login_personal
     visit root_path

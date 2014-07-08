@@ -14,28 +14,30 @@
 
     <tbody>
       <% @playlists.each do |playlist| %>
-        <tr>
-          <td><%= playlist.name %></td>
-          <td><%= playlist.mood %></td>
-          <td><%= playlist.timbre %></td>
-          <td><%= playlist.intensity %></td>
-          <td><%= playlist.tone %></td>
-        <% if User.find(playlist.user_id).role == "band" %>
-          <td><%= link_to 'Play', user_playlist_path(User.find(playlist.user_id), playlist), data: {"skip-pjax" => true} %></td>
-          <td><%= link_to 'View Songs', list_user_playlist_path(User.find(playlist.user_id), playlist) %></td>
-          <% if current_user && policy(playlist).edit? %>
-            <td><%= link_to 'Edit', edit_user_playlist_path(@user, playlist), data: {"skip-pjax" => true} %></td>
-            <td><%= link_to 'Destroy', user_playlist_path(@user, playlist), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% unless playlist.invisible && policy(playlist).edit? == false %>
+          <tr>
+            <td><%= playlist.name %></td>
+            <td><%= playlist.mood %></td>
+            <td><%= playlist.timbre %></td>
+            <td><%= playlist.intensity %></td>
+            <td><%= playlist.tone %></td>
+          <% if User.find(playlist.user_id).role == "band" %>
+            <td><%= link_to 'Play', user_playlist_path(User.find(playlist.user_id), playlist), data: {"skip-pjax" => true} %></td>
+            <td><%= link_to 'View Songs', list_user_playlist_path(User.find(playlist.user_id), playlist) %></td>
+            <% if current_user && policy(playlist).edit? %>
+              <td><%= link_to 'Edit', edit_user_playlist_path(@user, playlist), data: {"skip-pjax" => true} %></td>
+              <td><%= link_to 'Destroy', user_playlist_path(@user, playlist), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% end %>
+          <% else %>
+            <td><%= link_to 'Play', "/users/#{User.find(playlist.user_id).to_param}/playlists/#{playlist.id}", data: {"skip-pjax" => true} %></td>
+            <td><%= link_to 'View Songs', "/users/#{User.find(playlist.user_id).to_param}/playlists/#{playlist.id}/list" %></td>
+            <% if current_user && policy(playlist).edit? %>
+              <td><%= link_to 'Edit', "/users/#{current_user.to_param}/playlists/#{playlist.id}/edit", data: {"skip-pjax" => true}  %></td>
+              <td><%= link_to 'Destroy', "/users/#{current_user.to_param}/playlists/#{playlist.id}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% end %>
           <% end %>
-        <% else %>
-          <td><%= link_to 'Play', "/users/#{User.find(playlist.user_id).to_param}/playlists/#{playlist.id}", data: {"skip-pjax" => true} %></td>
-          <td><%= link_to 'View Songs', "/users/#{User.find(playlist.user_id).to_param}/playlists/#{playlist.id}/list" %></td>
-          <% if current_user && policy(playlist).edit? %>
-            <td><%= link_to 'Edit', "/users/#{current_user.to_param}/playlists/#{playlist.id}/edit", data: {"skip-pjax" => true}  %></td>
-            <td><%= link_to 'Destroy', "/users/#{current_user.to_param}/playlists/#{playlist.id}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          <% end %>
+          </tr>
         <% end %>
-        </tr>
       <% end %>
     </tbody>
   </table>

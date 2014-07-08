@@ -74,6 +74,10 @@
     <%= f.radio_button(:scope, "loose") %> Loose<br>
     <%= f.radio_button(:scope, "expansive") %> Expansive<br>
   </div>
+  <div class="field">
+    <%= f.label "Playlists are visible by the public by default!" %><br>
+    <%= f.check_box :invisible %> No way, make this playlist private!
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>
