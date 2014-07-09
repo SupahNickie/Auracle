@@ -21,7 +21,7 @@
     <div id="volume_controls">
       <p class="volume_label_class" id="<%= ruby_track_number %>-volume_label"><strong>Volume: 100</strong></p>
       <input class="volume_slider_class" id="<%= ruby_track_number %>-volumeSlider" type="text" data-slider="true", data-slider-range="0.00, 1.00", data-slider-theme="volume", data-slider-step="0.01", data-slider-highlight="true", value="1.00">
-    </div><br>
+    </div>
     <script type="text/javascript">
       audioPlayer[<%= ruby_track_number %>] = document.getElementById("<%= ruby_track_number %>-audioPlayer");
       volumeSlider[<%= ruby_track_number %>] = document.getElementById("<%= ruby_track_number %>-volumeSlider");
@@ -41,16 +41,16 @@
     <% elsif song.link_to_download? && song.link_to_purchase.empty? %>
       <%= link_to 'Download', "http://#{song.link_to_download}" %><br>
     <% else %>
-      <br>
     <% end %>
-
     <% if current_user && policy(@album).edit? %>
-      <br><%= link_to "Edit #{song.title}", edit_user_album_song_path(@user, @album, song) %> |
+      <%= link_to "Edit #{song.title}", edit_user_album_song_path(@user, @album, song) %> |
       <%= link_to "Delete #{song.title}", user_album_song_path(@user, @album, song), method: :delete, data: { confirm: 'Are you sure?' } %><br><br>
     <% end %>
+      <br>
+
   <% end %>
 <% else %>
-  <p>This artist hasn't uploaded any songs yet!</p>
+  <p>The artist hasn't uploaded any songs to this album yet!</p>
 <% end %>
 
 <br><br>
