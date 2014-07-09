@@ -17,7 +17,7 @@
 
   <% @album.songs.each do |song| %>
     <strong><%= @album.band.username %> - <%= song.title %></strong><br>
-    <audio src="<%= song.mp3.url %>" preload id="<%= ruby_track_number %>-audioPlayer" ></audio><br>
+    <audio src="<%= song.mp3.url %>" id="<%= ruby_track_number %>-audioPlayer" ></audio><br>
     <div id="volume_controls">
       <p class="volume_label_class" id="<%= ruby_track_number %>-volume_label"><strong>Volume: 100</strong></p>
       <input class="volume_slider_class" id="<%= ruby_track_number %>-volumeSlider" type="text" data-slider="true", data-slider-range="0.00, 1.00", data-slider-theme="volume", data-slider-step="0.01", data-slider-highlight="true", value="1.00">
