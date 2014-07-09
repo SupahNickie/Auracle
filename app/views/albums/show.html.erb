@@ -9,10 +9,30 @@
     <p>Please <%= link_to 'sign in', new_user_session_path %> to access full site functionality, including voting on this album's songs!</p>
   <% end %>
 
+  <%= javascript_tag do %>
+    window.audioPlayer = {};
+    window.volumeSlider = {};
+  <% end %>
+  <% ruby_track_number = 0 %>
+
   <% @album.songs.each do |song| %>
     <strong><%= @album.band.username %> - <%= song.title %></strong><br>
-    <%= audio_tag(song.mp3.url, controls: true) %><br>
-
+    <audio src="<%= song.mp3.url %>" preload id="<%= ruby_track_number %>-audioPlayer" ></audio><br>
+    <div id="volume_controls">
+      <p class="volume_label_class" id="<%= ruby_track_number %>-volume_label"><strong>Volume: 100</strong></p>
+      <input class="volume_slider_class" id="<%= ruby_track_number %>-volumeSlider" type="text" data-slider="true", data-slider-range="0.00, 1.00", data-slider-theme="volume", data-slider-step="0.01", data-slider-highlight="true", value="1.00">
+    </div><br>
+    <script type="text/javascript">
+      audioPlayer[<%= ruby_track_number %>] = document.getElementById("<%= ruby_track_number %>-audioPlayer");
+      volumeSlider[<%= ruby_track_number %>] = document.getElementById("<%= ruby_track_number %>-volumeSlider");
+      $("#<%= ruby_track_number %>-volumeSlider").bind("slider:ready slider:changed", function (event, data) {
+        document.getElementById("<%= ruby_track_number %>-audioPlayer").volume = document.getElementById("<%= ruby_track_number %>-volumeSlider").value;
+      });
+      $("#<%= ruby_track_number %>-volumeSlider").bind("slider:changed", function (event, data) {
+        document.getElementById("<%= ruby_track_number %>-volume_label").innerHTML = "<strong>Volume: " + Math.floor(volumeSlider[<%= ruby_track_number %>].value * 100) + "</strong>";
+      });
+    </script>
+    <% ruby_track_number += 1 %>
     <% if song.link_to_purchase? && song.link_to_download? %>
       <%= link_to 'Purchase', "http://#{song.link_to_purchase}" %> |
       <%= link_to 'Download', "http://#{song.link_to_download}" %><br>
@@ -36,7 +56,7 @@
 <br><br>
 
 <% if current_user && policy(@album).edit? %>
-  <%= link_to 'Add New Song to Album', new_user_album_song_path(@user, @album), data: {"skip-pjax" => true} %> |
+  <%= link_to 'Add New Song to Album', new_user_album_song_path(@user, @album) %> |
   <%= link_to 'Edit Album Details', edit_user_album_path(@user, @album) %> |
 <% end %>
 <%= link_to 'Back', user_albums_path(@user) %>

@@ -26,7 +26,7 @@
             <% if current_user %>
               <li><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></li>
             <% elsif @user.nil? || @user.username == "Guest" %>
-              <li><%= link_to "Make a playlist to try out!", playlists_try_path, data: {"skip-pjax" => true} %></li>
+              <li><%= link_to "Make a playlist to try out!", playlists_try_path %></li>
               <li><%= link_to 'Sign In', new_user_session_path %></li>
               <li><%= link_to 'Sign Up', new_user_registration_path %></li>
             <% end %>

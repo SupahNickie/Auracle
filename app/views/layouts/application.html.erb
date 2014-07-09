@@ -10,25 +10,10 @@
 
 <%= render 'layouts/navbar' %>
 <div class="container">
-  <div id="audio_container">
-    <div id="currently_playing">
-      <h3 id="song_info"></h3>
-    </div>
-    <audio src="" preload autoplay id="audioPlayer"></audio>
-    <div id="volume_controls">
-      <p id="volume_label"><strong>Volume: 100</strong></p>
-      <input id="volumeSlider" type="text" data-slider="true", data-slider-range="0.00, 1.00", data-slider-theme="volume", data-slider-step="0.01", data-slider-highlight="true", value="1.00">
-    </div><br>
-    <div class="song_box" id="previous_song">Previous song</div>
-    <div class="song_box" id="next_song">Next song</div><br><br>
-  </div>
-
-  <div data-pjax-container>
-    <% flash.each do |key, value| %>
-      <h4><%= value %></h4>
-    <% end %>
-    <%= yield %>
-  </div>
+  <% flash.each do |key, value| %>
+    <h4><%= value %></h4>
+  <% end %>
+  <%= yield %>
 </div>
 
 </body>

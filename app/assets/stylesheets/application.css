@@ -28,19 +28,15 @@
   padding: 0 10px;
 }
 
-#audio_container {
-  display: none;
-}
-
 #volume_controls {
+  margin-top: 5px;
   width: 450px;
-  display: inline-block;
 }
 
-#volumeSlider {
+.volume_slider_class {
   float: left;
 }
 
-#volume_label {
+.volume_label_class {
   float: right;
 }
