@@ -36,7 +36,7 @@
 <br><br>
 
 <% if current_user && policy(@album).edit? %>
-  <%= link_to 'Add New Song to Album', new_user_album_song_path(@user, @album), data: {"skip-pjax" => true} %> |
+  <%= link_to 'Add New Song to Album', new_user_album_song_path(@user, @album) %> |
   <%= link_to 'Edit Album Details', edit_user_album_path(@user, @album) %> |
 <% end %>
 <%= link_to 'Back', user_albums_path(@user) %>

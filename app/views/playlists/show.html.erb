@@ -1,80 +1,86 @@
+<div id="audio_container">
+  <div id="currently_playing">
+    <h3 id="song_info"></h3>
+  </div>
+  <audio preload autoplay id="audioPlayer"></audio>
+  <div id="volume_controls">
+    <p id="volume_label"><strong>Volume: 100</strong></p>
+    <input id="volumeSlider" type="text" data-slider="true", data-slider-range="0.00, 1.00", data-slider-theme="volume", data-slider-step="0.01", data-slider-highlight="true", value="1.00">
+  </div><br>
+  <div class="song_box" id="previous_song">Previous song</div>
+  <div class="song_box" id="next_song">Next song</div><br><br>
+</div>
+
 <p>
   <strong>Name:</strong>
   <%= @playlist.name %>
 </p>
 
-<!-- Declaring variables for Javascript playlist functions -->
+  <!-- Declaring variables for Javascript playlist functions -->
 
-<% hash_of_song_urls = {} %>
-<% hash_of_song_artists = {} %>
-<% hash_of_song_titles = {} %>
-<% counter = 0 %>
+  <% hash_of_song_urls = {} %>
+  <% hash_of_song_artists = {} %>
+  <% hash_of_song_titles = {} %>
+  <% counter = 0 %>
 
+  <% @playlist.songs_list.each do |song| %>
+    <% counter += 1 %>
+    <% hash_of_song_urls[counter] = song.mp3.url %>
+    <% hash_of_song_artists[counter] = song.album.band.username %>
+    <% hash_of_song_titles[counter] = song.title %>
+  <% end %>
 
-<% @playlist.songs_list.each do |song| %>
-  <% counter += 1 %>
-  <% hash_of_song_urls[counter] = song.mp3.url %>
-  <% hash_of_song_artists[counter] = song.album.band.username %>
-  <% hash_of_song_titles[counter] = song.title %>
-<% end %>
+  <%= javascript_tag do %>
+    window.tracklist = <%=raw hash_of_song_urls.to_json %>;
+    window.song_artists = <%=raw hash_of_song_artists.to_json %>;
+    window.song_titles = <%=raw hash_of_song_titles.to_json %>;
+  <% end %>
 
-<%= javascript_tag do %>
-  window.tracklist = <%=raw hash_of_song_urls.to_json %>;
-  window.song_artists = <%=raw hash_of_song_artists.to_json %>;
-  window.song_titles = <%=raw hash_of_song_titles.to_json %>;
-<% end %>
+  <!-- End Ruby => JS variable declarations -->
+  <!-- Begin JS functions for playlist autoplay/stream -->
 
-<!-- End Ruby => JS variable declarations -->
-<!-- Begin JS functions for playlist autoplay/stream -->
-
-<script type="text/javascript">
-var song = 1;
-window.onload = function(){
-  $('#audio_container').css("display", "block");
-  var audioPlayer = document.getElementById('audioPlayer');
-  var volumeSlider = document.getElementById('volumeSlider');
-  $("#volumeSlider").bind("slider:ready slider:changed", function (event, data) {
-    audioPlayer.volume = volumeSlider.value;
-  });
-  $("#volumeSlider").bind("slider:changed", function (event, data) {
-    $("#volume_label").html("<p id=\"volume_label\"><strong>Volume: " + Math.floor(volumeSlider.value * 100) + "</strong></p>");
-  });
-  audioPlayer.src = tracklist[song];
-  $('#song_info').html("<h3><strong>" + song_artists[song] + " - " + song_titles[song] + "</strong></h3>");
-  $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
-  audioPlayer.addEventListener('ended', function(e){
-    song = song + 1;
+  <script type="text/javascript">
+  var song = 1;
+  window.onload = function(){
+    var audioPlayer = document.getElementById('audioPlayer');
+    var volumeSlider = document.getElementById('volumeSlider');
+    $("#volumeSlider").bind("slider:ready slider:changed", function (event, data) {
+      audioPlayer.volume = volumeSlider.value;
+    });
+    $("#volumeSlider").bind("slider:changed", function (event, data) {
+      $("#volume_label").html("<p id=\"volume_label\"><strong>Volume: " + Math.floor(volumeSlider.value * 100) + "</strong></p>");
+    });
     audioPlayer.src = tracklist[song];
-    if (tracklist[song] == null) {
-      alert("Your playlist has ended. Please visit your playlist again to find new music to listen to!");
-    } else {
-      $('#song_info').html("<h3><strong>" + song_artists[song] + " - " + song_titles[song] + "</strong></h3>");
-      $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
-    }
-  });
-  $('#previous_song').click(function(){
-    song = song - 1;
-    audioPlayer.src = tracklist[song];
-    $('#song_info').html("<h3><strong> " + song_artists[song] + " - " + song_titles[song] + " </strong></h3>");
-    $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
-  });
-  $('#remove_song').click(function() {
-    song = song + 1;
-    audioPlayer.src = tracklist[song];
-    $('#song_info').html("<h3><strong> " + song_artists[song] + " - " + song_titles[song] + " </strong></h3>");
-    $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
-  })
-  $('#next_song').click(function() {
-    song = song + 1;
-    audioPlayer.src = tracklist[song];
-    $('#song_info').html("<h3><strong> " + song_artists[song] + " - " + song_titles[song] + " </strong></h3>");
-    $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");
-  });
-  audioPlayer.addEventListener('playing', function(e){
-    $('#audio_container').css("display", "block");
-  });
-};
-</script>
+    $('#song_info').html("<h3><strong>" + song_artists[song] + " - " + song_titles[song] + "</strong></h3>");
+    audioPlayer.addEventListener('ended', function(e){
+      song = song + 1;
+      audioPlayer.src = tracklist[song];
+      if (tracklist[song] == null) {
+        alert("Your playlist has ended. Please visit your playlist again to find new music to listen to!");
+      } else {
+        $('#song_info').html("<h3><strong>" + song_artists[song] + " - " + song_titles[song] + "</strong></h3>");
+      }
+    });
+    $('#previous_song').click(function(){
+      song = song - 1;
+      audioPlayer.src = tracklist[song];
+      $('#song_info').html("<h3><strong> " + song_artists[song] + " - " + song_titles[song] + " </strong></h3>");
+    });
+    $('#remove_song').click(function() {
+      song = song + 1;
+      audioPlayer.src = tracklist[song];
+      $('#song_info').html("<h3><strong> " + song_artists[song] + " - " + song_titles[song] + " </strong></h3>");
+    })
+    $('#next_song').click(function() {
+      song = song + 1;
+      audioPlayer.src = tracklist[song];
+      $('#song_info').html("<h3><strong> " + song_artists[song] + " - " + song_titles[song] + " </strong></h3>");
+    });
+    audioPlayer.addEventListener('playing', function(e){
+      $('#audio_container').css("display", "block");
+    });
+  };
+  </script>
 
 <% track_number = 0 %>
 <% @playlist.songs_list.each do |song| %>
@@ -88,20 +94,20 @@ window.onload = function(){
       <% if @playlist.whitelist.include? song.id %>
         <%= image_tag('glyphicons/png/glyphicons_012_heart.png', title: "Saved to this playlist!", class: "glyphicons") %>
       <% elsif @playlist.whitelist.exclude? song.id %>
-        <%= link_to image_tag('glyphicons/png/glyphicons_019_heart_empty.png'), whitelist_user_playlist_path(@user, @playlist, :song_id => song.id), method: :put, title: "Save this song to my playlist!", class: "glyphicons", target: '_blank', data: {"skip-pjax" => true}  %>
+        <%= link_to image_tag('glyphicons/png/glyphicons_019_heart_empty.png'), whitelist_user_playlist_path(@user, @playlist, :song_id => song.id), method: :put, title: "Save this song to my playlist!", class: "glyphicons", target: '_blank' %>
       <% end %>
     <% elsif current_user && current_user.role == "personal" %>
       <% if @playlist.whitelist.include? song.id %>
         <%= image_tag('glyphicons/png/glyphicons_012_heart.png', title: "Saved to this playlist!", class: "glyphicons") %>
       <% elsif @playlist.whitelist.exclude? song.id %>
-        <%= link_to image_tag('glyphicons/png/glyphicons_019_heart_empty.png'), "/users/#{current_user.to_param}/playlists/#{@playlist.id}/whitelist?song_id=#{song.id}", method: :put, title: "Save this song to my playlist!", class: "glyphicons", target: '_blank', data: {"skip-pjax" => true}  %>
+        <%= link_to image_tag('glyphicons/png/glyphicons_019_heart_empty.png'), "/users/#{current_user.to_param}/playlists/#{@playlist.id}/whitelist?song_id=#{song.id}", method: :put, title: "Save this song to my playlist!", class: "glyphicons", target: '_blank'  %>
       <% end %>
     <% end %>
 
     <% if current_user && current_user.role == "band" %>
-      <%= link_to image_tag('glyphicons/png/glyphicons_344_thumbs_down.png'), blacklist_user_playlist_path(@user, @playlist, :song_id => song.id), method: :put, title: "Blacklist this song from my playlist!", class: "glyphicons", target: "_blank", data: {"skip-pjax" => true}, id: "remove_song" %>
+      <%= link_to image_tag('glyphicons/png/glyphicons_344_thumbs_down.png'), blacklist_user_playlist_path(@user, @playlist, :song_id => song.id), method: :put, title: "Blacklist this song from my playlist!", class: "glyphicons", target: "_blank", id: "remove_song" %>
     <% elsif current_user && current_user.role == "personal"  %>
-      <%= link_to image_tag('glyphicons/png/glyphicons_344_thumbs_down.png'), "/users/#{current_user.to_param}/playlists/#{@playlist.id}/blacklist?song_id=#{song.id}", method: :put, title: "Blacklist this song from my playlist!", class: "glyphicons", target: "_blank", data: {"skip-pjax" => true}, id: "remove_song" %>
+      <%= link_to image_tag('glyphicons/png/glyphicons_344_thumbs_down.png'), "/users/#{current_user.to_param}/playlists/#{@playlist.id}/blacklist?song_id=#{song.id}", method: :put, title: "Blacklist this song from my playlist!", class: "glyphicons", target: "_blank", id: "remove_song" %>
     <% end %>
 
   <% end %>
@@ -120,14 +126,14 @@ window.onload = function(){
 <% end %>
 <% if current_user && current_user.role == "band" %>
   <% if policy(@playlist).edit? %>
-    <%= link_to 'Review Favorited and Blacklisted Songs', view_blacklist_user_playlist_path(@user, @playlist), target: '_blank', data: {"skip-pjax" => true} %> |
-    <%= link_to 'Edit Attributes and Scope', edit_user_playlist_path(@user, @playlist), data: {"skip-pjax" => true} %> |
+    <%= link_to 'Review Favorited and Blacklisted Songs', view_blacklist_user_playlist_path(@user, @playlist), target: '_blank' %> |
+    <%= link_to 'Edit Attributes and Scope', edit_user_playlist_path(@user, @playlist) %> |
   <% end %>
   <%= link_to 'Back to My Playlists', user_playlists_path(@user) %>
 <% elsif current_user && current_user.role == "personal"  %>
   <% if policy(@playlist).edit? %>
-    <%= link_to 'Review Favorited and Blacklisted Songs', "/users/#{current_user.to_param}/playlists/#{@playlist.id}/view_blacklist", target: '_blank', data: {"skip-pjax" => true} %> |
-    <%= link_to 'Edit Attributes and Scope', "/users/#{current_user.to_param}/playlists/#{@playlist.id}/edit", data: {"skip-pjax" => true} %> |
+    <%= link_to 'Review Favorited and Blacklisted Songs', "/users/#{current_user.to_param}/playlists/#{@playlist.id}/view_blacklist", target: '_blank' %> |
+    <%= link_to 'Edit Attributes and Scope', "/users/#{current_user.to_param}/playlists/#{@playlist.id}/edit" %> |
   <% end %>
   <%= link_to 'Back to My Playlists', "/users/#{current_user.to_param}/playlists" %>
 <% end %>
