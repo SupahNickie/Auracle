@@ -31,3 +31,16 @@
 #audio_container {
   display: none;
 }
+
+#volume_controls {
+  width: 450px;
+  display: inline-block;
+}
+
+#volumeSlider {
+  float: left;
+}
+
+#volume_label {
+  float: right;
+}

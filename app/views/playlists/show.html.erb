@@ -28,9 +28,17 @@
 <!-- Begin JS functions for playlist autoplay/stream -->
 
 <script type="text/javascript">
-  var song = 1;
+var song = 1;
 window.onload = function(){
+  $('#audio_container').css("display", "block");
   var audioPlayer = document.getElementById('audioPlayer');
+  var volumeSlider = document.getElementById('volumeSlider');
+  $("#volumeSlider").bind("slider:ready slider:changed", function (event, data) {
+    audioPlayer.volume = volumeSlider.value;
+  });
+  $("#volumeSlider").bind("slider:changed", function (event, data) {
+    $("#volume_label").html("<p id=\"volume_label\"><strong>Volume: " + Math.floor(volumeSlider.value * 100) + "</strong></p>");
+  });
   audioPlayer.src = tracklist[song];
   $('#song_info').html("<h3><strong>" + song_artists[song] + " - " + song_titles[song] + "</strong></h3>");
   $('#track_count_label').html("<p><strong>Currently Playing: Track " + song + "</strong></p>");

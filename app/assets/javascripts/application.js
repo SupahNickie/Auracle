@@ -15,8 +15,13 @@
 //= require jquery.ui.all
 //= require jquery.pjax
 //= require simple-slider.min
+//= require audio.min
 //= require_tree .
 
 $(function() {
   $(document).pjax('a:not([data-remote]):not([data-behavior]):not([data-skip-pjax])', '[data-pjax-container]')
+});
+
+audiojs.events.ready(function() {
+  var as = audiojs.createAll();
 });
